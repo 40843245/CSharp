@@ -30,3 +30,9 @@ Screenshot that illustrate the result of code in Unity Project.
 
 ![image](https://github.com/40843245/CSharp/assets/75050655/f0f6d74a-e89e-4018-965a-4d3aeb5299c1)
 
+![image](https://github.com/40843245/CSharp/assets/75050655/3c3302d4-5462-4bfb-acb7-7446f31892f9)
+
+![image](https://github.com/40843245/CSharp/assets/75050655/f54e2827-9fec-4435-942b-70e54dbdd56e)
+
+![Uploading image.png…]()
+
