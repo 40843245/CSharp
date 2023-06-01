@@ -36,3 +36,19 @@ Screenshot that illustrate the result of code in Unity Project.
 
 etc
 
+#### Ref 
+
+For the issue, list all available methods of class in C#.
+
+![image](https://github.com/40843245/CSharp/assets/75050655/3318291d-5203-422f-8308-acd63f77f3cc)
+
+Thanks to the reply on StackOverflow.
+
+![image](https://github.com/40843245/CSharp/assets/75050655/d2227e7d-1989-4dd8-a5cd-8304f4af46b2)
+
+https://stackoverflow.com/questions/1198417/generate-list-of-methods-of-a-class-with-method-types
+
+Here is the API of MSDS (Microsoft Docs).
+
+https://learn.microsoft.com/en-us/dotnet/api/system.type.getmethods?view=net-7.0
+
