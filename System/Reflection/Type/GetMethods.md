@@ -1,4 +1,43 @@
 # GetMethods in C#
+## Info
+### Assembly
+System.Runtime.dll
+### Namespace
+System
+## Introduction
+Gets all methods of the current Type filtered by specified attributes.
+## Overload
+    GetMethods(BindingFlags)
+    GetMethods()
+### GetMethods(BindingFlags)
+#### Syntax
+    public abstract System.Reflection.MethodInfo[] 
+    GetMethods 
+    (System.Reflection.BindingFlags bindingAttr);
+#### Introduction 
+        See the Parameter section.
+#### Parameter
+       bindingAttr: 
+            To filter the results by one or more attributes as the flag. You can consider it a flag.
+#### Return type
+       System.Reflection.MethodInfo[] 
+#### Return value
+        It returns a resultant array that contain all available methods of given class if exists. Otherwise, return null array (i.e. array of 0 elements).
+        The type of resultant array should be either null or the System.Reflection.MethodInfo class which contains infos about the available methods.
+### GetMethods()
+#### Syntax
+    public abstract System.Reflection.MethodInfo[] 
+    GetMethods 
+    ();
+#### Introduction 
+        When the flag is NOT specified, it assumes that one search all public methods.
+#### Parameter
+None        
+#### Return type
+       System.Reflection.MethodInfo[] 
+#### Return value
+        It returns a resultant array that contain all public methods of given class. Otherwise, return null array (i.e. array of 0 elements).
+        The type of resultant array should be either null or the System.Reflection.MethodInfo class which contains infos about the available methods.
 ## Application
 ### List All Methods in C#
 #### Example 
