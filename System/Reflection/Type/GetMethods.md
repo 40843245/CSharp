@@ -34,5 +34,5 @@ Screenshot that illustrate the result of code in Unity Project.
 
 ![image](https://github.com/40843245/CSharp/assets/75050655/f54e2827-9fec-4435-942b-70e54dbdd56e)
 
-![Uploading image.png…]()
+etc
 
