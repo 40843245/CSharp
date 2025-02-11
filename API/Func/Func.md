@@ -27,3 +27,5 @@ second type of generic in `Func<int, int, int>` is `int` indicates that type fir
 third type of generic in `Func<int, int, int>` is `int` indicates that type second argument should be `int`.
 ## reference
 [Func<T,TResult> Delegate](https://learn.microsoft.com/en-us/dotnet/api/system.func-2?view=net-9.0)
+
+[What is Func, how and when is it used](https://stackoverflow.com/questions/3624731/what-is-func-how-and-when-is-it-used)
