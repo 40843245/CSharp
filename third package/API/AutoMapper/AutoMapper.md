@@ -55,9 +55,56 @@ Image that
 
   - you have 1000 instance.
   - Or, you have an instance with 1000 getter-setter property.
-With `AutoMapper` package (version 5.2.0), we just need to create mapping table through
+
+With `AutoMapper` package (version 5.2.0), we just need to create mapping table through `CreateMap` method.
+
+As following code.
+
+Convert it from an instance of `User` class to another instance of `UserDTO` class.
+
+`UserDTOProfile.cs`
 
 ```
-
+    public class UserDTOProfile
+    {
+        public static UserDTO GetUserDTO(User data)
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<User, UserDTO>()
+                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
+                   .ForMember(userDTO => userDTO.ACCOUNT, action => action.MapFrom(user => user.account))
+                   .ForMember(userDTO => userDTO.PASSWORD, action => action.MapFrom(user => user.password))
+                       ;
+            });
+            var mapper = config.CreateMapper();
+            var result = mapper.Map<User,UserDTO>(data);
+            return result;
+        }
+    }
 ```
 
+Convert it from an instance of `UserDTO` class to another instance of `User` class.
+
+`UserProfile.cs`
+
+```
+    public class UserProfile
+    {
+        public static User GetUser(UserDTO data)
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<UserDTO, User>()
+                   .ForMember(user => user.username, action => action.MapFrom(userDTO => userDTO.USERNAME))
+                   .ForMember(user => user.account, action => action.MapFrom(userDTO => userDTO.ACCOUNT))
+                   .ForMember(user => user.password, action => action.MapFrom(userDTO => userDTO.PASSWORD))
+                   ;
+
+            });
+            var mapper = config.CreateMapper();
+            var result = mapper.Map<UserDTO,User>(data);
+            return result;
+        }
+    }
+```
