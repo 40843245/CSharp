@@ -213,3 +213,13 @@ where
             Console.ReadLine();
         }
 ```
+
+## demo project
+See [`AutoMapper demo2`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper)
+
+## reference
+### API reference
+See [latest version of AutoMapper API](https://docs.automapper.org/en/stable/)
+
+### tutorial reference
+See [AutoMapper —— 類別轉換超省力](https://igouist.github.io/post/2020/07/automapper/)
