@@ -60,7 +60,7 @@ With `AutoMapper` package (version 5.2.0), we just need to create mapping table 
 
 As following code.
 
-Convert it from an instance of `User` class to another instance of `UserDTO` class.
+To convert it from an instance of `User` class to another instance of `UserDTO` class, wrapping it into a method.
 
 `UserDTOProfile.cs`
 
@@ -84,7 +84,22 @@ Convert it from an instance of `User` class to another instance of `UserDTO` cla
     }
 ```
 
-Convert it from an instance of `UserDTO` class to another instance of `User` class.
+Then we can use it
+
+```
+        public static void test2()
+        {
+            User user1 = new User();
+            user1.username = "Jay";
+            user1.account = "jay30@gmail.com";
+            user1.password = "password";
+
+            UserDTO userDTO1 = UserDTOProfile.GetUserDTO(user1);
+            PrintInfo(user1, userDTO1);
+        }
+```
+
+To convert it from an instance of `UserDTO` class to another instance of `User` class.
 
 `UserProfile.cs`
 
@@ -107,4 +122,94 @@ Convert it from an instance of `UserDTO` class to another instance of `User` cla
             return result;
         }
     }
+```
+
+Then we can use it
+
+```
+        public static void test3()
+        {
+            UserDTO userDTO1 = new UserDTO();
+            userDTO1.USERNAME = "Jay";
+            userDTO1.ACCOUNT = "jay30@gmail.com";
+            userDTO1.PASSWORD = "password";
+
+            User user1 = UserProfile.GetUser(userDTO1);
+            PrintInfo(user1, userDTO1);
+        }
+```
+
+Or, it can be even more simpler, we can create two mapping tables at same time and wrapping it into a method.
+
+As following code
+
+`UserMapper.cs`
+
+```
+    public class UserMapper
+    {
+        public static IMapper CrreateMappingTable()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<User, UserDTO>()
+                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
+                   .ForMember(userDTO => userDTO.ACCOUNT, action => action.MapFrom(user => user.account))
+                   .ForMember(userDTO => userDTO.PASSWORD, action => action.MapFrom(user => user.password))
+                       ;
+                cfg.CreateMap<UserDTO, User>()
+                   .ForMember(user => user.username, action => action.MapFrom(userDTO => userDTO.USERNAME))
+                   .ForMember(user => user.account, action => action.MapFrom(userDTO => userDTO.ACCOUNT))
+                   .ForMember(user => user.password, action => action.MapFrom(userDTO => userDTO.PASSWORD))
+                   ;
+            });
+            var mapper = config.CreateMapper();
+            return mapper;
+        }
+    }
+```
+
+To convert it from an instance of `User` class to another instance of `UserDTO` class, we can simply type
+
+```
+        public static void test4()
+        {
+            User user1 = new User();
+            user1.username = "Jay";
+            user1.account = "jay30@gmail.com";
+            user1.password = "password";
+
+            IMapper mapper = UserMapper.CrreateMappingTable();
+            UserDTO userDTO1 = mapper.Map<User, UserDTO>(user1);
+            PrintInfo(user1, userDTO1);
+        }
+```
+
+To convert it from an instance of `UserDTO` class to another instance of `User` class.
+
+```
+        public static void test5()
+        {
+            UserDTO userDTO1 = new UserDTO();
+            userDTO1.USERNAME = "Jay";
+            userDTO1.ACCOUNT = "jay30@gmail.com";
+            userDTO1.PASSWORD = "password";
+
+            IMapper mapper = UserMapper.CrreateMappingTable();
+            User user1 = mapper.Map<UserDTO, User>(userDTO1);
+            PrintInfo(user1, userDTO1);
+        }
+```
+
+where 
+
+`PrintoInfo` method is defined as follows.
+
+```
+        private static void PrintInfo(User user, UserDTO userDTO)
+        {
+            Console.WriteLine(user.GetInfo());
+            Console.WriteLine(userDTO.GetInfo());
+            Console.ReadLine();
+        }
 ```
