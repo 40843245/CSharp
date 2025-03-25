@@ -12,11 +12,10 @@ invoke the `cmd.Parameters.AddWithValue` to set the value of parameter in SQL Qu
 ### example 1
 
 ```
-						SqlCommand sqlCmd = new SqlCommand();
-	
-						// your sql command string.
-            string sql_tmp = "SELECT　* FROM Table1 WHERE Field1 = @Field1 AND Field2 = @Field2; ";
-            sqlCmd.Command.AddWithValue("@Field1",2);
-            sqlCmd.Command.AddWithValue("@Field2","Value2");
-						sqlCmd.CommandText = sql_tmp;
+SqlCommand sqlCmd = new SqlCommand();	
+// your sql command string.
+string sql_tmp = "SELECT　* FROM Table1 WHERE Field1 = @Field1 AND Field2 = @Field2; ";
+sqlCmd.Command.AddWithValue("@Field1",2);
+sqlCmd.Command.AddWithValue("@Field2","Value2");
+sqlCmd.CommandText = sql_tmp;
 ```
