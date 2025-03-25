@@ -19,3 +19,7 @@ sqlCmd.Command.AddWithValue("@Field1",2);
 sqlCmd.Command.AddWithValue("@Field2","Value2");
 sqlCmd.CommandText = sql_tmp;
 ```
+
+## reference
++ [System.Data.SqlClient.SqlParameterCollection Class (MSDS)](https://learn.microsoft.com/en-us/dotnet/api/system.data.sqlclient.sqlparametercollection?view=net-9.0-pp)
++ [System.Data.SqlClient.SqlParameterCollection.AddWithValue(String, Object) Method (MSDS)](https://learn.microsoft.com/en-us/dotnet/api/system.data.sqlclient.sqlparametercollection.addwithvalue?view=net-9.0-pp)
