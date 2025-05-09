@@ -9,10 +9,120 @@ There are lots of ways.
 > [!CAUTION]
 > This syntax is only supported for AutoMapper in version 5.0 (or above) 
 
+Step 0:
+
+Define two class (of course, as the source and destination of mapping table)
+
+Suppose I define two classes -- `User` and `UserDTO`.
+
+`User.cs`
+
+```
+    public class User
+    {
+        public string username { get; set; }
+        public string account { get; set; }
+        public string password { get; set; }
+    }
+```
+
+`UserDTO.cs`
+
+```
+    public class UserDTO
+    {
+        public string USERNAME { get; set; }
+        public string ACCOUNT { get; set; }
+        public string PASSWORD { get; set; }
+    }
+```
+
+Step 2:
+
+First, to create and set up the mapper configuration, instantiate a `MapperConfiguration` instance by `new` keyword.  
+
+```
+var config = new MapperConfiguration(
+    cfg =>
+);
+```
+
+Step 3:
+
+Then, to set up one or more mapping table, call `CreateMap` instance method in the lambda expression inside `MapperConfiguration` constructor.
+
+To set the behavior of the mapping table (such as, the action of one member in one class maps to one member in another class), invoke `ForMember` instance method.  
+
+```
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<User, UserDTO>()
+                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
+                   .ForMember(userDTO => userDTO.ACCOUNT, action => action.MapFrom(user => user.account))
+                   .ForMember(userDTO => userDTO.PASSWORD, action => action.MapFrom(user => user.password))
+                       ;
+                cfg.CreateMap<UserDTO, User>()
+                   .ForMember(user => user.username, action => action.MapFrom(userDTO => userDTO.USERNAME))
+                   .ForMember(user => user.account, action => action.MapFrom(userDTO => userDTO.ACCOUNT))
+                   .ForMember(user => user.password, action => action.MapFrom(userDTO => userDTO.PASSWORD))
+                   ;
+            });
+```
+
+Let's break down the above code snippet.
+
++ In
+  
+```
+                cfg.CreateMap<User, UserDTO>()
+                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
+```
+
+the member `USERNAME` of userDTO (which is type of `UserDTO`) will map to the member `username` of user (which is type of `User`) using default behavior (i.e. value of `USERNAME` equals to value of `username`)
+
+
+Step 3:
+
+To create the mapping table (`IMapper` type), just invoke `CreateMapper` method in cfg instance (with type `MapperConfiguration`).
+
+```
+            var config = new MapperConfiguration(cfg =>
+            {
+                // ... code about set up the table omitted for clarity
+            });
+            var mapper = config.CreateMapper();
+```
+
+Step 4:
+
+The full code is
+
+`User.cs`
+
+```
+    public class User
+    {
+        public string username { get; set; }
+        public string account { get; set; }
+        public string password { get; set; }
+    }
+```
+
+`UserDTO.cs`
+
+```
+    public class UserDTO
+    {
+        public string USERNAME { get; set; }
+        public string ACCOUNT { get; set; }
+        public string PASSWORD { get; set; }
+    }
+```
+
 ```
     public class UserMapper
     {
-        public static IMapper CrreateMappingTable()
+        public static IMapper CreateMappingTable()
         {
             var config = new MapperConfiguration(cfg =>
             {
@@ -33,8 +143,42 @@ There are lots of ways.
     }
 ```
 
-## How to specifies the behavior of mapping from one member of one class to other member of other class.
-Use `.ForMember` method followed by `CreateMap` method. ()
+## How to specifies the behavior of mapping from one member of one class to other member of other class?
+Invoke `ForMember` instance method followed by `CreateMap` method. 
+
+```
+        cfg.CreateMap<User, UserDTO>()
+                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
+```
+
+For more details, see step 3 in above section.
+
+## How to ignore the action (i.e. one member of one class will NOT to other member of other class)?
+Invoke `Ignore` instance method in the lambda expression about action (which passed in 1th argument (zero-based)) inside `ForMember` instance method call.
+
+```
+            cfg.CreateMap<UserDTO, User>()
+                   .ForMember(user => user.birthdate, action => action.Ignore())
+```
+
+## How to use customized a value resolver to specify the action with complex operations?
+
+Step 1:
+
+To customize a value resolver, you need to define a class that implements `IValueResolver<TSource,TDestination,TReturnType>` interface.
+
+By the definition of `IValueResolver<TSource,TDestination,TReturnType>` interface,
+
+you will need to defines a method inside the class.
+
+```
+public TReturnType Resolve(TSource source, TDestination destination, TReturnType destMember, ResolutionContext context)`
+{
+    // your logic
+}
+```
+
+See example 2, for more details.
 
 ### examples
 #### example 1
@@ -248,8 +392,8 @@ where
         }
 ```
 
-## create a mapping table with ignore the property
-Using 
+## How create a mapping table which ignores the member
+Using `.ignore` when creating a map
 
 ## demo project
 See [`AutoMapper demo2 (version 5.2.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper)
