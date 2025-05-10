@@ -178,6 +178,47 @@ public TReturnType Resolve(TSource source, TDestination destination, TReturnType
 }
 ```
 
+Step 2:
+
+Then one can invoke `ResolveUsing` instance method in the lambda expression about action 
+
+with generic type `IValueResolver<TSource,TDestination,TReturnType>` inside `ForMember` instance method call.
+
+For example,
+
+I defined a class `AgeResolver` which implements `IValueResolver<User, UserDTO, int>` and define the Resolve method.
+
+```
+    public class AgeResolver : IValueResolver<User, UserDTO, int>
+    {
+        #region implement all interfaces
+        public int Resolve(User source, UserDTO destination, int destMember, ResolutionContext context)
+        {
+            DateTime now = DateTime.Now;
+
+            DateTime birthdate = source.birthdate;
+
+            int age = now.Year - birthdate.Year;
+
+            // Check if the birthday has occurred this year
+            if (birthdate > now.AddYears(-age))
+            {
+                age--;
+            }
+
+            return age;
+        }
+        #endregion
+    }
+```
+
+Then I can use it as follows.
+
+```
+                cfg.CreateMap<User, UserDTO>()
+                   .ForMember(userDTO => userDTO.AGE, action => action.ResolveUsing<AgeResolver>())
+```
+
 See example 2, for more details.
 
 ### examples
@@ -392,11 +433,10 @@ where
         }
 ```
 
-## How create a mapping table which ignores the member
-Using `.ignore` when creating a map
-
-## demo project
+##### demo project
 See [`AutoMapper demo2 (version 5.2.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper)
+
+#### examples2
 
 ## reference
 ### API reference
