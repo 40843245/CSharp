@@ -434,9 +434,191 @@ where
 ```
 
 ##### demo project
-See [`AutoMapper demo2 (version 5.2.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper)
+See [`AutoMapper demo2.7z (version 1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/1.0.0)
 
-#### examples2
+#### examples 2
+
+`User.cs`
+
+```
+    public class User
+    {
+        public DateTime birthdate { get; set; }
+        public string username { get; set; }
+        public string account { get; set; }
+        public string password { get; set; }
+    }
+```
+
+`UserDTO.cs`
+
+```
+    public class UserDTO
+    {
+        public int AGE { get; set; }
+        public string USERNAME { get; set; }
+        public string ACCOUNT { get; set; }
+        public string PASSWORD { get; set; }
+    }
+```
+
+`UserMapper.cs`
+
+```
+    public class UserMapper
+    {
+        public static IMapper CrreateMappingTable()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<User, UserDTO>()
+                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
+                   .ForMember(userDTO => userDTO.ACCOUNT, action => action.MapFrom(user => user.account))
+                   .ForMember(userDTO => userDTO.PASSWORD, action => action.MapFrom(user => user.password))
+                    .ForMember(userDTO => userDTO.AGE, action => action.ResolveUsing<AgeResolver>())
+
+                       ;
+                cfg.CreateMap<UserDTO, User>()
+                   .ForMember(user => user.username, action => action.MapFrom(userDTO => userDTO.USERNAME))
+                   .ForMember(user => user.account, action => action.MapFrom(userDTO => userDTO.ACCOUNT))
+                   .ForMember(user => user.password, action => action.MapFrom(userDTO => userDTO.PASSWORD))
+                   .ForMember(user => user.birthdate, action => action.Ignore())
+                   ;
+            });
+            var mapper = config.CreateMapper();
+            return mapper;
+        }
+    }
+```
+
+`AgeResolver.cs`
+
+```
+    public class AgeResolver : IValueResolver<User, UserDTO, int>
+    {
+        #region implement all interfaces
+        public int Resolve(User source, UserDTO destination, int destMember, ResolutionContext context)
+        {
+            DateTime now = DateTime.Now;
+
+            DateTime birthdate = source.birthdate;
+
+            int age = now.Year - birthdate.Year;
+
+            // Check if the birthday has occurred this year
+            if (birthdate > now.AddYears(-age))
+            {
+                age--;
+            }
+
+            return age;
+        }
+        #endregion
+    }
+```
+
+`DemoClass1.cs`
+
+```
+public static class DemoClass1
+    {
+        /// <summary>
+        /// static method that illustrate it's troublesome 
+        /// to convert from a class to another class without `AutoMapper` package. 
+        /// </summary>
+        public static void test1()
+        {
+            User user1 = new User();
+            user1.username = "Jay";
+            user1.account = "jay30@gmail.com";
+            user1.password = "password";
+
+            UserDTO userDTO1 = new UserDTO();
+            userDTO1.USERNAME = user1.username;
+            userDTO1.ACCOUNT = user1.account;
+            userDTO1.PASSWORD = user1.password;
+
+            PrintInfo(user1, userDTO1);
+        }
+
+        public static void test4()
+        {
+            User user1 = new User();
+            user1.username = "Jay";
+            user1.account = "jay30@gmail.com";
+            user1.password = "password";
+
+            IMapper mapper = UserMapper.CrreateMappingTable();
+            UserDTO userDTO1 = mapper.Map<User, UserDTO>(user1);
+            PrintInfo(user1, userDTO1);
+        }
+        public static void test5()
+        {
+            UserDTO userDTO1 = new UserDTO();
+            userDTO1.USERNAME = "Jay";
+            userDTO1.ACCOUNT = "jay30@gmail.com";
+            userDTO1.PASSWORD = "password";
+
+            IMapper mapper = UserMapper.CrreateMappingTable();
+            User user1 = mapper.Map<UserDTO, User>(userDTO1);
+            PrintInfo(user1, userDTO1);
+        }
+
+        public static void test6()
+        {
+            User user1 = new User();
+            user1.birthdate = new DateTime(2001, 1, 1);
+            user1.username = "testuser";
+            user1.account = "testaccount";
+            user1.password = "testpassword";
+            UserDTO userDTO1 = new UserDTO();
+            userDTO1.AGE = 2;
+            IMapper mapper = UserMapper.CrreateMappingTable();
+            userDTO1 = mapper.Map<User, UserDTO>(user1);
+            PrintInfo(user1, userDTO1);
+        }
+
+
+        private static void PrintInfo(User user, UserDTO userDTO)
+        {
+            Console.WriteLine(user.GetInfo());
+            Console.WriteLine(userDTO.GetInfo());
+            Console.ReadLine();
+        }
+    }
+```
+
+`ExtensionMethods.cs`, extension method defined in static class `ExtensionMethods`
+
+```
+    public static class ExtensionMethods
+    {
+        public static string GetInfo(this User user)
+        {
+            string result = 
+                $"user.username:'{user.username}'\t" +
+                $"user.account:'{user.account}'\t" +
+                $"user.password:'{user.password}'\t" +
+                $"user.birthdate:'{user.birthdate}'\t"
+                ;
+            return result;
+        }
+
+        public static string GetInfo(this UserDTO userDTO)
+        {
+            string result = 
+                $"userDTO.USERNAME:'{userDTO.USERNAME}'\t" +
+                $"userDTO.ACCOUNT:'{userDTO.ACCOUNT}'\t" +
+                $"userDTO.PASSWORD:'{userDTO.PASSWORD}'\t" +
+                $"userDTO.AGE:'{userDTO.AGE}'\t"
+                ;
+            return result;
+        }
+    }
+```
+
+##### demo project
+See [`AutoMapper demo2.7z (version 2.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/2.0.0)
 
 ## reference
 ### API reference
