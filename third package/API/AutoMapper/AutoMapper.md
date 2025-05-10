@@ -5,11 +5,11 @@ AutoMapper is a useful package that easily converts it from an instance of class
 ## How to create a mapping table
 There are lots of ways.
 
-### create a mapping table with new `CreateMap` inside new `MapperConfiguration`
+### 1th way: create a mapping table with new `CreateMap` inside new `MapperConfiguration`
 > [!CAUTION]
 > This syntax is only supported for AutoMapper in version 5.0 (or above) 
 
-Step 0:
+Step 1:
 
 Define two class (of course, as the source and destination of mapping table)
 
@@ -81,7 +81,7 @@ Let's break down the above code snippet.
 the member `USERNAME` of userDTO (which is type of `UserDTO`) will map to the member `username` of user (which is type of `User`) using default behavior (i.e. value of `USERNAME` equals to value of `username`)
 
 
-Step 3:
+Step 4:
 
 To create the mapping table (`IMapper` type), just invoke `CreateMapper` method in cfg instance (with type `MapperConfiguration`).
 
@@ -93,7 +93,7 @@ To create the mapping table (`IMapper` type), just invoke `CreateMapper` method 
             var mapper = config.CreateMapper();
 ```
 
-Step 4:
+Step 5:
 
 The full code is
 
@@ -221,8 +221,100 @@ Then I can use it as follows.
 
 See example 2, for more details.
 
-### examples
-#### example 1
+## 2th way: create and set up mapping table in `Profile` class (class that inherits `AutoMapper.Profile`) and add the profile class.
+
+Step 1:
+
+Define two class (of course, as the source and destination of mapping table)
+
+Suppose I define two classes -- `User` and `UserDTO`.
+
+`User.cs`
+
+```
+    public class User
+    {
+        // System.DateTime
+        public DateTime birthdate { get; set; }
+        public string username { get; set; }
+        public string account { get; set; }
+        public string password { get; set; }
+    }
+```
+
+`UserDTO.cs`
+
+```
+    public class UserDTO
+    {
+        public int AGE { get; set; }
+        public string USERNAME { get; set; }
+        public string ACCOUNT { get; set; }
+        public string PASSWORD { get; set; }
+    }
+```
+
+Step 2:
+
+> [!CAUTION]
+> The following way to define profiles is only supported in AutoMapper in version 5.0.0 (or above).
+>
+> For older version, see [`Configuration`](https://docs.automapper.org/en/stable/Configuration.html)
+
+Define profiles. 
+
+Defines classes.
+
+
+For each defined class, it MUST inherit `AutoMapper.Profile` class.
+
+And create and set up a mapping table in the constructor definition.
+
+`UserProfile.cs`
+
+```
+    public class UserProfile : AutoMapper.Profile
+    {
+        public UserProfile()
+        {
+            CreateMap<User, UserDTO>()
+                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
+                   .ForMember(userDTO => userDTO.ACCOUNT, action => action.MapFrom(user => user.account))
+                   .ForMember(userDTO => userDTO.PASSWORD, action => action.MapFrom(user => user.password))
+                   .ForMember(userDTO => userDTO.AGE, action => action.ResolveUsing<AgeResolver>())
+                       ;
+        }
+    }
+```
+
+Step 3:
+
+Add profiles.
+
+Next, instantiate a configuration. (same as step 4 in 1th way)
+
+Then create mapping tables by invoking `CreateMapper` instance method of `MapperConfiguration`. (same as step 4 in 1th way)
+
+```
+    public class UserMappers
+    {
+        public static IMapper CreateMappingTable()
+        {
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.CreateMap<User, UserDTO>();
+                cfg.AddProfile<UserProfile>();
+
+                cfg.CreateMap<UserDTO, User>();
+                cfg.AddProfile<UserDTOProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+            return mapper;
+        }
+    }
+```
+
+## examples
+### example 1
 For example,
 
 I have defined two classes.
@@ -433,10 +525,10 @@ where
         }
 ```
 
-##### demo project
+#### demo project
 See [`AutoMapper demo2.7z (version 1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/1.0.0)
 
-#### examples 2
+### examples 2
 
 `User.cs`
 
@@ -617,8 +709,12 @@ public static class DemoClass1
     }
 ```
 
-##### demo project
+#### demo project
 See [`AutoMapper demo2.7z (version 2.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/2.0.0)
+
+### example 3
+#### demo project
+See [`AutoMapper demo2.7z (version 3.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/3.0.0)
 
 ## reference
 ### API reference
