@@ -313,6 +313,72 @@ Then create mapping tables by invoking `CreateMapper` instance method of `Mapper
     }
 ```
 
+## How to create a nested mapping table
+Step 0:
+
+Define two classes (of course, used for mapping table).
+
+`InerSource.cs`
+
+```
+    public class InnerSource
+    {
+        public int OtherValue { get; set; }
+
+    }
+```
+
+`OuterSource.cs`
+
+```
+    public class OuterSource
+    {
+        public int Value { get; set; }
+        public InnerSource Inner { get; set; }
+    }
+```
+
+Step 2:
+
+Then create and setup mappint table.
+
+‵InnerAndOuterMappers.cs`
+
+```
+    public class InnerAndOuterMappers
+    {
+        public static IMapper CreateMappingTable()
+        {
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.CreateMap<OuterSource, OuterDest>();
+                cfg.CreateMap<InnerSource, InnerDest>();
+            });
+            var mapper = configuration.CreateMapper();
+            return mapper;
+        }
+    }
+```
+
+Step 3:
+
+Then we can use it
+
+```
+        public static void TestClass1()
+        {
+            var source = new OuterSource
+            {
+                Value = 5,
+                Inner = new InnerSource { OtherValue = 15 }
+            };
+            var mapper = InnerAndOuterMappers.CreateMappingTable();
+            var dest1 = mapper.Map<OuterSource, OuterDest>(source);
+            string message = dest1.GetOuterDestInfo();
+            Console.WriteLine(message);
+        }
+```
+Then
+
 ## examples
 ### example 1
 For example,
