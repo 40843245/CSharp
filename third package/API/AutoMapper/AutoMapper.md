@@ -314,7 +314,7 @@ Then create mapping tables by invoking `CreateMapper` instance method of `Mapper
 ```
 
 ## How to create a nested mapping table
-Step 0:
+Step 1:
 
 Define two classes (of course, used for mapping table).
 
@@ -342,7 +342,7 @@ Step 2:
 
 Then create and setup mappint table.
 
-‵InnerAndOuterMappers.cs`
+`InnerAndOuterMappers.cs`
 
 ```
     public class InnerAndOuterMappers
@@ -394,9 +394,9 @@ Just simply invoke `Map` instance method of `mapper` instance (`IMapper` data ty
 >
 > For more details, see (Lists and Arrays)[`https://docs.automapper.org/en/stable/Lists-and-arrays.html`]
 
-
-
 Take code snippets in above section for example.
+
+Invoking this static method
 
 ```
         public static void TestClass2()
@@ -446,6 +446,178 @@ Take code snippets in above section for example.
                 Console.WriteLine(message);
             }
         }
+```
+
+will output following in console.
+
+```
+outerDest.Value:5
+innerDest.OtherValue:15
+
+outerDest.Value:15
+innerDest.OtherValue:15
+
+outerDest.Value:5
+innerDest.OtherValue:15
+
+outerDest.Value:15
+innerDest.OtherValue:15
+
+outerDest.Value:5
+innerDest.OtherValue:15
+
+outerDest.Value:15
+innerDest.OtherValue:15
+
+outerDest.Value:5
+innerDest.OtherValue:15
+
+outerDest.Value:15
+innerDest.OtherValue:15
+
+outerDest.Value:5
+innerDest.OtherValue:15
+
+outerDest.Value:15
+innerDest.OtherValue:15
+
+```
+
+## How to do conditional mapping?
+Invoke `PreCondition` instance method in the lambda expression about action (which passed in 1th argument (zero-based)) inside `ForMember` instance method call.
+
+```
+        var configuration = new MapperConfiguration(cfg => {
+                cfg.CreateMap<OuterSource, OuterDest>()
+                    .ForMember(
+                        outerSource => outerSource.Value, 
+                        action => 
+                        {
+                            action.PreCondition(outerDest=>outerDest.Value >= 0);
+                            action.MapFrom(outerDest => outerDest.Value);
+                        }
+                    )
+                    ;
+        });
+```
+
+Take code snippets in above section for example.
+
+Modify the class `InnerAndOuterMappers` as follows.
+
+```
+    public class InnerAndOuterMappers
+    {
+        public static IMapper CreateMappingTable()
+        {
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.CreateMap<OuterSource, OuterDest>()
+                    .ForMember(
+                        outerSource => outerSource.Value, 
+                        action => 
+                        {
+                            action.PreCondition(outerDest=>outerDest.Value >= 0);
+                            action.MapFrom(outerDest => outerDest.Value);
+                        }
+                    )
+                    ;
+                cfg.CreateMap<InnerSource, InnerDest>()
+                    .ForMember(
+                        innerSource => innerSource.OtherValue,
+                        action =>
+                        {
+                            action.PreCondition(innerDest => innerDest.OtherValue >= 0);
+                            action.MapFrom(innerDest => innerDest.OtherValue);
+                        }
+                    )
+                    ;
+            });
+            var mapper = configuration.CreateMapper();
+            return mapper;
+        }
+    }
+```
+
+Then invoking the static method
+
+```
+        public static void TestClass3()
+        {
+            var outerSourceArray = new OuterSource[]
+            {
+                new OuterSource
+                {
+                    Value = 10,
+                    Inner = new InnerSource { OtherValue = 5 }
+                },
+                new OuterSource
+                {
+                    Value = 0,
+                    Inner = new InnerSource { OtherValue = 0 }
+                },
+                new OuterSource
+                {
+                    Value = -2,
+                    Inner = new InnerSource { OtherValue = -3 }
+                }
+            };
+
+            var innerSourceArray = new InnerSource[]
+            {
+                new InnerSource
+                {
+                    OtherValue = 10
+                },
+                new InnerSource
+                {
+                    OtherValue = 0
+                },
+                new InnerSource
+                {
+                    OtherValue = -2
+                }
+            };
+
+            var mapper = InnerAndOuterMappers.CreateMappingTable();
+
+            OuterDest[] outerDestArray = mapper.Map<OuterSource[], OuterDest[]>(outerSourceArray);
+            foreach (var dest1 in outerDestArray)
+            {
+                string message = dest1.GetOuterDestInfo();
+                Console.WriteLine(message);
+            }
+            Console.WriteLine("--------------------------------------------");
+
+            InnerDest[] innerDestArray = mapper.Map<InnerSource[], InnerDest[]>(innerSourceArray);
+            foreach (var dest1 in innerDestArray)
+            {
+                string message = dest1.GetInnerDestInfo();
+                Console.WriteLine(message);
+            }
+            Console.WriteLine("--------------------------------------------");
+        }
+```
+
+will output following in console.
+
+```
+outerDest.Value:10
+innerDest.OtherValue:5
+
+outerDest.Value:0
+innerDest.OtherValue:0
+
+outerDest.Value:0
+innerDest.OtherValue:0
+
+--------------------------------------------
+innerDest.OtherValue:10
+
+innerDest.OtherValue:0
+
+innerDest.OtherValue:0
+
+--------------------------------------------
 ```
 
 ## examples
