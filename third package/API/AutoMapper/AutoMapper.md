@@ -758,6 +758,112 @@ innerDest.OtherValue:0
 ```
 
 For more details, see the docs - [Preconditions](https://docs.automapper.org/en/stable/Conditional-mapping.html#preconditions) 
+
+## How to substitution from value of member of class which is null to specific value.
+Of course, you can use value Resolver that implements `IValueResolver` interface and defines `Resolve` with following logic.
+
+1. Check whether the value of member of class which is null or not.
+2. If it is null, then returns the specific value.
+3. If it is not null, then returns it.  
+
+However, you can invoke `NullSubstitute` instance method in the lambda expression about action (which passed in 1th argument (zero-based)) inside `ForMember` instance method call.
+
+```
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.CreateMap<InnerSource, InnerDest>()
+                    .ForMember(
+                        innerSource => innerSource.OtherValue,
+                        action =>
+                        {
+                            action.NullSubstitute(2);
+                        }
+                    )
+                    ;
+            });
+```
+
+Take code snippets in above section for example.
+
+Modify the class `InnerAndOuterMappers` as follows.
+
+```
+    public class InnerAndOuterMappers
+    {
+        public static IMapper CreateMappingTable()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<OuterSource, OuterDest>()
+                   .ForMember(
+                        outerSource => outerSource.Value,
+                        action =>
+                        {
+                            action.Condition(outerDest => outerDest.Value >= 0);
+                            action.MapFrom(outerDest => outerDest.Value);
+                        }
+                    )
+                    ;
+                cfg.CreateMap<InnerSource, InnerDest>()
+                    .ForMember(
+                        innerSource => innerSource.OtherValue,
+                        action =>
+                        {
+                            action.NullSubstitute(2);
+                        }
+                    )
+                    ;
+            });
+            var mapper = configuration.CreateMapper();
+            return mapper;
+        }
+    }
+```
+
+Then invoking the method will
+
+```
+        public static void TestClass5()
+        {
+            var innerSourceArray = new InnerSource[]
+            {
+                new InnerSource
+                {
+                    OtherValue = 50
+                },
+                new InnerSource
+                {
+                    OtherValue = 0
+                },
+                new InnerSource
+                {
+                    OtherValue = null
+                }
+            };
+
+          
+            var mapper = InnerAndOuterMappers.CreateMappingTable();
+            InnerDest[] innerDestArray = mapper.Map<InnerSource[], InnerDest[]>(innerSourceArray);
+            foreach (var dest1 in innerDestArray)
+            {
+                string message = dest1.GetInnerDestInfo();
+                Console.WriteLine(message);
+            }
+            Console.WriteLine("--------------------------------------------");
+        }
+```
+
+will output following in console.
+
+```
+innerDest.OtherValue:50
+
+innerDest.OtherValue:0
+
+innerDest.OtherValue:2
+
+--------------------------------------------
+```
+
 ## examples
 ### example 1
 For example,
