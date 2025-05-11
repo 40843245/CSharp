@@ -484,7 +484,7 @@ innerDest.OtherValue:15
 ```
 
 ## How to do conditional mapping?
-Invoke `PreCondition` instance method in the lambda expression about action (which passed in 1th argument (zero-based)) inside `ForMember` instance method call.
+Invoke `Condition` instance method in the lambda expression about action (which passed in 1th argument (zero-based)) inside `ForMember` instance method call.
 
 ```
         var configuration = new MapperConfiguration(cfg => {
@@ -493,15 +493,13 @@ Invoke `PreCondition` instance method in the lambda expression about action (whi
                         outerSource => outerSource.Value, 
                         action => 
                         {
-                            action.PreCondition(outerDest=>outerDest.Value >= 0);
+                            action.Condition(outerDest=>outerDest.Value >= 0);
                             action.MapFrom(outerDest => outerDest.Value);
                         }
                     )
                     ;
         });
 ```
-
-Take code snippets in above section for example.
 
 Modify the class `InnerAndOuterMappers` as follows.
 
@@ -516,7 +514,7 @@ Modify the class `InnerAndOuterMappers` as follows.
                         outerSource => outerSource.Value, 
                         action => 
                         {
-                            action.PreCondition(outerDest=>outerDest.Value >= 0);
+                            action.Condition(outerDest=>outerDest.Value >= 0);
                             action.MapFrom(outerDest => outerDest.Value);
                         }
                     )
@@ -526,7 +524,7 @@ Modify the class `InnerAndOuterMappers` as follows.
                         innerSource => innerSource.OtherValue,
                         action =>
                         {
-                            action.PreCondition(innerDest => innerDest.OtherValue >= 0);
+                            action.Condition(innerDest => innerDest.OtherValue >= 0);
                             action.MapFrom(innerDest => innerDest.OtherValue);
                         }
                     )
@@ -538,7 +536,7 @@ Modify the class `InnerAndOuterMappers` as follows.
     }
 ```
 
-Then invoking the static method
+Then invoking the following method will
 
 ```
         public static void TestClass3()
@@ -620,6 +618,146 @@ innerDest.OtherValue:0
 --------------------------------------------
 ```
 
+For more details, see the docs - [Conditional Mapping](https://docs.automapper.org/en/stable/Conditional-mapping.html#conditional-mapping) 
+
+## How to do pre-conditional mapping?
+Invoke `PreCondition` instance method in the lambda expression about action (which passed in 1th argument (zero-based)) inside `ForMember` instance method call.
+
+```
+        var configuration = new MapperConfiguration(cfg => {
+                cfg.CreateMap<OuterSource, OuterDest>()
+                    .ForMember(
+                        outerSource => outerSource.Value, 
+                        action => 
+                        {
+                            action.PreCondition(outerDest=>outerDest.Value >= 0);
+                            action.MapFrom(outerDest => outerDest.Value);
+                        }
+                    )
+                    ;
+        });
+```
+
+Take code snippets in above section for example.
+
+Modify the class `InnerAndOuterMappers` as follows.
+
+```
+    public class InnerAndOuterMappers
+    {
+        public static IMapper CreateMappingTable()
+        {
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.CreateMap<OuterSource, OuterDest>()
+                    .ForMember(
+                        outerSource => outerSource.Value, 
+                        action => 
+                        {
+                            action.PreCondition(outerDest=>outerDest.Value >= 0);
+                            action.MapFrom(outerDest => outerDest.Value);
+                        }
+                    )
+                    ;
+                cfg.CreateMap<InnerSource, InnerDest>()
+                    .ForMember(
+                        innerSource => innerSource.OtherValue,
+                        action =>
+                        {
+                            action.PreCondition(innerDest => innerDest.OtherValue >= 0);
+                            action.MapFrom(innerDest => innerDest.OtherValue);
+                        }
+                    )
+                    ;
+            });
+            var mapper = configuration.CreateMapper();
+            return mapper;
+        }
+    }
+```
+
+Then invoking the static method
+
+```
+        public static void TestClass4()
+        {
+            var outerSourceArray = new OuterSource[]
+            {
+                new OuterSource
+                {
+                    Value = 10,
+                    Inner = new InnerSource { OtherValue = 5 }
+                },
+                new OuterSource
+                {
+                    Value = 0,
+                    Inner = new InnerSource { OtherValue = 0 }
+                },
+                new OuterSource
+                {
+                    Value = -2,
+                    Inner = new InnerSource { OtherValue = -3 }
+                }
+            };
+
+            var innerSourceArray = new InnerSource[]
+            {
+                new InnerSource
+                {
+                    OtherValue = 10
+                },
+                new InnerSource
+                {
+                    OtherValue = 0
+                },
+                new InnerSource
+                {
+                    OtherValue = -2
+                }
+            };
+
+            var mapper = InnerAndOuterMappers.CreateMappingTable();
+
+            OuterDest[] outerDestArray = mapper.Map<OuterSource[], OuterDest[]>(outerSourceArray);
+            foreach (var dest1 in outerDestArray)
+            {
+                string message = dest1.GetOuterDestInfo();
+                Console.WriteLine(message);
+            }
+            Console.WriteLine("--------------------------------------------");
+
+            InnerDest[] innerDestArray = mapper.Map<InnerSource[], InnerDest[]>(innerSourceArray);
+            foreach (var dest1 in innerDestArray)
+            {
+                string message = dest1.GetInnerDestInfo();
+                Console.WriteLine(message);
+            }
+            Console.WriteLine("--------------------------------------------");
+        }
+```
+
+will output following in console.
+
+```
+outerDest.Value:10
+innerDest.OtherValue:5
+
+outerDest.Value:0
+innerDest.OtherValue:0
+
+outerDest.Value:0
+innerDest.OtherValue:0
+
+--------------------------------------------
+innerDest.OtherValue:10
+
+innerDest.OtherValue:0
+
+innerDest.OtherValue:0
+
+--------------------------------------------
+```
+
+For more details, see the docs - [Preconditions](https://docs.automapper.org/en/stable/Conditional-mapping.html#preconditions) 
 ## examples
 ### example 1
 For example,
