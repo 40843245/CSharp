@@ -43,7 +43,7 @@ First, to create and set up the mapper configuration, instantiate a `MapperConfi
 
 ```
 var config = new MapperConfiguration(
-    cfg =>
+    cfg => // ...
 );
 ```
 
@@ -377,7 +377,76 @@ Then we can use it
             Console.WriteLine(message);
         }
 ```
-Then
+
+## How to map lots of elements using mapping table?
+Just simply invoke `Map` instance method of `mapper` instance (`IMapper` data type) with generic type `TDestination`.
+
+> [!IMPORTANT]
+> In `AutoMapper`, `TSource` source collection types supports including
+> - `IEnumerable`
+> - `IEnumerable<T>`
+> - `ICollection`
+> - `ICollection<T>`
+> - `IList`
+> - `IList<T>`
+> - `List<T>`
+> - `Arrays`
+>
+> For more details, see (Lists and Arrays)[`https://docs.automapper.org/en/stable/Lists-and-arrays.html`]
+
+
+
+Take code snippets in above section for example.
+
+```
+        public static void TestClass2()
+        {
+            var sources = new OuterSource[]
+            {
+                new OuterSource
+                {
+                    Value = 5,
+                    Inner = new InnerSource { OtherValue = 15 }
+                },
+                new OuterSource
+                {
+                    Value = 15,
+                    Inner = new InnerSource { OtherValue = 15 }
+                }
+            };
+            var mapper = InnerAndOuterMappers.CreateMappingTable();
+            IEnumerable<OuterDest> iEnumerableDest = mapper.Map<OuterSource[], IEnumerable<OuterDest>>(sources);
+            foreach (var dest1 in iEnumerableDest)
+            {
+                string message = dest1.GetOuterDestInfo();
+                Console.WriteLine(message);
+            }
+            ICollection<OuterDest> iCollectionDest = mapper.Map<OuterSource[], ICollection<OuterDest>>(sources);
+            foreach (var dest1 in iCollectionDest)
+            {
+                string message = dest1.GetOuterDestInfo();
+                Console.WriteLine(message);
+            }
+            IList<OuterDest> iListDest = mapper.Map<OuterSource[], IList<OuterDest>>(sources);
+            foreach (var dest1 in iListDest)
+            {
+                string message = dest1.GetOuterDestInfo();
+                Console.WriteLine(message);
+            }
+            List<OuterDest> listDest = mapper.Map<OuterSource[], List<OuterDest>>(sources);
+            foreach (var dest1 in listDest)
+            {
+                string message = dest1.GetOuterDestInfo();
+                Console.WriteLine(message);
+            }
+            OuterDest[] DestArray = mapper.Map<OuterSource[], OuterDest[]>(sources);
+            foreach (var dest1 in DestArray)
+            {
+                string message = dest1.GetOuterDestInfo();
+                Console.WriteLine(message);
+            }
+        }
+```
 
 ## examples
 ### example 1
