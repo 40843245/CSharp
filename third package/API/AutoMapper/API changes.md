@@ -35,8 +35,7 @@
 
 | method name of</br>a class or an interface | first released</br>(in which version) | obsolete</br>(in which version) | encouraged by developer |
 | :--- | :--- | :--- | :-- |
-| `AutoMapper.IMapperConfigurationExpression.ResolveUsing<TResolver>()`,</br>its overloads, and</br>`AutoMapper.IMapperConfigurationExpression.MapFrom(Expression<Func<TSource, TDestination>> mapExpression);
-` | `1.0.0` | `8.0.0` | **HAS been obsoleted** |
+| `AutoMapper.IMapperConfigurationExpression.ResolveUsing<TResolver>()`,</br>its overloads, and</br>`AutoMapper.IMapperConfigurationExpression.MapFrom(Expression<Func<TSource, TDestination>> mapExpression)` | `1.0.0` | `8.0.0` | **HAS been obsoleted** |
 | `AutoMapper.IMapperConfigurationExpression.MapFrom` (three overloads,</br>`MapFrom(Expression<Func<TSource, TDestination>> mappingExpression)`,</br>`MapFrom<TResult>(Func<TSource, TDestination, TResult> mappingFunction)`, and</br>`MapFrom<TResult>(Func<TSource, TDestination, TMember, TResult> mappingFunction)` | `8.0.0` | NOT obsolete | Yes, fully encouraged. |
 
 For more details, see [ResolveUsing](https://docs.automapper.org/en/stable/8.0-Upgrade-Guide.html#resolveusing)
