@@ -878,6 +878,12 @@ For more details, see [Reverse Mapping and Unflattening](https://docs.automapper
 
 See example 4. for more understanding.
 
+## Mapping inheritence
+
+For more details, see [Runtime polymorphism](https://docs.automapper.org/en/stable/Mapping-inheritance.html#runtime-polymorphism) 
+
+See example 5. for more understanding.
+
 ## examples
 ### example 1
 For example,
@@ -1279,11 +1285,15 @@ See [`AutoMapper demo2.7z (version 2.0.0)`](https://github.com/40843245/CSharp-D
 
 ### example 3
 #### demo project
-See [`AutoMapper demo4.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo4/1.0.0/%5CAutoMapper%20demo4.7z)
+See [`AutoMapper demo2.7z (version 3.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/3.0.0)
 
 ### example 4
 #### demo project
-See [`AutoMapper demo2.7z (version 3.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/3.0.0)
+See [`AutoMapper demo4.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo4/1.0.0/%5CAutoMapper%20demo4.7z)
+
+### example 5
+#### demo project
+See [`AutoMapper demo5.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo5/1.0.0/%5CAutoMapper%20demo5.7z)
 
 ## reference
 ### API reference
