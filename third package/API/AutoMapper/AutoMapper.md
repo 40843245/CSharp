@@ -1080,6 +1080,8 @@ using Xunit;
     }
 ```
 
+Run code snippets in example 7, for more fully understanding.
+
 ## examples
 ### example 1
 For example,
@@ -1494,6 +1496,10 @@ See [`AutoMapper demo5.7z (version (1.0.0)`](https://github.com/40843245/CSharp-
 ### example 6
 #### demo project
 See [`AutoMapper demo5.7z (version (2.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo5/2.0.0/AutoMapper%20demo5.7z)
+
+### example 7
+#### demo project
+See [`AutoMapper demo5.7z (version (3.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo5/3.0.0/AutoMapper%20demo5.7z)
 
 ## reference
 ### API reference
