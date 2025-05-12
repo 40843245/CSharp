@@ -15,8 +15,8 @@
   
 | method name of</br>a class or an interface | first released</br>(in which version) | obsolete</br>(in which version) | encouraged by developer |
 | :--- | :--- | :--- | :-- |
-| `AutoMapper.IMapperConfigurationExpression.AddMaps` | `9.0.0` | NOT obsolete | Yes, fully encouraged. |
-| `AutoMapper.IMapperConfigurationExpression.AddProfile` | `5.0.0` | NOT obsolete | No, fully discouraged. |
+| `AutoMapper.IMapperConfigurationExpression.AddMaps(string assemblyName)`, and</br>its overloads. | `9.0.0` | NOT obsolete | Yes, fully encouraged. |
+| `AutoMapper.IMapperConfigurationExpression.AddProfile<TProfile>()`, and</br>its overloads. | `5.0.0` | NOT obsolete | No, fully discouraged. |
 
 + About how to create a mapping table by defining a (Profile) class that implements to `Profile` abstract class.
 
