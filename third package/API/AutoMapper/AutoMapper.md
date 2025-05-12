@@ -1003,6 +1003,83 @@ For more details, see [Specifying inheritance in derived classes](https://docs.a
 
 See example 6. for more understanding.
 
+### redirect a base map to an existing derived map.
+For simple cases, you can use As to redirect a base map to an existing derived map
+
+```
+    cfg.CreateMap<Order, OnlineOrderDto>();
+    cfg.CreateMap<Order, OrderDto>().As<OnlineOrderDto>();
+    
+    mapper.Map<OrderDto>(new Order()).ShouldBeOfType<OnlineOrderDto>();
+```
+
+### Inheritance Mapping Priorities
+
++ Explicit Mapping (using `MapFrom` instance method)
++ Inherited Explicit Mapping
++ Ignore Property Mapping (using `Ignore` instance method)
++ Convention Mapping (Properties that are matched via convention)
+
+To demonstrate this, lets modify our classes.
+
+`Order.cs`
+
+```
+    public class Order { }
+
+    public class OnlineOrder : Order
+    {
+        public string Referrer { get; set; }
+    }
+    public class MailOrder : Order { }
+```
+
+`OrderDto.cs`
+
+```
+    public class OrderDto
+    {
+        public string Referrer { get; set; }
+    }
+```
+
+`OrderMappingTable.cs`
+
+```
+     public class OrderMappingTable
+    {
+        public static IMapper CreateMappingTable()
+        {
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.CreateMap<Order, OrderDto>()
+                    .Include<OnlineOrder, OrderDto>()
+                    .Include<MailOrder, OrderDto>()
+                    .ForMember(o => o.Referrer, m => m.Ignore());
+                cfg.CreateMap<OnlineOrder, OrderDto>();
+                cfg.CreateMap<MailOrder, OrderDto>();
+            });
+            var mapper = configuration.CreateMapper();
+            return mapper;
+        }
+    }
+```
+
+```
+using Xunit;
+// ...
+
+    public static class DemoClass1
+    {
+        public static void TestMethod1()
+        {
+            var order = new OnlineOrder { Referrer = "google" };
+            IMapper mapper = OrderMappingTable.CreateMappingTable();
+            var mapped = (OnlineOrder)mapper.Map(order, order.GetType(), typeof(OrderDto));
+            Assert.Null(mapped.Referrer);
+        }
+    }
+```
+
 ## examples
 ### example 1
 For example,
