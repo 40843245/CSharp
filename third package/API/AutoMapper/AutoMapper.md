@@ -2,14 +2,225 @@
 ## intro
 `AutoMapper` is a useful package that easily converts it from an instance of class to another instance of class.
 
-## creating a mapping table
+## pro of creating mapping tables with `AutoMapper` package
+For example,
 
+I have defined two classes.
+
+`User.cs`
+
+```
+    public class User
+    {
+        public string username { get; set; }
+        public string account { get; set; }
+        public string password { get; set; }
+    }
+```
+
+`UserDTO.cs`
+
+```
+    public class UserDTO
+    {
+        public string USERNAME { get; set; }
+        public string ACCOUNT { get; set; }
+        public string PASSWORD { get; set; }
+    }
+```
+
+Now, I want to convert an instance of `User` class (here, I name it as `user1`) to another instance of `UserDTO` class (here, I name it as `userDTO1`).
+
++ Without `AutoMapper` package, I have to access it from getter-setter property of `user1` and assign it to getter-setter property of `userDTO1`.
+
+```
+            User user1 = new User();
+            user1.username = "Jay";
+            user1.account = "jay30@gmail.com";
+            user1.password = "password";
+
+            UserDTO userDTO1 = new UserDTO();
+            userDTO1.USERNAME = user1.username;
+            userDTO1.ACCOUNT = user1.account;
+            userDTO1.PASSWORD = user1.password;
+```
+
+It's easily to read, but it has fatal cons.
+  
+  - It's not flexible.
+  - It's not to write code and hard to maintain.
+
+Image that 
+
+  - you have 1000 instance.
+  - Or, you have an instance with 1000 getter-setter property.
+
+With `AutoMapper` package (version 5.2.0), we just need to create mapping table through `CreateMap` method.
+
+As following code.
+
+To convert it from an instance of `User` class to another instance of `UserDTO` class, wrapping it into a method.
+
+`UserDTOProfile.cs`
+
+```
+    public class UserDTOProfile
+    {
+        public static UserDTO GetUserDTO(User data)
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<User, UserDTO>()
+                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
+                   .ForMember(userDTO => userDTO.ACCOUNT, action => action.MapFrom(user => user.account))
+                   .ForMember(userDTO => userDTO.PASSWORD, action => action.MapFrom(user => user.password))
+                       ;
+            });
+            var mapper = config.CreateMapper();
+            var result = mapper.Map<User,UserDTO>(data);
+            return result;
+        }
+    }
+```
+
+Then we can use it
+
+```
+        public static void test2()
+        {
+            User user1 = new User();
+            user1.username = "Jay";
+            user1.account = "jay30@gmail.com";
+            user1.password = "password";
+
+            UserDTO userDTO1 = UserDTOProfile.GetUserDTO(user1);
+            PrintInfo(user1, userDTO1);
+        }
+```
+
+To convert it from an instance of `UserDTO` class to another instance of `User` class.
+
+`UserProfile.cs`
+
+```
+    public class UserProfile
+    {
+        public static User GetUser(UserDTO data)
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<UserDTO, User>()
+                   .ForMember(user => user.username, action => action.MapFrom(userDTO => userDTO.USERNAME))
+                   .ForMember(user => user.account, action => action.MapFrom(userDTO => userDTO.ACCOUNT))
+                   .ForMember(user => user.password, action => action.MapFrom(userDTO => userDTO.PASSWORD))
+                   ;
+
+            });
+            var mapper = config.CreateMapper();
+            var result = mapper.Map<UserDTO,User>(data);
+            return result;
+        }
+    }
+```
+
+Then we can use it
+
+```
+        public static void test3()
+        {
+            UserDTO userDTO1 = new UserDTO();
+            userDTO1.USERNAME = "Jay";
+            userDTO1.ACCOUNT = "jay30@gmail.com";
+            userDTO1.PASSWORD = "password";
+
+            User user1 = UserProfile.GetUser(userDTO1);
+            PrintInfo(user1, userDTO1);
+        }
+```
+
+Or, it can be even more simpler, we can create two mapping tables at same time and wrapping it into a method.
+
+As following code
+
+`UserMapper.cs`
+
+```
+    public class UserMapper
+    {
+        public static IMapper CrreateMappingTable()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<User, UserDTO>()
+                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
+                   .ForMember(userDTO => userDTO.ACCOUNT, action => action.MapFrom(user => user.account))
+                   .ForMember(userDTO => userDTO.PASSWORD, action => action.MapFrom(user => user.password))
+                       ;
+                cfg.CreateMap<UserDTO, User>()
+                   .ForMember(user => user.username, action => action.MapFrom(userDTO => userDTO.USERNAME))
+                   .ForMember(user => user.account, action => action.MapFrom(userDTO => userDTO.ACCOUNT))
+                   .ForMember(user => user.password, action => action.MapFrom(userDTO => userDTO.PASSWORD))
+                   ;
+            });
+            var mapper = config.CreateMapper();
+            return mapper;
+        }
+    }
+```
+
+To convert it from an instance of `User` class to another instance of `UserDTO` class, we can simply type
+
+```
+        public static void test4()
+        {
+            User user1 = new User();
+            user1.username = "Jay";
+            user1.account = "jay30@gmail.com";
+            user1.password = "password";
+
+            IMapper mapper = UserMapper.CrreateMappingTable();
+            UserDTO userDTO1 = mapper.Map<User, UserDTO>(user1);
+            PrintInfo(user1, userDTO1);
+        }
+```
+
+To convert it from an instance of `UserDTO` class to another instance of `User` class.
+
+```
+        public static void test5()
+        {
+            UserDTO userDTO1 = new UserDTO();
+            userDTO1.USERNAME = "Jay";
+            userDTO1.ACCOUNT = "jay30@gmail.com";
+            userDTO1.PASSWORD = "password";
+
+            IMapper mapper = UserMapper.CrreateMappingTable();
+            User user1 = mapper.Map<UserDTO, User>(userDTO1);
+            PrintInfo(user1, userDTO1);
+        }
+```
+
+where 
+
+`PrintoInfo` method is defined as follows.
+
+```
+        private static void PrintInfo(User user, UserDTO userDTO)
+        {
+            Console.WriteLine(user.GetInfo());
+            Console.WriteLine(userDTO.GetInfo());
+            Console.ReadLine();
+        }
+```
+
+run code snippets in example 1 for fully understanding.
+## creating a mapping table
 ### How to create a mapping table
 There are lots of ways.
 
-#### 1th way: create a mapping table with new `CreateMap` inside new `MapperConfiguration`
+#### 1th way: create a mapping table (using `CreateMap`) directly inside map configuration
 > [!CAUTION]
-> This syntax is only supported for AutoMapper in version 5.0 (or above) 
+> This syntax is ONLY supported for `AutoMapper` in version 5.0 (or above) 
 
 Step 1:
 
@@ -145,7 +356,9 @@ The full code is
     }
 ```
 
-#### 2th way: create and set up mapping table in `Profile` class (class that inherits `AutoMapper.Profile`) and add the profile class.
+see example 1.
+
+#### 2th way: create and set up mapping table (using `CreateMap`) in `Profile` classes (classes that inherits `AutoMapper.Profile`) and add the profile classes in mapper configuration one-by-one.
 
 Step 1:
 
@@ -189,7 +402,6 @@ Define profiles.
 
 Defines classes.
 
-
 For each defined class, it MUST inherit `AutoMapper.Profile` class.
 
 And create and set up a mapping table in the constructor definition.
@@ -211,6 +423,23 @@ And create and set up a mapping table in the constructor definition.
     }
 ```
 
+`UserDTOProfile.cs`
+
+```
+    public class UserDTOProfile : Profile
+    {
+        public UserDTOProfile()
+        {
+            CreateMap<UserDTO, User>()
+                   .ForMember(user => user.username, action => action.MapFrom(userDTO => userDTO.USERNAME))
+                   .ForMember(user => user.account, action => action.MapFrom(userDTO => userDTO.ACCOUNT))
+                   .ForMember(user => user.password, action => action.MapFrom(userDTO => userDTO.PASSWORD))
+                   .ForMember(user => user.birthdate, action => action.Ignore())
+                   ;
+        }
+    }
+```
+
 Step 3:
 
 Add profiles.
@@ -225,10 +454,7 @@ Then create mapping tables by invoking `CreateMapper` instance method of `Mapper
         public static IMapper CreateMappingTable()
         {
             var configuration = new MapperConfiguration(cfg => {
-                cfg.CreateMap<User, UserDTO>();
                 cfg.AddProfile<UserProfile>();
-
-                cfg.CreateMap<UserDTO, User>();
                 cfg.AddProfile<UserDTOProfile>();
             });
             var mapper = configuration.CreateMapper();
@@ -237,70 +463,38 @@ Then create mapping tables by invoking `CreateMapper` instance method of `Mapper
     }
 ```
 
-## How to create a nested mapping table
-Step 1:
+see example 3.
 
-Define two classes (of course, used for mapping table).
+### 3th way -- create and set up mapping table in `Profile` class (class that inherits `AutoMapper.Profile`) and add the assemblies using (`AddMaps` instance method call).
+> [!CAUTION]
+> `AddMaps` instance method is ONLY supported in `AutoMapper` package in version 9.0.0 (or above)
+>
+> according to Microsoft Copilot's answer.
+>
+> <img width="617" alt="image" src="https://github.com/user-attachments/assets/52093760-24dc-4d19-95ab-67a881aa26e0" />
+> 
+> DONT believe the answers from [Google Gemini's answer](https://g.co/gemini/share/e9a6f05bebf8). **It's wrong**
 
-`InerSource.cs`
-
-```
-    public class InnerSource
-    {
-        public int OtherValue { get; set; }
-
-    }
-```
-
-`OuterSource.cs`
-
-```
-    public class OuterSource
-    {
-        public int Value { get; set; }
-        public InnerSource Inner { get; set; }
-    }
-```
-
-Step 2:
-
-Then create and setup mappint table.
-
-`InnerAndOuterMappers.cs`
-
-```
-    public class InnerAndOuterMappers
-    {
-        public static IMapper CreateMappingTable()
-        {
-            var configuration = new MapperConfiguration(cfg => {
-                cfg.CreateMap<OuterSource, OuterDest>();
-                cfg.CreateMap<InnerSource, InnerDest>();
-            });
-            var mapper = configuration.CreateMapper();
-            return mapper;
-        }
-    }
-```
+## create a nested mapping table
+Step 1 and Step 2 are same to that in 2th way.
 
 Step 3:
 
-Then we can use it
+Add assemblies
 
 ```
-        public static void TestClass1()
-        {
-            var source = new OuterSource
-            {
-                Value = 5,
-                Inner = new InnerSource { OtherValue = 15 }
-            };
-            var mapper = InnerAndOuterMappers.CreateMappingTable();
-            var dest1 = mapper.Map<OuterSource, OuterDest>(source);
-            string message = dest1.GetOuterDestInfo();
-            Console.WriteLine(message);
-        }
+        var configuration = new MapperConfiguration(cfg => {
+                cfg.AddMaps(
+                    new[]
+                    {
+                        typeof(Mapping.MapperProfiles.UserProfile).Assembly,
+                        typeof(Mapping.MapperProfiles.UserDTOProfile).Assembly,
+                    }
+                );
+            });
 ```
+
+see example 4.
 
 ### How to map lots of elements using mapping table?
 Just simply invoke `Map` instance method of `mapper` instance (`IMapper` data type) with generic type `TDestination`.
@@ -419,7 +613,7 @@ Chain `ReverseMap` instance method of `CreateMap` type.
 
 For more details, see [Reverse Mapping and Unflattening](https://docs.automapper.org/en/stable/Reverse-Mapping-and-Unflattening.html) 
 
-See example 4. for more understanding.
+See example 5. for more understanding.
 
 ## specifies the action
 ### How to specifies the action of mapping from one member of one class to other member of other class?
@@ -459,6 +653,16 @@ public TReturnType Resolve(TSource source, TDestination destination, TReturnType
 ```
 
 Step 2:
+> [!CAUTION]
+> `ResolveUsing` is deprecated in `AutoMapper` package in version 8.0.0.
+>
+> For later version, use `MapFrom` instead, the syntax of `MapFrom` is equivalent to that of `ResolveUsing`.
+>
+> For example,
+> 
+> ```
+> cfg.ForMember(userDTO => userDTO.AGE, action => action.MapFrom<AgeResolver>())
+> ```
 
 Then one can invoke `ResolveUsing` instance method in the lambda expression about action 
 
@@ -884,6 +1088,8 @@ innerDest.OtherValue:2
 --------------------------------------------
 ```
 
+see example 6.
+
 ## Mapping inheritence
 ### configuring inheritance from the base class
 You can invoke `Include` instance method to include the derived class that will be used for mapping table.
@@ -949,7 +1155,7 @@ using Xunit;
 
 For more details, see [Runtime polymorphism](https://docs.automapper.org/en/stable/Mapping-inheritance.html#runtime-polymorphism) 
 
-See example 5. for more understanding.
+See example 6. for more understanding.
 
 ### specifying inheritance in derived classes
 Instead of configuring inheritance from the base class, you can specify inheritance from the derived classes:
@@ -1007,7 +1213,7 @@ The modify the `OrderMappingTable.CreateMappingTable` static method as follows:
 
 For more details, see [Specifying inheritance in derived classes](https://docs.automapper.org/en/stable/Mapping-inheritance.html#runtime-polymorphism) 
 
-See example 6. for more understanding.
+See example 7. for more understanding.
 
 ### redirect a base map to an existing derived map.
 For simple cases, you can use As to redirect a base map to an existing derived map
@@ -1086,429 +1292,148 @@ using Xunit;
     }
 ```
 
-Run code snippets in example 7, for more fully understanding.
+Run code snippets in example 8, for more fully understanding.
 
 ## attribute mapping
-### searching for maps to configuration
-> [!CAUTION]
-> `AutoMapAttribute` is ONLY supported in `AutoMapper` package when `Profile` class is supported.
->
-> The answers references [Google Gemini's answer](https://g.co/gemini/share/e9a6f05bebf8).
-
-### declare an attribute map
+### declare an class with `AutoMap`
 > [!CAUTION]
 > `AutoMapAttribute` is ONLY supported in `AutoMapper` package in version 8.1.0 (or above)
 >
 > The answers references [Google Gemini's answer](https://g.co/gemini/share/f56e364f1cae).
 
-
 To declare an attribute map, decorate your destination class with `AutoMapAttribute` (which can be shorten as `AutoMap`).
 
+The basic structure should look like this:
+
+`Order.cs`
+
 ```
+// source class
+public class Order {
+    // source members
+}
+```
+
+`OrderDto.cs`
+
+```
+// destination class
 [AutoMap(typeof(Order))]
 public class OrderDto {
     // destination members
 }
 ```
 
-Run code snippets in example 8, for more fully understanding.
+Image that one wants to map from all members of source class to all members of destination class, 
 
-## examples
-### example 1
+one can chain `ForMember` instance method ono-by-one for all members in source class. It's so troublesome.
+
+At that time, `AutoMap` helps a lots.
+
+For those members with same name, `AutoMap` tells compiler to automatically map from to the source members to the desintaion members.
+
+And thus, you don't have to explicitly map (using `.ForMember` instance method) from to the source members to the desintaion members, for those members with same name, if the destination class is marked with `AutoMapAttribute`.
+
 For example,
 
-I have defined two classes.
+`Order.cs`
+
+```
+    /// source class
+    public class Order
+    {
+        public int Id { get; set; }
+        public User OrderPlacer { get; set; }
+    }
+```
 
 `User.cs`
 
 ```
     public class User
     {
-        public string username { get; set; }
-        public string account { get; set; }
-        public string password { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
     }
 ```
 
-`UserDTO.cs`
+`OrderDto.cs`
 
 ```
-    public class UserDTO
+    /// destination class
+    [AutoMap(typeof(Order))]
+    public class OrderDto
     {
-        public string USERNAME { get; set; }
-        public string ACCOUNT { get; set; }
-        public string PASSWORD { get; set; }
+        public int Id { get; set; }
+
+        public User OrderPlacer { get; set; }
+
     }
 ```
 
-Now, I want to convert an instance of `User` class (here, I name it as `user1`) to another instance of `UserDTO` class (here, I name it as `userDTO1`).
-
-+ Without `AutoMapper` package, I have to access it from getter-setter property of `user1` and assign it to getter-setter property of `userDTO1`.
+Without `AutoMap`, or say if the `destination class` -- `OrderDto` class is NOT marked as `AutoMap` with `[AutoMap(typeof(Order))]` decoration, as following defintion.
 
 ```
-            User user1 = new User();
-            user1.username = "Jay";
-            user1.account = "jay30@gmail.com";
-            user1.password = "password";
-
-            UserDTO userDTO1 = new UserDTO();
-            userDTO1.USERNAME = user1.username;
-            userDTO1.ACCOUNT = user1.account;
-            userDTO1.PASSWORD = user1.password;
-```
-
-It's easily to read, but it has fatal cons.
-  
-  - It's not flexible.
-  - It's not to write code and hard to maintain.
-
-Image that 
-
-  - you have 1000 instance.
-  - Or, you have an instance with 1000 getter-setter property.
-
-With `AutoMapper` package (version 5.2.0), we just need to create mapping table through `CreateMap` method.
-
-As following code.
-
-To convert it from an instance of `User` class to another instance of `UserDTO` class, wrapping it into a method.
-
-`UserDTOProfile.cs`
-
-```
-    public class UserDTOProfile
+    /// destination class
+    public class OrderDto
     {
-        public static UserDTO GetUserDTO(User data)
-        {
-            var config = new MapperConfiguration(cfg =>
+        public int Id { get; set; }
+
+        public User OrderPlacer { get; set; }
+    }
+```
+
+one needs to explicitly map for each members,
+
+and might write the following code snippet.
+
+```
+            var configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<User, UserDTO>()
-                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
-                   .ForMember(userDTO => userDTO.ACCOUNT, action => action.MapFrom(user => user.account))
-                   .ForMember(userDTO => userDTO.PASSWORD, action => action.MapFrom(user => user.password))
-                       ;
+                /// method declaration with generics -- `CreateMap<TSource, TDestination>()`
+                cfg.CreateMap<Order, OrderDto>()
+                    .ForMember(orderDto => orderDto.Id, action => action.MapFrom(order=>order.Id))
+                    .ForMember(orderDto => orderDto.OrderPlacer, action => action.MapFrom(order=>order.OrderPlacer))
             });
-            var mapper = config.CreateMapper();
-            var result = mapper.Map<User,UserDTO>(data);
-            return result;
-        }
-    }
 ```
 
-Then we can use it
+It's so troublesome.
+
+With `AutoMap`, or say if the `destination class` -- `OrderDto` class is marked as `AutoMap` with `[AutoMap(typeof(Order))]` decoration, as following defintion.
 
 ```
-        public static void test2()
-        {
-            User user1 = new User();
-            user1.username = "Jay";
-            user1.account = "jay30@gmail.com";
-            user1.password = "password";
-
-            UserDTO userDTO1 = UserDTOProfile.GetUserDTO(user1);
-            PrintInfo(user1, userDTO1);
-        }
-```
-
-To convert it from an instance of `UserDTO` class to another instance of `User` class.
-
-`UserProfile.cs`
-
-```
-    public class UserProfile
+    /// destination class
+    [AutoMap(typeof(Order))]
+    public class OrderDto
     {
-        public static User GetUser(UserDTO data)
-        {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<UserDTO, User>()
-                   .ForMember(user => user.username, action => action.MapFrom(userDTO => userDTO.USERNAME))
-                   .ForMember(user => user.account, action => action.MapFrom(userDTO => userDTO.ACCOUNT))
-                   .ForMember(user => user.password, action => action.MapFrom(userDTO => userDTO.PASSWORD))
-                   ;
+        public int Id { get; set; }
 
-            });
-            var mapper = config.CreateMapper();
-            var result = mapper.Map<UserDTO,User>(data);
-            return result;
-        }
+        public User OrderPlacer { get; set; }
+
     }
 ```
 
-Then we can use it
+one don't have to explicitly map for those members with same name,
+
+and can be simplified as
 
 ```
-        public static void test3()
-        {
-            UserDTO userDTO1 = new UserDTO();
-            userDTO1.USERNAME = "Jay";
-            userDTO1.ACCOUNT = "jay30@gmail.com";
-            userDTO1.PASSWORD = "password";
-
-            User user1 = UserProfile.GetUser(userDTO1);
-            PrintInfo(user1, userDTO1);
-        }
-```
-
-Or, it can be even more simpler, we can create two mapping tables at same time and wrapping it into a method.
-
-As following code
-
-`UserMapper.cs`
-
-```
-    public class UserMapper
-    {
-        public static IMapper CrreateMappingTable()
-        {
-            var config = new MapperConfiguration(cfg =>
+            var configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<User, UserDTO>()
-                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
-                   .ForMember(userDTO => userDTO.ACCOUNT, action => action.MapFrom(user => user.account))
-                   .ForMember(userDTO => userDTO.PASSWORD, action => action.MapFrom(user => user.password))
-                       ;
-                cfg.CreateMap<UserDTO, User>()
-                   .ForMember(user => user.username, action => action.MapFrom(userDTO => userDTO.USERNAME))
-                   .ForMember(user => user.account, action => action.MapFrom(userDTO => userDTO.ACCOUNT))
-                   .ForMember(user => user.password, action => action.MapFrom(userDTO => userDTO.PASSWORD))
-                   ;
+                cfg.CreateMap<Order, OrderDto>();
             });
-            var mapper = config.CreateMapper();
-            return mapper;
-        }
-    }
 ```
 
-To convert it from an instance of `User` class to another instance of `UserDTO` class, we can simply type
+For full code, see example 9.
 
-```
-        public static void test4()
-        {
-            User user1 = new User();
-            user1.username = "Jay";
-            user1.account = "jay30@gmail.com";
-            user1.password = "password";
+Run code snippets in example 9, for more fully understanding.
 
-            IMapper mapper = UserMapper.CrreateMappingTable();
-            UserDTO userDTO1 = mapper.Map<User, UserDTO>(user1);
-            PrintInfo(user1, userDTO1);
-        }
-```
-
-To convert it from an instance of `UserDTO` class to another instance of `User` class.
-
-```
-        public static void test5()
-        {
-            UserDTO userDTO1 = new UserDTO();
-            userDTO1.USERNAME = "Jay";
-            userDTO1.ACCOUNT = "jay30@gmail.com";
-            userDTO1.PASSWORD = "password";
-
-            IMapper mapper = UserMapper.CrreateMappingTable();
-            User user1 = mapper.Map<UserDTO, User>(userDTO1);
-            PrintInfo(user1, userDTO1);
-        }
-```
-
-where 
-
-`PrintoInfo` method is defined as follows.
-
-```
-        private static void PrintInfo(User user, UserDTO userDTO)
-        {
-            Console.WriteLine(user.GetInfo());
-            Console.WriteLine(userDTO.GetInfo());
-            Console.ReadLine();
-        }
-```
-
+## examples
+### example 1
 #### demo project
 See [`AutoMapper demo2.7z (version 1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/1.0.0)
 
 ### examples 2
-
-`User.cs`
-
-```
-    public class User
-    {
-        public DateTime birthdate { get; set; }
-        public string username { get; set; }
-        public string account { get; set; }
-        public string password { get; set; }
-    }
-```
-
-`UserDTO.cs`
-
-```
-    public class UserDTO
-    {
-        public int AGE { get; set; }
-        public string USERNAME { get; set; }
-        public string ACCOUNT { get; set; }
-        public string PASSWORD { get; set; }
-    }
-```
-
-`UserMapper.cs`
-
-```
-    public class UserMapper
-    {
-        public static IMapper CrreateMappingTable()
-        {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<User, UserDTO>()
-                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
-                   .ForMember(userDTO => userDTO.ACCOUNT, action => action.MapFrom(user => user.account))
-                   .ForMember(userDTO => userDTO.PASSWORD, action => action.MapFrom(user => user.password))
-                    .ForMember(userDTO => userDTO.AGE, action => action.ResolveUsing<AgeResolver>())
-
-                       ;
-                cfg.CreateMap<UserDTO, User>()
-                   .ForMember(user => user.username, action => action.MapFrom(userDTO => userDTO.USERNAME))
-                   .ForMember(user => user.account, action => action.MapFrom(userDTO => userDTO.ACCOUNT))
-                   .ForMember(user => user.password, action => action.MapFrom(userDTO => userDTO.PASSWORD))
-                   .ForMember(user => user.birthdate, action => action.Ignore())
-                   ;
-            });
-            var mapper = config.CreateMapper();
-            return mapper;
-        }
-    }
-```
-
-`AgeResolver.cs`
-
-```
-    public class AgeResolver : IValueResolver<User, UserDTO, int>
-    {
-        #region implement all interfaces
-        public int Resolve(User source, UserDTO destination, int destMember, ResolutionContext context)
-        {
-            DateTime now = DateTime.Now;
-
-            DateTime birthdate = source.birthdate;
-
-            int age = now.Year - birthdate.Year;
-
-            // Check if the birthday has occurred this year
-            if (birthdate > now.AddYears(-age))
-            {
-                age--;
-            }
-
-            return age;
-        }
-        #endregion
-    }
-```
-
-`DemoClass1.cs`
-
-```
-public static class DemoClass1
-    {
-        /// <summary>
-        /// static method that illustrate it's troublesome 
-        /// to convert from a class to another class without `AutoMapper` package. 
-        /// </summary>
-        public static void test1()
-        {
-            User user1 = new User();
-            user1.username = "Jay";
-            user1.account = "jay30@gmail.com";
-            user1.password = "password";
-
-            UserDTO userDTO1 = new UserDTO();
-            userDTO1.USERNAME = user1.username;
-            userDTO1.ACCOUNT = user1.account;
-            userDTO1.PASSWORD = user1.password;
-
-            PrintInfo(user1, userDTO1);
-        }
-
-        public static void test4()
-        {
-            User user1 = new User();
-            user1.username = "Jay";
-            user1.account = "jay30@gmail.com";
-            user1.password = "password";
-
-            IMapper mapper = UserMapper.CrreateMappingTable();
-            UserDTO userDTO1 = mapper.Map<User, UserDTO>(user1);
-            PrintInfo(user1, userDTO1);
-        }
-        public static void test5()
-        {
-            UserDTO userDTO1 = new UserDTO();
-            userDTO1.USERNAME = "Jay";
-            userDTO1.ACCOUNT = "jay30@gmail.com";
-            userDTO1.PASSWORD = "password";
-
-            IMapper mapper = UserMapper.CrreateMappingTable();
-            User user1 = mapper.Map<UserDTO, User>(userDTO1);
-            PrintInfo(user1, userDTO1);
-        }
-
-        public static void test6()
-        {
-            User user1 = new User();
-            user1.birthdate = new DateTime(2001, 1, 1);
-            user1.username = "testuser";
-            user1.account = "testaccount";
-            user1.password = "testpassword";
-            UserDTO userDTO1 = new UserDTO();
-            userDTO1.AGE = 2;
-            IMapper mapper = UserMapper.CrreateMappingTable();
-            userDTO1 = mapper.Map<User, UserDTO>(user1);
-            PrintInfo(user1, userDTO1);
-        }
-
-
-        private static void PrintInfo(User user, UserDTO userDTO)
-        {
-            Console.WriteLine(user.GetInfo());
-            Console.WriteLine(userDTO.GetInfo());
-            Console.ReadLine();
-        }
-    }
-```
-
-`ExtensionMethods.cs`, extension method defined in static class `ExtensionMethods`
-
-```
-    public static class ExtensionMethods
-    {
-        public static string GetInfo(this User user)
-        {
-            string result = 
-                $"user.username:'{user.username}'\t" +
-                $"user.account:'{user.account}'\t" +
-                $"user.password:'{user.password}'\t" +
-                $"user.birthdate:'{user.birthdate}'\t"
-                ;
-            return result;
-        }
-
-        public static string GetInfo(this UserDTO userDTO)
-        {
-            string result = 
-                $"userDTO.USERNAME:'{userDTO.USERNAME}'\t" +
-                $"userDTO.ACCOUNT:'{userDTO.ACCOUNT}'\t" +
-                $"userDTO.PASSWORD:'{userDTO.PASSWORD}'\t" +
-                $"userDTO.AGE:'{userDTO.AGE}'\t"
-                ;
-            return result;
-        }
-    }
-```
-
 #### demo project
 See [`AutoMapper demo2.7z (version 2.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/2.0.0/AutoMapper%20demo2.7z)
 
@@ -1518,24 +1443,27 @@ See [`AutoMapper demo2.7z (version 3.0.0)`](https://github.com/40843245/CSharp-D
 
 ### example 4
 #### demo project
-See [`AutoMapper demo4.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo4/1.0.0/AutoMapper%20demo4.7z)
+See [`AutoMapper demo2.7z (version 4.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/4.0.0/AutoMapper%20demo2.7z)
 
 ### example 5
 #### demo project
-See [`AutoMapper demo5.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo5/1.0.0/AutoMapper%20demo5.7z)
+See [`AutoMapper demo4.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo4/1.0.0/AutoMapper%20demo4.7z)
 
 ### example 6
 #### demo project
-See [`AutoMapper demo5.7z (version (2.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo5/2.0.0/AutoMapper%20demo5.7z)
+See [`AutoMapper demo5.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo5/1.0.0/AutoMapper%20demo5.7z)
 
 ### example 7
 #### demo project
-See [`AutoMapper demo5.7z (version (3.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo5/3.0.0/AutoMapper%20demo5.7z)
+See [`AutoMapper demo5.7z (version (2.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo5/2.0.0/AutoMapper%20demo5.7z)
 
 ### example 8
 #### demo project
-See [`AutoMapper demo6.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo6/1.0.0/AutoMapper%20demo6.7z)
+See [`AutoMapper demo5.7z (version (3.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo5/3.0.0/AutoMapper%20demo5.7z)
 
+### example 9
+#### demo project
+See [`AutoMapper demo6.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo6/1.0.0/AutoMapper%20demo6.7z)
 
 ## reference
 ### API reference
