@@ -1,11 +1,13 @@
 # AutoMapper
 ## intro
-AutoMapper is a useful package that easily converts it from an instance of class to another instance of class.
+`AutoMapper` is a useful package that easily converts it from an instance of class to another instance of class.
 
-## How to create a mapping table
+## creating a mapping table
+
+### How to create a mapping table
 There are lots of ways.
 
-### 1th way: create a mapping table with new `CreateMap` inside new `MapperConfiguration`
+#### 1th way: create a mapping table with new `CreateMap` inside new `MapperConfiguration`
 > [!CAUTION]
 > This syntax is only supported for AutoMapper in version 5.0 (or above) 
 
@@ -143,85 +145,7 @@ The full code is
     }
 ```
 
-## How to specifies the behavior of mapping from one member of one class to other member of other class?
-Invoke `ForMember` instance method followed by `CreateMap` method. 
-
-```
-        cfg.CreateMap<User, UserDTO>()
-                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
-```
-
-For more details, see step 3 in above section.
-
-## How to ignore the action (i.e. one member of one class will NOT to other member of other class)?
-Invoke `Ignore` instance method in the lambda expression about action (which passed in 1th argument (zero-based)) inside `ForMember` instance method call.
-
-```
-            cfg.CreateMap<UserDTO, User>()
-                   .ForMember(user => user.birthdate, action => action.Ignore())
-```
-
-## How to use customized a value resolver to specify the action with complex operations?
-
-Step 1:
-
-To customize a value resolver, you need to define a class that implements `IValueResolver<TSource,TDestination,TReturnType>` interface.
-
-By the definition of `IValueResolver<TSource,TDestination,TReturnType>` interface,
-
-you will need to defines a method inside the class.
-
-```
-public TReturnType Resolve(TSource source, TDestination destination, TReturnType destMember, ResolutionContext context)`
-{
-    // your logic
-}
-```
-
-Step 2:
-
-Then one can invoke `ResolveUsing` instance method in the lambda expression about action 
-
-with generic type `IValueResolver<TSource,TDestination,TReturnType>` inside `ForMember` instance method call.
-
-For example,
-
-I defined a class `AgeResolver` which implements `IValueResolver<User, UserDTO, int>` and define the Resolve method.
-
-```
-    public class AgeResolver : IValueResolver<User, UserDTO, int>
-    {
-        #region implement all interfaces
-        public int Resolve(User source, UserDTO destination, int destMember, ResolutionContext context)
-        {
-            DateTime now = DateTime.Now;
-
-            DateTime birthdate = source.birthdate;
-
-            int age = now.Year - birthdate.Year;
-
-            // Check if the birthday has occurred this year
-            if (birthdate > now.AddYears(-age))
-            {
-                age--;
-            }
-
-            return age;
-        }
-        #endregion
-    }
-```
-
-Then I can use it as follows.
-
-```
-                cfg.CreateMap<User, UserDTO>()
-                   .ForMember(userDTO => userDTO.AGE, action => action.ResolveUsing<AgeResolver>())
-```
-
-See example 2, for more details.
-
-## 2th way: create and set up mapping table in `Profile` class (class that inherits `AutoMapper.Profile`) and add the profile class.
+#### 2th way: create and set up mapping table in `Profile` class (class that inherits `AutoMapper.Profile`) and add the profile class.
 
 Step 1:
 
@@ -378,7 +302,7 @@ Then we can use it
         }
 ```
 
-## How to map lots of elements using mapping table?
+### How to map lots of elements using mapping table?
 Just simply invoke `Map` instance method of `mapper` instance (`IMapper` data type) with generic type `TDestination`.
 
 > [!IMPORTANT]
@@ -483,7 +407,102 @@ innerDest.OtherValue:15
 
 ```
 
-## How to do conditional mapping?
+### How to create a reverse mapping table?
+Chain `ReverseMap` instance method of `CreateMap` type.
+
+```
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.CreateMap<Order, OrderDto>()
+                   .ReverseMap();
+            });
+```
+
+For more details, see [Reverse Mapping and Unflattening](https://docs.automapper.org/en/stable/Reverse-Mapping-and-Unflattening.html) 
+
+See example 4. for more understanding.
+
+## specifies the action
+### How to specifies the action of mapping from one member of one class to other member of other class?
+Invoke `ForMember` instance method followed by `CreateMap` method. 
+
+```
+        cfg.CreateMap<User, UserDTO>()
+                   .ForMember(userDTO => userDTO.USERNAME, action => action.MapFrom(user => user.username))
+```
+
+For more details, see step 3 in above section.
+
+### How to ignore the action (i.e. one member of one class will NOT to other member of other class)?
+Invoke `Ignore` instance method in the lambda expression about action (which passed in 1th argument (zero-based)) inside `ForMember` instance method call.
+
+```
+            cfg.CreateMap<UserDTO, User>()
+                   .ForMember(user => user.birthdate, action => action.Ignore())
+```
+
+## value resolver
+### How to use customized a value resolver to specify the action with complex operations?
+
+Step 1:
+
+To customize a value resolver, you need to define a class that implements `IValueResolver<TSource,TDestination,TReturnType>` interface.
+
+By the definition of `IValueResolver<TSource,TDestination,TReturnType>` interface,
+
+you will need to defines a method inside the class.
+
+```
+public TReturnType Resolve(TSource source, TDestination destination, TReturnType destMember, ResolutionContext context)`
+{
+    // your logic
+}
+```
+
+Step 2:
+
+Then one can invoke `ResolveUsing` instance method in the lambda expression about action 
+
+with generic type `IValueResolver<TSource,TDestination,TReturnType>` inside `ForMember` instance method call.
+
+For example,
+
+I defined a class `AgeResolver` which implements `IValueResolver<User, UserDTO, int>` and define the Resolve method.
+
+```
+    public class AgeResolver : IValueResolver<User, UserDTO, int>
+    {
+        #region implement all interfaces
+        public int Resolve(User source, UserDTO destination, int destMember, ResolutionContext context)
+        {
+            DateTime now = DateTime.Now;
+
+            DateTime birthdate = source.birthdate;
+
+            int age = now.Year - birthdate.Year;
+
+            // Check if the birthday has occurred this year
+            if (birthdate > now.AddYears(-age))
+            {
+                age--;
+            }
+
+            return age;
+        }
+        #endregion
+    }
+```
+
+Then I can use it as follows.
+
+```
+                cfg.CreateMap<User, UserDTO>()
+                   .ForMember(userDTO => userDTO.AGE, action => action.ResolveUsing<AgeResolver>())
+```
+
+See example 2, for more details.
+
+## mapping table with conditions
+### How to do conditional mapping?
 Invoke `Condition` instance method in the lambda expression about action (which passed in 1th argument (zero-based)) inside `ForMember` instance method call.
 
 ```
@@ -620,7 +639,7 @@ innerDest.OtherValue:0
 
 For more details, see the docs - [Conditional Mapping](https://docs.automapper.org/en/stable/Conditional-mapping.html#conditional-mapping) 
 
-## How to do pre-conditional mapping?
+### How to do pre-conditional mapping?
 Invoke `PreCondition` instance method in the lambda expression about action (which passed in 1th argument (zero-based)) inside `ForMember` instance method call.
 
 ```
@@ -759,7 +778,8 @@ innerDest.OtherValue:0
 
 For more details, see the docs - [Preconditions](https://docs.automapper.org/en/stable/Conditional-mapping.html#preconditions) 
 
-## How to substitution from value of member of class which is null to specific value.
+## null substitution
+### How to substitution from value of member of class which is null to specific value.
 Of course, you can use value Resolver that implements `IValueResolver` interface and defines `Resolve` with following logic.
 
 1. Check whether the value of member of class which is null or not.
@@ -863,20 +883,6 @@ innerDest.OtherValue:2
 
 --------------------------------------------
 ```
-
-## How to create a reverse mapping table?
-Chain `ReverseMap` instance method of `CreateMap` type.
-
-```
-            var configuration = new MapperConfiguration(cfg => {
-                cfg.CreateMap<Order, OrderDto>()
-                   .ReverseMap();
-            });
-```
-
-For more details, see [Reverse Mapping and Unflattening](https://docs.automapper.org/en/stable/Reverse-Mapping-and-Unflattening.html) 
-
-See example 4. for more understanding.
 
 ## Mapping inheritence
 ### configuring inheritance from the base class
@@ -1081,6 +1087,31 @@ using Xunit;
 ```
 
 Run code snippets in example 7, for more fully understanding.
+
+## attribute mapping
+### searching for maps to configuration
+> [!CAUTION]
+> `AutoMapAttribute` is ONLY supported in `AutoMapper` package when `Profile` class is supported.
+>
+> The answers references [Google Gemini's answer](https://g.co/gemini/share/e9a6f05bebf8).
+
+### declare an attribute map
+> [!CAUTION]
+> `AutoMapAttribute` is ONLY supported in `AutoMapper` package in version 8.1.0 (or above)
+>
+> The answers references [Google Gemini's answer](https://g.co/gemini/share/f56e364f1cae).
+
+
+To declare an attribute map, decorate your destination class with `AutoMapAttribute` (which can be shorten as `AutoMap`).
+
+```
+[AutoMap(typeof(Order))]
+public class OrderDto {
+    // destination members
+}
+```
+
+Run code snippets in example 8, for more fully understanding.
 
 ## examples
 ### example 1
@@ -1479,11 +1510,11 @@ public static class DemoClass1
 ```
 
 #### demo project
-See [`AutoMapper demo2.7z (version 2.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/2.0.0)
+See [`AutoMapper demo2.7z (version 2.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/2.0.0/AutoMapper%20demo2.7z)
 
 ### example 3
 #### demo project
-See [`AutoMapper demo2.7z (version 3.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/3.0.0)
+See [`AutoMapper demo2.7z (version 3.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/3.0.0/AutoMapper%20demo2.7z)
 
 ### example 4
 #### demo project
@@ -1500,6 +1531,11 @@ See [`AutoMapper demo5.7z (version (2.0.0)`](https://github.com/40843245/CSharp-
 ### example 7
 #### demo project
 See [`AutoMapper demo5.7z (version (3.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo5/3.0.0/AutoMapper%20demo5.7z)
+
+### example 8
+#### demo project
+See [`AutoMapper demo6.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo6/1.0.0/AutoMapper%20demo6.7z)
+
 
 ## reference
 ### API reference
