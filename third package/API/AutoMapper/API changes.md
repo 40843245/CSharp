@@ -61,3 +61,11 @@ For the topics NOT dived into, see [Type converters](https://docs.automapper.org
 | annotation | first released</br>(in which version) | obsolete</br>(in which version) | encouraged by developer |
 | :--- | :--- | :--- | :-- |
 | `[AutoMapper.AutoMap]` | `8.0.0` | NOT obsolete | Yes, fully encouraged. |
+
+## reference
+### offical docs
++ [`API changes`](https://docs.automapper.org/en/stable/API-Changes.html)
+
+### AI model
++ Google Gemini
++ Microsoft Copilot
