@@ -521,7 +521,7 @@ Thanks to `AutoMapper`, due to this feature
 > - `List<T>`
 > - `Arrays`
 >
-> For more details, see (Lists and Arrays)[`https://docs.automapper.org/en/stable/Lists-and-arrays.html`]
+> For more details, see [`Lists and Arrays`](https://docs.automapper.org/en/stable/Lists-and-arrays.html`)
 
 For example,
 
