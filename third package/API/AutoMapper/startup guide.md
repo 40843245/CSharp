@@ -706,8 +706,8 @@ Then I can use it as follows.
 See example 2, for more details.
 
 ## value transformer
-### value transformation at global level
-If one create a value transformer at global level, the value transformer will apply to all members of class in all Profiles (i.e. the class that inherits the `AutoMapper.Profile` abstract class).
+### value transformer at global level
+If one create a value transformer at global level, the value transformer will apply to all members of class in the map configuration.
 
 ```
              var configuration = new MapperConfiguration(cfg => {
@@ -867,6 +867,69 @@ cfg.ValueTransformers.Add<string>(str => str.Trim());
 ```
 
 Run code snippets of example 10 for more understanding.
+
+### value transformer at member level
+If one create a value transformer at member level, the value transformer will ONLY apply to the members of the class.
+
+```
+    public class QuestionProfile : Profile
+    {
+        public QuestionProfile()
+        {
+            CreateMap<Question, QuestionDto>()
+                /// create member-level value transformer
+                .ForMember(questionDto => questionDto.Body, action => action.AddTransform(val => "Hello everone!!! " + val));
+                ;
+        }
+    }
+```
+
+Take preceeding example for example,
+
+Modifies `QuestionProfile.cs` as followings.
+
+```
+    public class QuestionProfile : Profile
+    {
+        public QuestionProfile()
+        {
+            CreateMap<Question, QuestionDto>()
+                /// create member-level value transformer
+                .ForMember(questionDto => questionDto.Body, action => action.AddTransform(val => "Hello everone!!! " + val));
+                ;
+        }
+    }
+```
+
+Then invoking the method `TestMethod1` (defined in above example)
+
+will output following in console.
+
+```
+TestMethod1
+'Yazawa Nico' asks a question.
+Title:Can 'Yazawa Nico' join the LoveLive club?
+Body:Hello everone!!! I love music and dancing. So I want to join LoveLive club.
+
+'Ayase Eli' asks a question.
+Title:How to manage the LoveLive club?
+Body:Hello everone!!!  I'm a student council in LoveLive school.
+I'm encountering a very huge difficulty.
+There are fewer and fewer student want to join in our school.
+How can I do?
+
+------------------------------------------------------
+```
+
+you will found the `Body` uses blockquotes `Hello Everyone!!!` at the begin.
+
+That's value transformer of member level does
+
+```
+.ForMember(questionDto => questionDto.Body, action => action.AddTransform(val => "Hello everone!!! " + val));
+```
+
+Run code snippets in example 11 for more fully understanding.
 
 ## mapping table with conditions
 ### How to do conditional mapping?
@@ -1631,6 +1694,10 @@ See [`AutoMapper demo6.7z (version (1.0.0)`](https://github.com/40843245/CSharp-
 ### example 10
 #### demo project
 See [`AutoMapper demo7.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo7/1.0.0/AutoMapper%20demo7.7z)
+
+### example 11
+#### demo project
+See [`AutoMapper demo7.7z (version (2.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo7/2.0.0/AutoMapper%20demo7.7z)
 
 ## reference
 ### API reference
