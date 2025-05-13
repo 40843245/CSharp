@@ -962,35 +962,7 @@ Modifies the `QuestionProfile.cs`
     }
 ```
 
-In `ublic class QuestionProfile : Profile
-    {
-        public QuestionProfile()
-        {
-            CreateMap<Question, QuestionDto>()
-                // create a value transformer in map level.
-                .AddTransform<string>(val =>"LoveLive School Question."+val)
-                ;
-        }
-    }`
-
-```
-    public class QuestionProfile : Profile
-    {
-        public QuestionProfile()
-        {
-             CreateMap<Question, QuestionDto>()
-                // create a value transformer in map level.
-                .AddTransform<string>(val =>"LoveLive School Question."+val)
-                ;
-        }
-    }
-```
-
-inherits the abstract class.
-
 And, here, it will add new string `LoveLive School Question.` at the begin of the member whose type is string and defines in this mapper. 
-
-
 
 Then invoking method TestMethod1,
 
@@ -1017,6 +989,178 @@ How can I do?
 you will found that in Title (string` type) and Body (string` type) BOTH added blockquote `LoveLive School Question.`
 
 Run code snippets in example 11 for more fully understanding.
+
+### value transformer at profile level
+If one create a value transformer at profile level, the value transformer will apply to the members of the mapping tables (whose type of member that saitisfies the generic type) in the Profile class.
+
+```
+    public class AnswerProfile : Profile
+    {
+        public AnswerProfile()
+        {
+            CreateMap<Answer, AnswerDto>();
+            // create a value transformer in profile level.
+            ValueTransformers.Add<string>(val=> $"Answered at:{DateTime.Now.ToString(@"MM\/dd\/yyyy HH:mm")},{val}");
+        }
+    }
+```
+
+Take preceeding example for example.
+
+Add Entity
+
+`Answer.cs`
+
+```
+    public class Answer
+    {
+        public User Answerer { get; set; }
+
+        public string Title { get; set; }
+
+        public string Body { get; set; }
+    }
+```
+
+Then add DTO
+
+`AnswerDto.cs`
+
+```
+    [AutoMap(typeof(Question))]
+    public class AnswerDto
+    {
+        public User Answerer { get; set; }
+
+        public string Title { get; set; }
+
+        public string Body { get; set; }
+    }
+```
+
+Then add profile.
+
+`AnswerProfile.cs`
+
+```
+    public class AnswerProfile : Profile
+    {
+        public AnswerProfile()
+        {
+            CreateMap<Answer, AnswerDto>();
+            // create a value transformer in profile level.
+            ValueTransformers.Add<string>(val=> $"Answered at:{DateTime.Now.ToString(@"MM\/dd\/yyyy HH:mm")},{val}");
+        }
+    }
+```
+
+Then invoke the following method 
+
+```
+        public static void TestMethod2()
+        {
+            Question[] questions = new Question[]
+            {
+                new Question()
+                {
+                    Asker = new User()
+                    {
+                        firstName = "Yazawa",
+                        lastName = "Nico"
+                    },
+                    Title = "Can 'Yazawa Nico' join the LoveLive club?",
+                    Body = "I love music and dancing. So I want to join LoveLive club.",
+                    Responses = new List<Answer>()
+                },
+                new Question()
+                {
+                    Asker = new User()
+                    {
+                        firstName = "Ayase",
+                        lastName = "Eli"
+                    },
+                    Title = "How to manage the LoveLive club?",
+                    Body = " "+"I'm a student council in LoveLive school.\nI'm encountering a very huge difficulty.\nThere are fewer and fewer student want to join in our school.\nHow can I do?" + " ",
+                    Responses = new List<Answer>()
+                }
+            };
+
+            Answer[] answers = new Answer[]
+            {
+                new Answer()
+                {
+                    Answerer = new User()
+                    {
+                        firstName = "Ayase",
+                        lastName = "Eli"
+                    },
+                    Title = "Brief answer",
+                    Body = "Yes, you can join the LoveLive club.",
+                },
+                new Answer()
+                {
+                    Answerer = new User()
+                    {
+                        firstName = "Ayase",
+                        lastName = "Eli"
+                    },
+                    Title = "Detailed answer",
+                    Body = " "+"Get first rank on the following dancing contest."+" ",
+                }   
+            };
+
+            questions[0].Responses.Add(answers[0]);
+            questions[1].Responses.Add(answers[1]);
+
+            IMapper mapper = MappingTableConfiguration.CreateMappingTable();
+            QuestionDto[] questionDtos = mapper.Map<QuestionDto[]>(questions);
+            AnswerDto[] answerDtos = mapper.Map<AnswerDto[]>(answers);
+
+            Console.WriteLine("TestMethod2");
+            foreach (var questionDto in questionDtos)
+            {
+                Console.WriteLine(questionDto.GetQuestionDtoInfo());
+            }
+            Console.WriteLine("------------------------------------------------------");
+            foreach (var answerDto in answerDtos)
+            {
+                Console.WriteLine(answerDto.GetAnswerDtoInfo());
+            }
+            Console.WriteLine("------------------------------------------------------");
+
+        }
+```
+
+will output following in console.
+
+```
+TestMethod2
+'Yazawa Nico' asks a question.
+Title:LoveLive School Question.Can 'Yazawa Nico' join the LoveLive club?
+Body:LoveLive School Question.I love music and dancing. So I want to join LoveLive club.
+
+'Ayase Eli' asks a question.
+Title:LoveLive School Question.How to manage the LoveLive club?
+Body:LoveLive School Question. I'm a student council in LoveLive school.
+I'm encountering a very huge difficulty.
+There are fewer and fewer student want to join in our school.
+How can I do?
+
+------------------------------------------------------
+'Ayase Eli' answers a question.
+Title:Answered at:05/13/2025 11:11,Brief answer
+Body:Answered at:05/13/2025 11:11,Yes, you can join the LoveLive club.
+
+'Ayase Eli' answers a question.
+Title:Answered at:05/13/2025 11:11,Detailed answer
+Body:Answered at:05/13/2025 11:11, Get first rank on the following dancing contest.
+
+------------------------------------------------------
+```
+
+<img width="856" alt="image" src="https://github.com/user-attachments/assets/4a8ce8b6-e03c-4c56-8d1b-96919c9a746a" />
+
+Run code snippets in example 13 for more understanding.
 
 ## mapping table with conditions
 ### How to do conditional mapping?
@@ -1789,6 +1933,10 @@ See [`AutoMapper demo7.7z (version (2.0.0)`](https://github.com/40843245/CSharp-
 ### example 12
 #### demo project
 See [`AutoMapper demo7.7z (version (3.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo7/3.0.0/AutoMapper%20demo7.7z)
+
+### example 13
+#### demo project
+See [`AutoMapper demo7.7z (version (4.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo7/4.0.0/AutoMapper%20demo7.7z)
 
 ## reference
 ### API reference
