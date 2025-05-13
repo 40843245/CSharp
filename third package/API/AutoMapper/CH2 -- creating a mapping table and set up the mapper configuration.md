@@ -251,7 +251,7 @@ Then create mapping tables by invoking `CreateMapper` instance method of `Mapper
     }
 ```
 
-see example 3.
+see example 2.
 
 ### 3th way -- create and set up mapping table in `Profile` class (class that inherits `AutoMapper.Profile`) and add the assemblies using (`AddMaps` instance method call).
 > [!CAUTION]
@@ -280,3 +280,19 @@ Add assemblies
                 );
             });
 ```
+
+see example 3.
+
+## examples
+### example 1
+#### demo project
+See [`AutoMapper demo2.7z (version 1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/1.0.0)
+run code snippets in example 1 for fully understanding.
+
+### example 2
+#### demo project
+See [`AutoMapper demo2.7z (version 3.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/3.0.0/AutoMapper%20demo2.7z)
+
+### example 3
+#### demo project
+See [`AutoMapper demo2.7z (version 4.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/4.0.0/AutoMapper%20demo2.7z)
