@@ -5,6 +5,14 @@ In this article, you will learn how to
 + create a mapping table
 + set up the mapper configuration
 
+**extra bonus**
+
+you will also learn how to
+
++ mapping lots of members without repetitive loop.
++ create a reversed mapping table
++ create a nested mapping table
+
 ## CH2.1 -- create a mapping table
 ### 1th way: create a mapping table (using `CreateMap`) directly inside map configuration
 > [!CAUTION]
@@ -144,7 +152,7 @@ The full code is
     }
 ```
 
-see example 1.
+see example 1 for full code.
 
 #### 2th way: create and set up mapping table (using `CreateMap`) in `Profile` classes (classes that inherits `AutoMapper.Profile`) and add the profile classes in mapper configuration one-by-one.
 
@@ -251,7 +259,7 @@ Then create mapping tables by invoking `CreateMapper` instance method of `Mapper
     }
 ```
 
-see example 2.
+see example 2 for full code.
 
 ### 3th way -- create and set up mapping table in `Profile` class (class that inherits `AutoMapper.Profile`) and add the assemblies using (`AddMaps` instance method call).
 > [!CAUTION]
@@ -281,7 +289,160 @@ Add assemblies
             });
 ```
 
-see example 3.
+see example 3 for full code.
+
+## CH2.3 -- mapping lots of members without repetitive loop.
+One does NOT need to mapping lots of members with repetitive loop.
+
+To do that, just simply invoke `Map` instance method of `mapper` instance (`IMapper` data type) with generic type `TDestination`.
+
+Thanks to `AutoMapper`, due to this feature
+
++ When creating a mapping table (using `AutoMapper.Create<TSource,TDestination>`), it will auto generate create these mapping tables including
+
+   - `AutoMapper.Create<IEnumerable<TSource>,IEnumerable<TDestination>>`
+   - `AutoMapper.Create<TSource[],TDestination[]>`
+   - etc
+  
+> [!IMPORTANT]
+> In `AutoMapper`, `TSource` source collection types supports including
+> - `IEnumerable`
+> - `IEnumerable<T>`
+> - `ICollection`
+> - `ICollection<T>`
+> - `IList`
+> - `IList<T>`
+> - `List<T>`
+> - `Arrays`
+>
+> For more details, see (Lists and Arrays)[`https://docs.automapper.org/en/stable/Lists-and-arrays.html`]
+
+For example,
+
+Instead of 
+
+```
+// source is `List<OuterSource>` type.
+
+List<OuterDest> listDest = new List<OuterDest>();
+foreach(source in sources)
+{
+    var dest = mapper.Map<OuterSource,OuterDest>(source);
+    listDest.Add(dest);
+}
+```
+
+We can simply use one mapping table.
+
+```
+// source is `List<OuterSource>` type.
+
+List<OuterDest> listDest = mapper.Map<List<OuterSource>,List<OuterDest>>(sources);
+```
+
+Take code snippets in above section for example.
+
+Invoking this static method
+
+```
+        public static void TestClass2()
+        {
+            var sources = new OuterSource[]
+            {
+                new OuterSource
+                {
+                    Value = 5,
+                    Inner = new InnerSource { OtherValue = 15 }
+                },
+                new OuterSource
+                {
+                    Value = 15,
+                    Inner = new InnerSource { OtherValue = 15 }
+                }
+            };
+            var mapper = InnerAndOuterMappers.CreateMappingTable();
+            IEnumerable<OuterDest> iEnumerableDest = mapper.Map<OuterSource[], IEnumerable<OuterDest>>(sources);
+            foreach (var dest1 in iEnumerableDest)
+            {
+                string message = dest1.GetOuterDestInfo();
+                Console.WriteLine(message);
+            }
+            ICollection<OuterDest> iCollectionDest = mapper.Map<OuterSource[], ICollection<OuterDest>>(sources);
+            foreach (var dest1 in iCollectionDest)
+            {
+                string message = dest1.GetOuterDestInfo();
+                Console.WriteLine(message);
+            }
+            IList<OuterDest> iListDest = mapper.Map<OuterSource[], IList<OuterDest>>(sources);
+            foreach (var dest1 in iListDest)
+            {
+                string message = dest1.GetOuterDestInfo();
+                Console.WriteLine(message);
+            }
+            List<OuterDest> listDest = mapper.Map<OuterSource[], List<OuterDest>>(sources);
+            foreach (var dest1 in listDest)
+            {
+                string message = dest1.GetOuterDestInfo();
+                Console.WriteLine(message);
+            }
+            OuterDest[] DestArray = mapper.Map<OuterSource[], OuterDest[]>(sources);
+            foreach (var dest1 in DestArray)
+            {
+                string message = dest1.GetOuterDestInfo();
+                Console.WriteLine(message);
+            }
+        }
+```
+
+will output following in console.
+
+```
+outerDest.Value:5
+innerDest.OtherValue:15
+
+outerDest.Value:15
+innerDest.OtherValue:15
+
+outerDest.Value:5
+innerDest.OtherValue:15
+
+outerDest.Value:15
+innerDest.OtherValue:15
+
+outerDest.Value:5
+innerDest.OtherValue:15
+
+outerDest.Value:15
+innerDest.OtherValue:15
+
+outerDest.Value:5
+innerDest.OtherValue:15
+
+outerDest.Value:15
+innerDest.OtherValue:15
+
+outerDest.Value:5
+innerDest.OtherValue:15
+
+outerDest.Value:15
+innerDest.OtherValue:15
+
+```
+
+## CH2.4 -- create a reversed mapping table
+Chain `ReverseMap` instance method of `CreateMap` type.
+
+```
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.CreateMap<Order, OrderDto>()
+                   .ReverseMap();
+            });
+```
+
+see example 4 for full code.
+
+For more details, see [Reverse Mapping and Unflattening](https://docs.automapper.org/en/stable/Reverse-Mapping-and-Unflattening.html) 
+
 
 ## examples
 ### example 1
@@ -296,3 +457,11 @@ See [`AutoMapper demo2.7z (version 3.0.0)`](https://github.com/40843245/CSharp-D
 ### example 3
 #### demo project
 See [`AutoMapper demo2.7z (version 4.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/4.0.0/AutoMapper%20demo2.7z)
+
+### example 4
+#### demo project
+See [`AutoMapper demo4.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo4/1.0.0/AutoMapper%20demo4.7z)
+
+## reference
+### further reading
++ [Reverse Mapping and Unflattening](https://docs.automapper.org/en/stable/Reverse-Mapping-and-Unflattening.html) 
