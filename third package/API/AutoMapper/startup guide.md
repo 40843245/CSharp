@@ -930,7 +930,7 @@ That's value transformer of member level does
 .ForMember(questionDto => questionDto.Body, action => action.AddTransform(val => "Hello everone!!! " + val));
 ```
 
-Run code snippets in example 11 for more fully understanding.
+Run code snippets in example 10 for more fully understanding.
 
 ### value transformer at map level
 If one create a value transformer at map level, the value transformer will ONLY apply to the members of all the mapping table (whose type of member that saitisfies the generic type).
@@ -988,7 +988,7 @@ How can I do?
 
 you will found that in Title (string` type) and Body (string` type) BOTH added blockquote `LoveLive School Question.`
 
-Run code snippets in example 11 for more fully understanding.
+Run code snippets in example 10 for more fully understanding.
 
 ### value transformer at profile level
 If one create a value transformer at profile level, the value transformer will apply to the members of the mapping tables (whose type of member that saitisfies the generic type) in the Profile class.
@@ -1160,7 +1160,7 @@ Body:Answered at:05/13/2025 11:11, Get first rank on the following dancing conte
 
 <img width="856" alt="image" src="https://github.com/user-attachments/assets/4a8ce8b6-e03c-4c56-8d1b-96919c9a746a" />
 
-Run code snippets in example 13 for more understanding.
+Run code snippets in example 10 for more understanding.
 
 ## mapping table with conditions
 ### How to do conditional mapping?
@@ -1923,18 +1923,6 @@ See [`AutoMapper demo5.7z (version (3.0.0)`](https://github.com/40843245/CSharp-
 See [`AutoMapper demo6.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo6/1.0.0/AutoMapper%20demo6.7z)
 
 ### example 10
-#### demo project
-See [`AutoMapper demo7.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo7/1.0.0/AutoMapper%20demo7.7z)
-
-### example 11
-#### demo project
-See [`AutoMapper demo7.7z (version (2.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo7/2.0.0/AutoMapper%20demo7.7z)
-
-### example 12
-#### demo project
-See [`AutoMapper demo7.7z (version (3.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo7/3.0.0/AutoMapper%20demo7.7z)
-
-### example 13
 #### demo project
 See [`AutoMapper demo7.7z (version (4.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo7/4.0.0/AutoMapper%20demo7.7z)
 
