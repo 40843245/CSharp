@@ -223,4 +223,4 @@ where
 ### example 1
 #### demo project
 See [`AutoMapper demo2.7z (version 1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/1.0.0)
-run code snippets in example 1 for fully understanding.1
+run code snippets in example 1 for fully understanding.
