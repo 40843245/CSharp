@@ -315,7 +315,7 @@ Thanks to `AutoMapper`, due to this feature
 > - `List<T>`
 > - `Arrays`
 >
-> For more details, see (Lists and Arrays)[`https://docs.automapper.org/en/stable/Lists-and-arrays.html`]
+> For more details, see [`Lists and Arrays`](https://docs.automapper.org/en/stable/Lists-and-arrays.html`)
 
 For example,
 
@@ -464,4 +464,5 @@ See [`AutoMapper demo4.7z (version (1.0.0)`](https://github.com/40843245/CSharp-
 
 ## reference
 ### further reading
++ [`Lists and Arrays`](https://docs.automapper.org/en/stable/Lists-and-arrays.html`)
 + [Reverse Mapping and Unflattening](https://docs.automapper.org/en/stable/Reverse-Mapping-and-Unflattening.html) 
