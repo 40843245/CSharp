@@ -705,6 +705,169 @@ Then I can use it as follows.
 
 See example 2, for more details.
 
+## value transformer
+### value transformation at global level
+If one create a value transformer at global level, the value transformer will apply to all members of class in all Profiles (i.e. the class that inherits the `AutoMapper.Profile` abstract class).
+
+```
+             var configuration = new MapperConfiguration(cfg => {
+                // ... add profiles or assemblies
+
+                // create global value transformer for strings that will trim (the space) from the string 
+                cfg.ValueTransformers.Add<string>(str => str.Trim());
+            });
+```
+
+Take example 10 for example,
+
+`Question.cs`
+
+```
+    public class Question
+    {
+        public User Asker { get; set; }
+
+        public string Title { get; set; }
+
+        public string Body { get; set; }
+
+        public List<Answer> Responses { get; set; }
+    }
+```
+
+`QuestionDto.cs`
+
+```
+    [AutoMap(typeof(Question))]
+    public class QuestionDto
+    {
+        public User Asker { get; set; }
+
+        public string Title { get; set; }
+
+        public string Body { get; set; }
+
+        public List<Answer> Responses { get; set; }
+
+    }
+```
+
+`QuestionProfile.cs`
+
+```
+using AutoMapper;
+// ...
+
+    public class QuestionProfile : Profile
+    {
+        public QuestionProfile()
+        {
+            CreateMap<Question, QuestionDto>();
+        }
+    }
+```
+
+`MappingTableConfiguration.cs`
+
+```
+    public class MappingTableConfiguration
+    {
+        public static IMapper CreateMappingTable()
+        {
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.AddProfile<QuestionProfile>();
+
+                // ... other profiles omitted for clarity.
+
+                // Global value transformer for strings
+                cfg.ValueTransformers.Add<string>(str => str.Trim());
+            });
+
+            IMapper mapper = configuration.CreateMapper();
+            return mapper;
+        }
+    }
+```
+
+Then invoke the following static method
+
+```
+        public static void TestMethod1()
+        {
+            Question[] questions = new Question[]
+            {
+                new Question()
+                {
+                    Asker = new User()
+                    {
+                        firstName = "Yazawa",
+                        lastName = "Nico"
+                    },
+                    Title = "Can 'Yazawa Nico' join the LoveLive club?",
+                    Body = "I love music and dancing. So I want to join LoveLive club.",
+                    Responses = new List<Answer>()
+                },
+                new Question()
+                {
+                    Asker = new User()
+                    {
+                        firstName = "Ayase",
+                        lastName = "Eli"
+                    },
+                    Title = "How to manage the LoveLive club?",
+                    Body = " "+"I'm a student council in LoveLive school.\nI'm encountering a very huge difficulty.\nThere are fewer and fewer student want to join in our school.\nHow can I do?" + " ",
+                    Responses = new List<Answer>()
+                }
+            };
+
+            IMapper mapper = MappingTableConfiguration.CreateMappingTable();
+            QuestionDto[]  questionDtos = mapper.Map<QuestionDto[]>(questions);
+
+            Console.WriteLine("TestMethod1");
+            foreach (var questionDto in questionDtos)
+            {
+                Console.WriteLine(questionDto.GetQuestionDtoInfo());
+            }
+            Console.WriteLine("------------------------------------------------------");
+        }
+```
+
+will output following in console.
+
+```
+TestMethod1
+'Yazawa Nico' asks a question.
+Title:Can 'Yazawa Nico' join the LoveLive club?
+Body:I love music and dancing. So I want to join LoveLive club.
+
+'Ayase Eli' asks a question.
+Title:How to manage the LoveLive club?
+Body:I'm a student council in LoveLive school.
+I'm encountering a very huge difficulty.
+There are fewer and fewer student want to join in our school.
+How can I do?
+
+------------------------------------------------------
+```
+
+<img width="867" alt="image" src="https://github.com/user-attachments/assets/2bce76f8-3d61-45c0-94c1-c0f5eb9f7492" />
+
+you will found there are exactly one whitespace at the begin and end of the `Body` getter-setter property
+
+```
+Body = " "+"I'm a student council in LoveLive school.\nI'm encountering a very huge difficulty.\nThere are fewer and fewer student want to join in our school.\nHow can I do?" + " ",
+```
+
+But, it does NOT output the leading and trailing whitespaces. 
+
+That's the following global value transformer does.
+
+```
+cfg.ValueTransformers.Add<string>(str => str.Trim());
+```
+
+Run code snippets of example 10 for more understanding.
+
 ## mapping table with conditions
 ### How to do conditional mapping?
 Invoke `Condition` instance method in the lambda expression about action (which passed in 1th argument (zero-based)) inside `ForMember` instance method call.
@@ -1464,6 +1627,10 @@ See [`AutoMapper demo5.7z (version (3.0.0)`](https://github.com/40843245/CSharp-
 ### example 9
 #### demo project
 See [`AutoMapper demo6.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo6/1.0.0/AutoMapper%20demo6.7z)
+
+### example 10
+#### demo project
+See [`AutoMapper demo7.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo7/1.0.0/AutoMapper%20demo7.7z)
 
 ## reference
 ### API reference
