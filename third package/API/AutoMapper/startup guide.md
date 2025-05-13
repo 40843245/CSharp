@@ -498,8 +498,18 @@ Add assemblies
 see example 4.
 
 ### How to map lots of elements using mapping table?
-Just simply invoke `Map` instance method of `mapper` instance (`IMapper` data type) with generic type `TDestination`.
+One does NOT need to mapping lots of members with repetitive loop.
 
+To do that, just simply invoke `Map` instance method of `mapper` instance (`IMapper` data type) with generic type `TDestination`.
+
+Thanks to `AutoMapper`, due to this feature
+
++ When creating a mapping table (using `AutoMapper.Create<TSource,TDestination>`), it will auto generate create these mapping tables including
+
+   - `AutoMapper.Create<IEnumerable<TSource>,IEnumerable<TDestination>>`
+   - `AutoMapper.Create<TSource[],TDestination[]>`
+   - etc
+  
 > [!IMPORTANT]
 > In `AutoMapper`, `TSource` source collection types supports including
 > - `IEnumerable`
@@ -512,6 +522,29 @@ Just simply invoke `Map` instance method of `mapper` instance (`IMapper` data ty
 > - `Arrays`
 >
 > For more details, see (Lists and Arrays)[`https://docs.automapper.org/en/stable/Lists-and-arrays.html`]
+
+For example,
+
+Instead of 
+
+```
+// source is `List<OuterSource>` type.
+
+List<OuterDest> listDest = new List<OuterDest>();
+foreach(source in sources)
+{
+    var dest = mapper.Map<OuterSource,OuterDest>(source);
+    listDest.Add(dest);
+}
+```
+
+We can simply use one mapping table.
+
+```
+// source is `List<OuterSource>` type.
+
+List<OuterDest> listDest = mapper.Map<List<OuterSource>,List<OuterDest>>(sources);
+```
 
 Take code snippets in above section for example.
 
@@ -719,7 +752,6 @@ If one create a value transformer at global level, the value transformer will ap
             });
 ```
 
-Take example 10 for example,
 
 `Question.cs`
 
