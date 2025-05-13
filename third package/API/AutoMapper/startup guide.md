@@ -214,6 +214,7 @@ where
 ```
 
 run code snippets in example 1 for fully understanding.
+
 ## creating a mapping table
 ### How to create a mapping table
 There are lots of ways.
@@ -928,6 +929,92 @@ That's value transformer of member level does
 ```
 .ForMember(questionDto => questionDto.Body, action => action.AddTransform(val => "Hello everone!!! " + val));
 ```
+
+Run code snippets in example 11 for more fully understanding.
+
+### value transformer at map level
+If one create a value transformer at map level, the value transformer will ONLY apply to the members of all the mapping table (whose type of member that saitisfies the generic type).
+
+```
+        public QuestionProfile()
+        {
+            CreateMap<Question, QuestionDto>()
+                // create a value transformer in map level.
+                .AddTransform<string>(val =>"LoveLive School Question."+val)
+                ;
+        }
+```
+
+Take preceeding example for example.
+
+Modifies the `QuestionProfile.cs` 
+
+```
+    public class QuestionProfile : Profile
+    {
+        public QuestionProfile()
+        {
+            CreateMap<Question, QuestionDto>()
+                // create a value transformer in map level.
+                .AddTransform<string>(val =>"LoveLive School Question."+val)
+                ;
+        }
+    }
+```
+
+In `ublic class QuestionProfile : Profile
+    {
+        public QuestionProfile()
+        {
+            CreateMap<Question, QuestionDto>()
+                // create a value transformer in map level.
+                .AddTransform<string>(val =>"LoveLive School Question."+val)
+                ;
+        }
+    }`
+
+```
+    public class QuestionProfile : Profile
+    {
+        public QuestionProfile()
+        {
+             CreateMap<Question, QuestionDto>()
+                // create a value transformer in map level.
+                .AddTransform<string>(val =>"LoveLive School Question."+val)
+                ;
+        }
+    }
+```
+
+inherits the abstract class.
+
+And, here, it will add new string `LoveLive School Question.` at the begin of the member whose type is string and defines in this mapper. 
+
+
+
+Then invoking method TestMethod1,
+
+it will output the following in console
+
+```
+TestMethod1
+'Yazawa Nico' asks a question.
+Title:LoveLive School Question.Can 'Yazawa Nico' join the LoveLive club?
+Body:LoveLive School Question.I love music and dancing. So I want to join LoveLive club.
+
+'Ayase Eli' asks a question.
+Title:LoveLive School Question.How to manage the LoveLive club?
+Body:LoveLive School Question. I'm a student council in LoveLive school.
+I'm encountering a very huge difficulty.
+There are fewer and fewer student want to join in our school.
+How can I do?
+
+------------------------------------------------------
+```
+
+<img width="853" alt="image" src="https://github.com/user-attachments/assets/b25c1015-b954-4682-bfb9-b56029e25ea6" />
+
+you will found that in Title (string` type) and Body (string` type) BOTH added blockquote `LoveLive School Question.`
 
 Run code snippets in example 11 for more fully understanding.
 
@@ -1698,6 +1785,10 @@ See [`AutoMapper demo7.7z (version (1.0.0)`](https://github.com/40843245/CSharp-
 ### example 11
 #### demo project
 See [`AutoMapper demo7.7z (version (2.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo7/2.0.0/AutoMapper%20demo7.7z)
+
+### example 12
+#### demo project
+See [`AutoMapper demo7.7z (version (3.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo7/3.0.0/AutoMapper%20demo7.7z)
 
 ## reference
 ### API reference
