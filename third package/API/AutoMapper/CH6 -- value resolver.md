@@ -71,6 +71,8 @@ Then I can use it as follows.
                    .ForMember(userDTO => userDTO.AGE, action => action.ResolveUsing<AgeResolver>())
 ```
 
+see example 1.
+
 ## examples
 ### example 1
 #### demo project
