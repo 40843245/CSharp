@@ -464,5 +464,6 @@ See [`AutoMapper demo4.7z (version (1.0.0)`](https://github.com/40843245/CSharp-
 
 ## reference
 ### further reading
++ [`Getting Started Guide`](https://docs.automapper.org/en/stable/Getting-started.html)
 + [`Lists and Arrays`](https://docs.automapper.org/en/stable/Lists-and-arrays.html`)
-+ [Reverse Mapping and Unflattening](https://docs.automapper.org/en/stable/Reverse-Mapping-and-Unflattening.html) 
++ [`Reverse Mapping and Unflattening`](https://docs.automapper.org/en/stable/Reverse-Mapping-and-Unflattening.html) 
