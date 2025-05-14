@@ -22,3 +22,8 @@ Invoke `Ignore` instance method in the lambda expression about action (which pas
             cfg.CreateMap<UserDTO, User>()
                    .ForMember(user => user.birthdate, action => action.Ignore())
 ```
+
+## reference
+### further reading
++ [`Projection`](https://docs.automapper.org/en/stable/Projection.html)
++ [`Reverse Mapping and Unflattening`](https://docs.automapper.org/en/stable/Reverse-Mapping-and-Unflattening.html)
