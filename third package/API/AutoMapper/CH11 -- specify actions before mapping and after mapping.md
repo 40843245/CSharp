@@ -616,3 +616,7 @@ see [AutoMapper demo8.7z (version 2.0.0)](https://github.com/40843245/CSharp-Dem
 ### example 3
 #### demo project
 see [AutoMapper demo8.7z (version 3.0.0)](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo8/3.0.0/AutoMapper%20demo8.7z)
+
+## reference
+### further reading
++ [Before and After Map Action](https://docs.automapper.org/en/stable/Before-and-after-map-actions.html)
