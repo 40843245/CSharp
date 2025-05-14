@@ -71,9 +71,13 @@ Then I can use it as follows.
                    .ForMember(userDTO => userDTO.AGE, action => action.ResolveUsing<AgeResolver>())
 ```
 
-see example 1.
+see example 1 for complete code.
 
 ## examples
 ### example 1
 #### demo project
 See [`AutoMapper demo2.7z (version 2.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/2.0.0/AutoMapper%20demo2.7z)
+
+## reference
+### further reading
++ [`Custom Value Resolvers`](https://docs.automapper.org/en/stable/Custom-value-resolvers.html)
