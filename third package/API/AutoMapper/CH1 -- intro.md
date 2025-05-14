@@ -226,4 +226,6 @@ run code snippets in example 1 for fully understanding.
 #### demo project
 See [`AutoMapper demo2.7z (version 1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/tree/main/AutoMapper/AutoMapper%20demo2/1.0.0)
 
-
+## reference
+### further reading
++ [`Getting Started Guide`](https://docs.automapper.org/en/stable/Getting-started.html)
