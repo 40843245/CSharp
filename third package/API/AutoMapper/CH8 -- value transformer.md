@@ -463,4 +463,8 @@ see example 1 for full code.
 ## examples
 ### example 1
 #### demo project
-See [`AutoMapper demo7.7z (version (4.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo7/4.0.0/AutoMapper%20demo7.7z)
+See [`AutoMapper demo7.7z (version 4.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo7/4.0.0/AutoMapper%20demo7.7z)
+
+## reference
+### further reading
++ [`Value Transformers`](https://docs.automapper.org/en/stable/Value-transformers.html)
