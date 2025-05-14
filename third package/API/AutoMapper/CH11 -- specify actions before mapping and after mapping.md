@@ -2,13 +2,14 @@
 ## objectives
 In this article, you will learn how to
 
-+ specify actions before mapping
-+ specify actions after mapping
++ specify actions before mapping (`BeforeMap`)
++ specify actions after mapping (`AfterMap`)
++ specify actions before mapping or after mapping with template (`Process` method in `IMappingAction` interface)
 
 **extra bonus**
 you will know its pros.
 
-## CH11.1 -- specify actions before mapping
+## CH11.1 -- specify actions before mapping (`BeforeMap`)
 To map from preprocessed data, we can preprocess data before mapping then mapping them (using such as `mapper.Map<TSource,TDestination>` instance method call).
 
 However, it's so troublesome.
@@ -229,7 +230,19 @@ The student:'Minami Kotori' gets 40 score.
 
 see example 1 for complete code.
 
-## CH11.2 -- specify actions after mapping
+Story:
+
+The kindly teacher found the fact that even she multiply score by two for all student (of course, clampping the score between 0 and 100).
+
+But there is a sttudent named 'Minami Kotori' still failed the test (i.e. score < 60 ) as she gets 40 score.
+
+She want to make every studen pass the test. 
+
+How can she do? 
+
+She founds the solution ad takes a note in the next section.
+
+## CH11.2 -- specify actions after mapping (`AfterMap`)
 To map data then process them, we can mapping data (using such as `mapper.Map<TSource,TDestination>` instance method call), first, then write code to process data.
 
 However, there is a simple way to do that in recent version of `AutoMapper`. 
@@ -364,17 +377,41 @@ The student:'Minami Kotori' gets 60 score.
 
 <img width="863" alt="image" src="https://github.com/user-attachments/assets/86ffb649-1e1f-4bc1-a957-856263a6135c" />
 
+see example 2 for complete code.
+
+Story:
+
 We can find that each student passes the test (i.e. score >= 60 )
 
 Before `.AfterMap` call, the student named 'Minami Kotori' will fail the test (as she gets `40`) even if adjusting the score at first time.
 
 Thanks to kindly teacher, who wants each student passes the test, but she is lazy for write a repetive loop to adjust the score after mapping.
 
-So, she uses `AutoMapper` API -- `AfterMap`.
+So, she uses `AutoMapper` API -- `AfterMap`, and put the logic in the lambda expression in `AfterMap` method call.
 
-And that's the pro of `AfterMap`
+That's the pro of `AfterMap`. 
 
-## CH11.3 -- pros
+However, she is thinking about an question. 
+
+logic in the lambda expression in `AfterMap` method call seems to be a little complicated. 
+
+Are there any ways to make it easuer to read?  
+
+Yes, see next section.
+
+## CH11.3 -- specify actions before mapping or after mapping with template (`Process` method in `IMappingAction` interface)
+Logic in the lambda expression in `BeforeMap` or `AfterMap` method call might seem to be a little complicated.
+
+In `AutoMapper, we can extract the logic in the lambda expression in `BeforeMap` or `AfterMap` method call into other place 
+
+and invoke `BeforeMap` or `AfterMap` method call with template.
+
+
+```
+
+```
+
+## CH11.4 -- pros
 Without `AutoMapper` API -- `BeforeMap` and `AfterMap`,
 
 one needs to do one of the following.
