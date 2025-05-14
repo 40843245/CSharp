@@ -431,6 +431,149 @@ then defines `public void Process(TSource source, TDestination dest, ResolutionC
 
 Step 2:
 
+place your logic inside `public void Process(TSource source, TDestination dest, ResolutionContext context)` method.
+
+Step 3:
+
+to use the action as template, 
+
+just put it as generic in `BeforeMap` , `AfterMap` instance method.
+
+```
+                /// to make every student passes the test by adjusting the score to 60 for those students who fails test (i.e. score is under 60) 
+                cfg.AfterMap<LowestValueAdjustificationHandler>()
+```
+
+Take proceeding example.
+
+Add `LowestValueAdjustificationHandler.cs`. 
+
+Move the code (about logic) from lamda expression in `AfterMap` method call to `Process` method definition.
+
+```
+    public class LowestValueAdjustificationHandler: IMappingAction<StudentInfo, StudentInfoDto>
+    {
+        /// to make every student passes the test by adjusting the score to 60 for those students who fails test (i.e. score is under 60) 
+        public void Process(StudentInfo studentInfo, StudentInfoDto studentInfoDto, ResolutionContext context)
+        {
+            int oldScore = studentInfoDto.Score;
+            int newScore = oldScore >= 60 ? oldScore : 60;
+            studentInfoDto.Score = newScore;
+        }
+    }
+```
+
+And next, just simply use `LowestValueAdjustificationHandler` generic type in `AfterMap` method call.
+
+`StudentInfoProfile.cs`
+
+```
+    public class StudentInfoProfile: Profile
+    {
+        public StudentInfoProfile()
+        {
+            CreateMap<StudentInfo, StudentInfoDto>()
+                .BeforeMap((studentInfo, studentInfoDto) =>
+                    {
+                        GeometricAdjustificationHandler geometricAdjustificationHandler = new GeometricAdjustificationHandler(100, 0);
+                        studentInfo.Score = geometricAdjustificationHandler.Adjust(studentInfo, 2);
+                    }
+                )
+                /// to make every student passes the test by adjusting the score to 60 for those students who fails test (i.e. score is under 60) 
+                .AfterMap<LowestValueAdjustificationHandler>()
+                ;
+        }
+    }
+```
+
+Then running the test method -- `TestMethod1`, same as above
+
+```
+        public static void TestMethod1()
+        {
+            StudentInfo[] studentInfos = new StudentInfo[]
+            {
+                new StudentInfo()
+                {
+                    Student = new User()
+                    {
+                        firstName = "Yazawa",
+                        lastName = "Nico"
+                    },
+                    Score = 30
+                },
+                new StudentInfo()
+                {
+                    Student = new User()
+                    {
+                        firstName = "Ayase",
+                        lastName = "Eli"
+                    },
+                    Score = 60
+                },
+                new StudentInfo()
+                {
+                    Student = new User()
+                    {
+                        firstName = "Minami",
+                        lastName = "Kotori"
+                    },
+                    Score = 20
+                },
+            };
+
+
+            Console.WriteLine("Before adjusting the score,");
+            Console.WriteLine();
+            Console.WriteLine("StudentInfos:");
+            InfoOutput.PrintStudentInfos(studentInfos);
+            Console.WriteLine("--------------------------------------------------");
+
+            IMapper mapper = MappingTableConfiguration.CreateMappingTable();
+            StudentInfoDto[] studentInfoDtos = mapper.Map<StudentInfo[], StudentInfoDto[]>(studentInfos);
+
+            Console.WriteLine("After adjusting the score,");
+            Console.WriteLine();
+            Console.WriteLine("StudentInfos:");
+            InfoOutput.PrintStudentInfos(studentInfos);
+            Console.WriteLine("StudentInfoDtos:");
+            InfoOutput.PrintStudentInfoDtos(studentInfoDtos);
+            Console.WriteLine("--------------------------------------------------");
+        }
+```
+
+it will output following in console.
+
+```
+Before adjusting the score,
+
+StudentInfos:
+The student:'Yazawa Nico' gets 30 score.
+The student:'Ayase Eli' gets 60 score.
+The student:'Minami Kotori' gets 20 score.
+--------------------------------------------------
+After adjusting the score,
+
+StudentInfos:
+The student:'Yazawa Nico' gets 60 score.
+The student:'Ayase Eli' gets 100 score.
+The student:'Minami Kotori' gets 40 score.
+StudentInfoDtos:
+The student:'Yazawa Nico' gets 60 score.
+The student:'Ayase Eli' gets 100 score.
+The student:'Minami Kotori' gets 60 score.
+--------------------------------------------------
+```
+
+<img width="862" alt="image" src="https://github.com/user-attachments/assets/9797cfde-6a30-4b2b-9f4e-ca0ae9d09cb4" />
+
+see example 3 for complete code.
+
+Story:
+
+The kindly teacher finally founds a way to make it easier.
+
+Just implement `AutoMapper.IMappingAction<TSource,TDestination>` and defines the `public void Process(TSource source,TDestination dest,ResolutionContext context)` method.
 
 ## CH11.4 -- pros
 Without `AutoMapper` API -- `BeforeMap` and `AfterMap`,
@@ -465,3 +608,11 @@ It has following pros, including:
 ### example 1
 #### demo project
 see [AutoMapper demo8.7z (version 1.0.0)](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo8/1.0.0/AutoMapper%20demo8.7z)
+
+### example 2
+#### demo project
+see [AutoMapper demo8.7z (version 2.0.0)](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo8/2.0.0/AutoMapper%20demo8.7z)
+
+### example 3
+#### demo project
+see [AutoMapper demo8.7z (version 3.0.0)](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo8/3.0.0/AutoMapper%20demo8.7z)
