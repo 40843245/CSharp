@@ -146,9 +146,13 @@ public class OrderDto {
 }
 ```
 
-see example 1 for full code.
+see example 1 for complete code.
 
 ## examples
 ### example 1
 #### demo project
 See [`AutoMapper demo6.7z (version (1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo6/1.0.0/AutoMapper%20demo6.7z)
+
+## reference
+### further reading
++ [`Attribute Mapping`](https://docs.automapper.org/en/stable/Attribute-mapping.html)
