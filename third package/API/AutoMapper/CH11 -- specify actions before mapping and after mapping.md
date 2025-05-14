@@ -7,6 +7,7 @@ In this article, you will learn how to
 + specify actions before mapping or after mapping with template (`Process` method in `IMappingAction` interface)
 
 **extra bonus**
+
 you will know its pros.
 
 ## CH11.1 -- specify actions before mapping (`BeforeMap`)
@@ -407,9 +408,29 @@ In `AutoMapper, we can extract the logic in the lambda expression in `BeforeMap`
 and invoke `BeforeMap` or `AfterMap` method call with template.
 
 
-```
+To create an action and use it as template, follow these steps.
+
+Step 1:
+
+To create an action, create a class that implements `IMappingAction<TSource, TDestination>` interface,
+
+then defines `public void Process(TSource source, TDestination dest, ResolutionContext context)` method.
 
 ```
+    // `IMappingAction<TSource, TDestination>`
+    public class LowestValueAdjustificationHandler: IMappingAction<StudentInfo, StudentInfoDto>
+    {
+        /// to make every student passes the test by adjusting the score to 60 for those students who fails test (i.e. score is under 60)
+        `public void Process(TSource source, TDestination dest, ResolutionContext context)`
+        public void Process(StudentInfo studentInfo, StudentInfoDto studentInfoDto, ResolutionContext context)
+        {
+            // logic
+        }
+    }
+```
+
+Step 2:
+
 
 ## CH11.4 -- pros
 Without `AutoMapper` API -- `BeforeMap` and `AfterMap`,
