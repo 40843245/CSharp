@@ -35,7 +35,7 @@ You may wonder that these following are referentially equal and non-referentiall
 
 + two delegate functions are made from an expression in form of an expression tree but with different `Compile` instance method call.
 
-I will discuss it then use examples (example 2 and example 3) to prove it that there are **NEITHER** referentially equal **NOR** non-referentially equal.
+I will discuss it then use examples (example 2 to example 5) to prove it that there are **NEITHER** referentially equal **NOR** non-referentially equal.
 
 Lots of people thinks that
 
@@ -43,7 +43,7 @@ Lots of people thinks that
 >
 > However, it is **wrong**.
 
-example 2 and example 3 will prove it.
+example 2 to example 5 will prove it.
 
 ## examples
 ### example 1
@@ -125,15 +125,39 @@ Invoking following method
             Expression<Func<int , bool>> expression1 = i => i < 5; // represents a delegate function in form of an expression tree.
             Func<int , bool> delegateFunction2 = expression1.Compile(); // compile it, making it as an delegate function.
 
-            bool isEqual = object.Equals(delegateFunction1 , delegateFunction2);
-            bool isReferentiallyEqual = object.ReferenceEquals(delegateFunction1,delegateFunction2);
-            Console.WriteLine($"Are these delegate functions equal? {isEqual}");
-
-            Console.WriteLine($"Are these delegate functions referentially equal? {isReferentiallyEqual}");
+            EqualMessageOutput.PrintInfo(
+                delegateFunction1 ,
+                delegateFunction2 ,
+                "delegate function"
+            );
         }
 ```
 
-will output following
+where 
+
+`EqualMessageOutput.PrintInfo` static method is defined in `EqualMessageOutput` static class as follows.
+
+`EqualMessageOutput.cs`
+
+```
+    public static class EqualMessageOutput
+    {
+        public static void PrintInfo(
+            object object1, 
+            object object2,
+            string objectTypeName
+        )
+        {
+            bool isEqual = object.Equals(object1 , object2);
+            bool isReferentiallyEqual = object.ReferenceEquals(object1 , object2);
+            Console.WriteLine($"Are these {objectTypeName}s equal? {isEqual}");
+
+            Console.WriteLine($"Are these {objectTypeName}s referentially equal? {isReferentiallyEqual}");
+        }
+    }
+```
+
+It will output following
 
 ```
 Are these delegate functions equal? False
@@ -164,19 +188,92 @@ Invoking following method
             Func<int , bool> delegateFunction1 = expression1.Compile(); // compile it, making it as an delegate function.
             Func<int , bool> delegateFunction2 = expression1.Compile(); // compile it, making it as an delegate function.
 
-            bool isEqual = object.Equals(delegateFunction1 , delegateFunction2);
-            bool isReferentiallyEqual = object.ReferenceEquals(delegateFunction1 , delegateFunction2);
-            Console.WriteLine($"Are these delegate functions equal? {isEqual}");
-
-            Console.WriteLine($"Are these delegate functions referentially equal? {isReferentiallyEqual}");
+           EqualMessageOutput.PrintInfo(
+                delegateFunction1 ,
+                delegateFunction2 ,
+                "delegate function"
+            );
         }
 ```
 
-will output following
+where
+
+`EqualMessageOutput.PrintInfo` is defined same as above.
+
+It will output following
 
 ```
 Are these delegate functions equal? False
 Are these delegate functions referentially equal? False
+```
+
+#### demo project
+
+### example 4
+Invoking following method
+
+```
+        /// <summary>
+        /// Compare two delegate function are referentially equal.
+        /// 
+        /// First delegate function and second delegate function is made from an expression in form of an expression tree. But made with different `Compile` instance method call. 
+        /// </summary>
+        public static void TestMethod4()
+        {
+            Expression<Func<int , bool>> expression1 = i => i < 5; // represents a delegate function in form of an expression tree.
+
+            Func<int , bool> delegateFunction1 = expression1.Compile(false); // not compile it, using other way to make it as an delegate function.
+            Func<int , bool> delegateFunction2 = expression1.Compile(false); // not compile it, using other way to make it as an delegate function.
+
+            EqualMessageOutput.PrintInfo(
+                delegateFunction1,
+                delegateFunction2,
+                "delegate function"
+            );
+        }
+```
+
+where
+
+`EqualMessageOutput.PrintInfo` is defined same as above.
+
+It will output following
+
+```
+Are these delegate functions equal? False
+Are these delegate functions referentially equal? False
+```
+
+#### demo project
+
+### example 5
+Invoking following method
+
+```
+        public static void TestMethod5()
+        {
+            Expression<Func<int , bool>> expression1 = i => i < 5; // represents a delegate function in form of an expression tree.
+
+            Func<int , bool> delegateFunction1 = expression1.Compile(false); // compile it, making it as an delegate function.
+            Func<int , bool> delegateFunction2 = delegateFunction1; // points to first delegate function,
+
+            EqualMessageOutput.PrintInfo(
+                delegateFunction1 ,
+                delegateFunction2 ,
+                "delegate function"
+            );
+        }
+```
+
+where
+
+`EqualMessageOutput.PrintInfo` is defined same as above.
+
+It will output following
+
+```
+Are these delegate functions equal? True
+Are these delegate functions referentially equal? True
 ```
 
 #### demo project
