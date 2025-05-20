@@ -1,10 +1,10 @@
-# CH4 -- the order of visiting the expression tree
+# CH6 -- the order of visiting the expression tree
 ## objectives
 You will know
 
 + the order of visiting the expression tree
 
-## CH4.1 -- the order of visiting the expression tree
+## CH6.1 -- the order of visiting the expression tree
 See following example.
 
 ## examples
