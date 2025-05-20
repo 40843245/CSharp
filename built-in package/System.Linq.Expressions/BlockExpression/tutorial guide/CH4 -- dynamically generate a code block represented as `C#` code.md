@@ -1,10 +1,10 @@
-# CH2 -- dynamically generate a code block represented as `C#` code
+# CH4 -- dynamically generate a code block represented as `C#` code
 ## objectives
 You will know how to 
 
 + dynamically generate a code block represented as `C#` code
 
-## CH2.1 -- dynamically generate a code block represented as `C#` code
+## CH4.1 -- dynamically generate a code block represented as `C#` code
 Step 1:
 
 Create an expression tree.
