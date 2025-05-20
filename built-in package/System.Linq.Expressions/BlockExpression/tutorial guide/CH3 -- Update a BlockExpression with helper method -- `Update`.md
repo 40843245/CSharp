@@ -132,6 +132,8 @@ static type of the expression:System.String
 ```
 
 #### demo project
+#### demo project
+see [Example.7z (version 1.0.0)](https://github.com/40843245/CSharp-Demo-Project/blob/main/built-in%20package/System.Linq.Expressions/BlockExpression/code/v1.0.0/Example.7z)
 
 ## wrong examples
 ### wrong example 1
@@ -171,6 +173,5 @@ Invoking following will cause `System.ArgumentException`, since it violate the r
         }
 ```
 
-![Uploading image.png…]()
-
 #### demo project
+see [Example.7z (version 1.0.0)](https://github.com/40843245/CSharp-Demo-Project/blob/main/built-in%20package/System.Linq.Expressions/BlockExpression/code/v1.0.0/Example.7z)
