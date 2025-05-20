@@ -1,11 +1,11 @@
-# CH3 -- compile the dynamically generated code block and execute it
+# CH5 -- compile the dynamically generated code block and execute it
 ## objectives
 You will learn how to 
 
 + compile dynamically generated code block
 + get the result after executing the compiled result from dynamically generated code block
 
-## CH3.1 -- compile dynamically generated code block
+## CH5.1 -- compile dynamically generated code block
 Step 1:
 
 Creates an expression tree that represents a lambda expression.
@@ -30,7 +30,7 @@ Expression.Lambda<Func<int>>(blockExpr).Compile();
 
 Then it will return a delegate function.
 
-## CH3.2 -- get the result after executing the compiled result from dynamically generated code block
+## CH5.2 -- get the result after executing the compiled result from dynamically generated code block
 Step 1 and 2 are same as previous section.
 
 Step 3:
