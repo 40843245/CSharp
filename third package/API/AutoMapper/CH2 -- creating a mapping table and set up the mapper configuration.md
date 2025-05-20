@@ -460,7 +460,7 @@ See [`AutoMapper demo2.7z (version 4.0.0)`](https://github.com/40843245/CSharp-D
 
 ### example 4
 #### demo project
-See [`AutoMapper demo4.7z (version 1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo4/1.0.0/AutoMapper%20demo4.7z)
+See [`AutoMapper demo4.7z (version 1.0.0)`](https://github.com/40843245/CSharp/blob/main/third%20package/API/AutoMapper/AutoMapper%20demo4/1.0.0/AutoMapper%20demo4.7z)
 
 ## reference
 ### further reading
