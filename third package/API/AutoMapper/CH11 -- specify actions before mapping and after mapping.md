@@ -607,15 +607,15 @@ It has following pros, including:
 ## examples
 ### example 1
 #### demo project
-see [AutoMapper demo8.7z (version 1.0.0)](https://github.com/40843245/CSharp/blob/main/third%20package/API/AutoMapper/AutoMapper%20demo8/1.0.0/AutoMapper%20demo8.7z)
+see [AutoMapper demo8.7z (version 1.0.0)](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo8/1.0.0/AutoMapper%20demo8.7z)
 
 ### example 2
 #### demo project
-see [AutoMapper demo8.7z (version 2.0.0)](https://github.com/40843245/CSharp/blob/main/third%20package/API/AutoMapper/AutoMapper%20demo8/2.0.0/AutoMapper%20demo8.7z)
+see [AutoMapper demo8.7z (version 2.0.0)](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo8/2.0.0/AutoMapper%20demo8.7z)
 
 ### example 3
 #### demo project
-see [AutoMapper demo8.7z (version 3.0.0)](https://github.com/40843245/CSharp/blob/main/third%20package/API/AutoMapper/AutoMapper%20demo8/3.0.0/AutoMapper%20demo8.7z)
+see [AutoMapper demo8.7z (version 3.0.0)](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo8/3.0.0/AutoMapper%20demo8.7z)
 
 ## reference
 ### further reading
