@@ -91,8 +91,9 @@ Analysis:
 + last expression: `Expression.Constant(42)` which is evaluated to `42` with data type `System.Int32`, so `blockExpr.Result` returns `42`.
 + There are no defined variables inside `Expression.block` factory method call, even `welcomeMessage` variable is placed (`Expression.Constant(welcomeMessage)`) in the first expression, so `blockExpr.Variable` returns empty `ICollection`.
 + Inside `Expression.block` factory method call, there is only one static type in these expressions -- in the third expression `Expression.Constant(42)` which is evaluated to `42` with data type `System.Int32`, so `blockExpr.Type` is `System.Int32`.
+
 #### demo project
-see [Example (version 1.0.0)]()
+see [Example.7z (version 1.0.0)](https://github.com/40843245/CSharp-Demo-Project/blob/main/built-in%20package/System.Linq.Expressions/BlockExpression/code/v1.0.0/Example.7z)
 
 ### example 2
 Invoking following method
@@ -165,7 +166,7 @@ it creates an expression and defines a variable with name `message` and data typ
 + By definition of `Type` getter-property, it will return the type of last expression which is `System.String`.
   
 #### demo project
-see [Example (version 1.0.0)]()
+see [Example.7z (version 1.0.0)](https://github.com/40843245/CSharp-Demo-Project/blob/main/built-in%20package/System.Linq.Expressions/BlockExpression/code/v1.0.0/Example.7z)
 
 ## reference
 ### API docs
