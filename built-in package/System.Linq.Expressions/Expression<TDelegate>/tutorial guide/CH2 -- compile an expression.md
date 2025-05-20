@@ -65,4 +65,54 @@ delegateFunction2(8) = False
 delegateFunction2(9) = False
 ```
 
+> [!IMPORTANT]
+> Although these two delegate functions do same behavior,
+>
+> there are not only **NOT** **referientially equal** (of course, as one delegate function does NOT points to another delegate function)
+>
+> but also **NOT** **non-referientially equal**.
+>
+> see example 2 for more understanding.
+
+#### demo project
+
+### example 2
+Invoking following method 
+
+```
+        /// <summary>
+        /// Compare two delegate function are referentially equal.
+        /// 
+        /// First delegate function is directly initialized.
+        /// 
+        /// While, second delegate function is made from an expression in form of an expression tree.
+        /// </summary>
+        public static void TestMethod2()
+        {
+            Func<int , bool> delegateFunction1 = i => i < 5; // a delegate function.
+
+            Expression<Func<int , bool>> expression1 = i => i < 5; // represents a delegate function in form of an expression tree.
+            Func<int , bool> delegateFunction2 = expression1.Compile(); // compile it, making it as an delegate function.
+
+            bool isEqual = object.Equals(delegateFunction1 , delegateFunction2);
+            bool isReferentiallyEqual = object.ReferenceEquals(delegateFunction1,delegateFunction2);
+            Console.WriteLine($"Are these delegate functions equal? {isEqual}");
+
+            Console.WriteLine($"Are these delegate functions referentially equal? {isReferentiallyEqual}");
+        }
+```
+
+will output following
+
+```
+Are these delegate functions equal? False
+Are these delegate functions referentially equal? False
+```
+
+In this example, we can prove that
+
+> there are not only **NOT** **referientially equal** (using `object.ReferenceEqual` static method call)
+>
+> but also **NOT** **non-referientially equal** (using `object.Equals` static method call)
+
 #### demo project
