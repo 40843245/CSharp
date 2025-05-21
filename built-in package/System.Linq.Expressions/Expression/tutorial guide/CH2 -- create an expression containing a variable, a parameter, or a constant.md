@@ -1,4 +1,4 @@
-# CH2 -- create an expression
+# CH2 -- create an expression containing a variable, a parameter, or a constant
 ## objectives
 You will learn how to
 
@@ -45,3 +45,9 @@ Expression expressionConstantOne = Expression.Constant(1);
 In above code snippets, an expression containing a constant `1` will be created. 
 
 For more details, see [`Expression.Constant Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.constant?view=net-8.0)
+
+## reference
+### API docs
++ [`Expression.Variable Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.variable?view=net-8.0)
++ [`Expression.Parameter Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.parameter?view=net-8.0)
++ [`Expression.Constant Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.constant?view=net-8.0)
