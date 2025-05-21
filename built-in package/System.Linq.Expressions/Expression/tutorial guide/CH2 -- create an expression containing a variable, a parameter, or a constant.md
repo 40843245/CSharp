@@ -39,7 +39,7 @@ For more details, see [`Expression.Parameter Method`](https://learn.microsoft.co
 You can create an expression contnaining a constant using `Expression.Constant` static method call.
 
 ```
-Expression expressionConstantOne = Expression.Constant(1);
+ConstantExpression expressionConstantOne = Expression.Constant(1);
 ```
 
 In above code snippets, an expression containing a constant `1` will be created. 
