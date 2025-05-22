@@ -401,7 +401,89 @@ For example,
 ```
 
 ## examples
-See examples in CH8.
+### example 1
+See example 1 in CH8.
+
+### example 2
+Invoking this method
+
+```
+         /// <summary>
+        /// illustrate bitwise or logical operation with `UnaryExpression`.
+        /// </summary>
+        public static void TestMethod11()
+        {
+            Console.WriteLine("In {0} method call," , MethodBase.GetCurrentMethod().Name);
+
+            int constant = 42;
+
+            List<UnaryExpression> unaryExpressions = new List<UnaryExpression>();
+
+            unaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do bitwise one's complementation (without short circuit) to the parameter value.
+                Expression.OnesComplement(
+                    Expression.Constant(constant)
+                )
+            );
+
+            unaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do bitwise two's complementation (without short circuit) to the parameter value.
+                Expression.Not(
+                    Expression.Constant(constant)
+                )
+            );
+
+            unaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do arithmetic negation operation (without short circuit) to the parameter value.
+                Expression.Negate(
+                    Expression.Constant(constant)
+                )
+            );
+
+            Console.WriteLine("About `unaryExpressions`");
+            unaryExpressions.ForEach(
+                (unaryExpression) =>
+                {
+                    string infoText = unaryExpression.GetInfo();
+                    Console.WriteLine(infoText);
+
+                    LambdaExpression lambdaExpression = 
+                        Expression.Lambda<Func<int>>(
+                            unaryExpression
+                        );
+
+                    Console.WriteLine("executimg the expression`{0}` with argument `{1}` will get result `{2}`" ,lambdaExpression.ToString(),constant,lambdaExpression.Compile().DynamicInvoke());
+                }
+            );
+            Console.WriteLine();
+        }
+```
+
+will output
+
+```
+In TestMethod11 method call,
+About `unaryExpressions`
+unaryExpression.IsLifted:False
+unaryExpression.IsLiftedToNull:False
+unaryExpression.Operand:42
+
+executimg the expression`() => ~(42)` with argument `42` will get result `-43`
+unaryExpression.IsLifted:False
+unaryExpression.IsLiftedToNull:False
+unaryExpression.Operand:42
+
+executimg the expression`() => Not(42)` with argument `42` will get result `-43`
+unaryExpression.IsLifted:False
+unaryExpression.IsLiftedToNull:False
+unaryExpression.Operand:42
+
+executimg the expression`() => -42` with argument `42` will get result `-42`
+
+```
 
 ## reference
 ### API docs
