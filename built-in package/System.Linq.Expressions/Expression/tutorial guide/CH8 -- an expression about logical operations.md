@@ -296,6 +296,17 @@ Invoking following method
                 {
                     string infoText = binaryExpression.GetInfo();
                     Console.WriteLine(infoText);
+                    LambdaExpression lambdaExpression = Expression.Lambda(
+                                                            binaryExpression ,
+                                                            new List<ParameterExpression>() { parameterExpression }
+                                                        );
+                    var compiledDelegateExpression = lambdaExpression.Compile();
+                    Console.WriteLine("---- new round ----");
+                    for(int i = -5; i <= 5; i++) 
+                    { 
+                        var result = compiledDelegateExpression.DynamicInvoke(i);                  
+                        Console.WriteLine("compiledDelegateExpression.DynamicInvoke({0}):{1}",i,result);
+                    }
                 }
             );
             Console.WriteLine();
@@ -308,7 +319,8 @@ Invoking following method
                    Console.WriteLine("---- new round ----");
                    for(int i=-5;i<=5;i++) 
                    {
-                       Console.WriteLine("compiledDelegateExpression.DynamicInvoke({0}):{1}" , i , compiledDelegateExpression.DynamicInvoke(i));
+                       var result = compiledDelegateExpression.DynamicInvoke(i);
+                       Console.WriteLine("compiledDelegateExpression.DynamicInvoke({0}):{1}" , i , result);
                    }
                }
            );
@@ -339,9 +351,42 @@ where
     }
 ```
 
+and 
+
+the `ParameterRebinder` class inherits `ExpressionVisitor` abstract class
+
+Defined as follows. 
+
+`ParameterRebinder.cs`
+
+```
+    public class ParameterRebinder : ExpressionVisitor
+    {
+        private readonly Dictionary<ParameterExpression , ParameterExpression> _map;
+
+        public ParameterRebinder(Dictionary<ParameterExpression , ParameterExpression> map)
+        {
+            _map = map ?? new Dictionary<ParameterExpression , ParameterExpression>();
+        }
+
+        // This method is called for each ParameterExpression encountered during the visit.
+        protected override Expression VisitParameter(ParameterExpression p)
+        {
+            // If the parameter is in our map, return its replacement.
+            if(_map.TryGetValue(p , out ParameterExpression replacement))
+            {
+                return replacement;
+            }
+            // Otherwise, return the original parameter.
+            return base.VisitParameter(p);
+        }
+    }
+```
+
 It will output following
 
 ```
+-----------------------------------------
 In TestMethod10 method call,
 About `binaryExpressions`
 binaryExpression.Left:arg
@@ -349,51 +394,171 @@ binaryExpression.Right:1
 binaryExpression.IsLifted:False
 binaryExpression.IsLiftedToNull:False
 
+---- new round ----
+compiledDelegateExpression.DynamicInvoke(-5):1
+compiledDelegateExpression.DynamicInvoke(-4):0
+compiledDelegateExpression.DynamicInvoke(-3):1
+compiledDelegateExpression.DynamicInvoke(-2):0
+compiledDelegateExpression.DynamicInvoke(-1):1
+compiledDelegateExpression.DynamicInvoke(0):0
+compiledDelegateExpression.DynamicInvoke(1):1
+compiledDelegateExpression.DynamicInvoke(2):0
+compiledDelegateExpression.DynamicInvoke(3):1
+compiledDelegateExpression.DynamicInvoke(4):0
+compiledDelegateExpression.DynamicInvoke(5):1
 binaryExpression.Left:arg
 binaryExpression.Right:2
 binaryExpression.IsLifted:False
 binaryExpression.IsLiftedToNull:False
 
+---- new round ----
+compiledDelegateExpression.DynamicInvoke(-5):2
+compiledDelegateExpression.DynamicInvoke(-4):0
+compiledDelegateExpression.DynamicInvoke(-3):0
+compiledDelegateExpression.DynamicInvoke(-2):2
+compiledDelegateExpression.DynamicInvoke(-1):2
+compiledDelegateExpression.DynamicInvoke(0):0
+compiledDelegateExpression.DynamicInvoke(1):0
+compiledDelegateExpression.DynamicInvoke(2):2
+compiledDelegateExpression.DynamicInvoke(3):2
+compiledDelegateExpression.DynamicInvoke(4):0
+compiledDelegateExpression.DynamicInvoke(5):0
 binaryExpression.Left:arg
 binaryExpression.Right:1
 binaryExpression.IsLifted:False
 binaryExpression.IsLiftedToNull:False
 
+---- new round ----
+compiledDelegateExpression.DynamicInvoke(-5):-5
+compiledDelegateExpression.DynamicInvoke(-4):-3
+compiledDelegateExpression.DynamicInvoke(-3):-3
+compiledDelegateExpression.DynamicInvoke(-2):-1
+compiledDelegateExpression.DynamicInvoke(-1):-1
+compiledDelegateExpression.DynamicInvoke(0):1
+compiledDelegateExpression.DynamicInvoke(1):1
+compiledDelegateExpression.DynamicInvoke(2):3
+compiledDelegateExpression.DynamicInvoke(3):3
+compiledDelegateExpression.DynamicInvoke(4):5
+compiledDelegateExpression.DynamicInvoke(5):5
 binaryExpression.Left:arg
 binaryExpression.Right:4
 binaryExpression.IsLifted:False
 binaryExpression.IsLiftedToNull:False
 
+---- new round ----
+compiledDelegateExpression.DynamicInvoke(-5):-1
+compiledDelegateExpression.DynamicInvoke(-4):-4
+compiledDelegateExpression.DynamicInvoke(-3):-3
+compiledDelegateExpression.DynamicInvoke(-2):-2
+compiledDelegateExpression.DynamicInvoke(-1):-1
+compiledDelegateExpression.DynamicInvoke(0):4
+compiledDelegateExpression.DynamicInvoke(1):5
+compiledDelegateExpression.DynamicInvoke(2):6
+compiledDelegateExpression.DynamicInvoke(3):7
+compiledDelegateExpression.DynamicInvoke(4):4
+compiledDelegateExpression.DynamicInvoke(5):5
 binaryExpression.Left:arg
 binaryExpression.Right:4
 binaryExpression.IsLifted:False
 binaryExpression.IsLiftedToNull:False
 
+---- new round ----
+compiledDelegateExpression.DynamicInvoke(-5):-1
+compiledDelegateExpression.DynamicInvoke(-4):-8
+compiledDelegateExpression.DynamicInvoke(-3):-7
+compiledDelegateExpression.DynamicInvoke(-2):-6
+compiledDelegateExpression.DynamicInvoke(-1):-5
+compiledDelegateExpression.DynamicInvoke(0):4
+compiledDelegateExpression.DynamicInvoke(1):5
+compiledDelegateExpression.DynamicInvoke(2):6
+compiledDelegateExpression.DynamicInvoke(3):7
+compiledDelegateExpression.DynamicInvoke(4):0
+compiledDelegateExpression.DynamicInvoke(5):1
 binaryExpression.Left:arg
 binaryExpression.Right:4
 binaryExpression.IsLifted:False
 binaryExpression.IsLiftedToNull:False
 
+---- new round ----
+compiledDelegateExpression.DynamicInvoke(-5):-1
+compiledDelegateExpression.DynamicInvoke(-4):-8
+compiledDelegateExpression.DynamicInvoke(-3):-7
+compiledDelegateExpression.DynamicInvoke(-2):-6
+compiledDelegateExpression.DynamicInvoke(-1):-5
+compiledDelegateExpression.DynamicInvoke(0):4
+compiledDelegateExpression.DynamicInvoke(1):5
+compiledDelegateExpression.DynamicInvoke(2):6
+compiledDelegateExpression.DynamicInvoke(3):7
+compiledDelegateExpression.DynamicInvoke(4):0
+compiledDelegateExpression.DynamicInvoke(5):1
 binaryExpression.Left:arg
 binaryExpression.Right:4
 binaryExpression.IsLifted:False
 binaryExpression.IsLiftedToNull:False
 
+---- new round ----
+compiledDelegateExpression.DynamicInvoke(-5):-80
+compiledDelegateExpression.DynamicInvoke(-4):-64
+compiledDelegateExpression.DynamicInvoke(-3):-48
+compiledDelegateExpression.DynamicInvoke(-2):-32
+compiledDelegateExpression.DynamicInvoke(-1):-16
+compiledDelegateExpression.DynamicInvoke(0):0
+compiledDelegateExpression.DynamicInvoke(1):16
+compiledDelegateExpression.DynamicInvoke(2):32
+compiledDelegateExpression.DynamicInvoke(3):48
+compiledDelegateExpression.DynamicInvoke(4):64
+compiledDelegateExpression.DynamicInvoke(5):80
 binaryExpression.Left:arg
 binaryExpression.Right:4
 binaryExpression.IsLifted:False
 binaryExpression.IsLiftedToNull:False
 
+---- new round ----
+compiledDelegateExpression.DynamicInvoke(-5):-80
+compiledDelegateExpression.DynamicInvoke(-4):-64
+compiledDelegateExpression.DynamicInvoke(-3):-48
+compiledDelegateExpression.DynamicInvoke(-2):-32
+compiledDelegateExpression.DynamicInvoke(-1):-16
+compiledDelegateExpression.DynamicInvoke(0):0
+compiledDelegateExpression.DynamicInvoke(1):16
+compiledDelegateExpression.DynamicInvoke(2):32
+compiledDelegateExpression.DynamicInvoke(3):48
+compiledDelegateExpression.DynamicInvoke(4):64
+compiledDelegateExpression.DynamicInvoke(5):80
 binaryExpression.Left:arg
 binaryExpression.Right:4
 binaryExpression.IsLifted:False
 binaryExpression.IsLiftedToNull:False
 
+---- new round ----
+compiledDelegateExpression.DynamicInvoke(-5):-1
+compiledDelegateExpression.DynamicInvoke(-4):-1
+compiledDelegateExpression.DynamicInvoke(-3):-1
+compiledDelegateExpression.DynamicInvoke(-2):-1
+compiledDelegateExpression.DynamicInvoke(-1):-1
+compiledDelegateExpression.DynamicInvoke(0):0
+compiledDelegateExpression.DynamicInvoke(1):0
+compiledDelegateExpression.DynamicInvoke(2):0
+compiledDelegateExpression.DynamicInvoke(3):0
+compiledDelegateExpression.DynamicInvoke(4):0
+compiledDelegateExpression.DynamicInvoke(5):0
 binaryExpression.Left:arg
 binaryExpression.Right:4
 binaryExpression.IsLifted:False
 binaryExpression.IsLiftedToNull:False
 
+---- new round ----
+compiledDelegateExpression.DynamicInvoke(-5):-1
+compiledDelegateExpression.DynamicInvoke(-4):-1
+compiledDelegateExpression.DynamicInvoke(-3):-1
+compiledDelegateExpression.DynamicInvoke(-2):-1
+compiledDelegateExpression.DynamicInvoke(-1):-1
+compiledDelegateExpression.DynamicInvoke(0):0
+compiledDelegateExpression.DynamicInvoke(1):0
+compiledDelegateExpression.DynamicInvoke(2):0
+compiledDelegateExpression.DynamicInvoke(3):0
+compiledDelegateExpression.DynamicInvoke(4):0
+compiledDelegateExpression.DynamicInvoke(5):0
 
 About `delegateExpressions`
 ---- new round ----
