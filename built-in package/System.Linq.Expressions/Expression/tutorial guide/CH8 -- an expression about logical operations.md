@@ -99,3 +99,364 @@ For example,
                                                        xParam // The new lambda's single parameter
                                                     );
 ```
+
+## examples
+### example 1
+Invoking following method
+
+```
+        /// <summary>
+        /// illustrate how to use BinaryExpression to do bitwise or logical operations.  
+        /// </summary>
+        public static void TestMethod10()
+        {
+            Console.WriteLine("In {0} method call," , MethodBase.GetCurrentMethod().Name);
+
+            ParameterExpression parameterExpression = Expression.Parameter(typeof(int) , "arg");
+
+            ParameterExpression iParam = Expression.Parameter(typeof(int) , "i");
+            ParameterExpression jParam = Expression.Parameter(typeof(int) , "j");
+            ParameterExpression xParam = Expression.Parameter(typeof(int) , "x");
+
+            MethodInfo writeLineMethod = typeof(Console).GetMethod("WriteLine" , new [ ] { typeof(string) });
+            MethodInfo stringFormatMethod = typeof(string).GetMethod("Format" , new [ ] { typeof(string) , typeof(object) });
+
+            Expression<Func<int , bool>> lambdaExpression1 = Expression.Lambda<Func<int , bool>>(
+                    Expression.Block(
+                        // Expression for Console.WriteLine($"i:{i}")
+                        Expression.Call(
+                            writeLineMethod ,
+                            Expression.Call(
+                                stringFormatMethod ,
+                                Expression.Constant("i:{0}") ,
+                                Expression.Convert(iParam , typeof(object)) // Convert int to object for string.Format
+                            )
+                        ) ,
+                        // Expression for return i > 0; (the result of the block)
+                        Expression.GreaterThan(iParam , Expression.Constant(0))
+                    ),
+                    iParam
+            );
+
+            Expression<Func<int , bool>> lambdaExpression2 = Expression.Lambda<Func<int , bool>>(
+                    Expression.Block(
+                        // Expression for Console.WriteLine($"j:{j}")
+                        Expression.Call(
+                            writeLineMethod ,
+                            Expression.Call(
+                                stringFormatMethod ,
+                                Expression.Constant("j:{0}") ,
+                                Expression.Convert(jParam , typeof(object)) // Convert int to object for string.Format
+                            )
+                        ) ,
+                        // Expression for return j <= 0; (the result of the block)
+                        Expression.LessThanOrEqual(jParam , Expression.Constant(0))
+                    ) ,
+                    jParam
+            );
+
+            // Prepare for Parameter Rebinding
+            // We need to tell our rebinder to replace 'iParam' and 'jParam'
+            // with the new 'xParam' in their respective bodies.
+            var parameterMap = new Dictionary<ParameterExpression , ParameterExpression>
+            {
+                { lambdaExpression1.Parameters[0], xParam }, // Map iParam to xParam
+                { lambdaExpression2.Parameters[0], xParam }  // Map jParam to xParam
+            };
+
+            // Parameter Rebinding
+            var parameterRebinder = new ParameterRebinder(parameterMap);
+
+            // Rebind the Bodies
+            Expression body1Rebound = parameterRebinder.Visit(lambdaExpression1.Body);
+            Expression body2Rebound = parameterRebinder.Visit(lambdaExpression2.Body);
+
+            List<BinaryExpression> binaryExpressions = new List<BinaryExpression>();
+            
+            List<Expression<Func<int , bool>>> delegateExpressions = new List<Expression<Func<int , bool>>>();
+
+            binaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do bitwise `AND` operation (without short circuit) to the parameter value.
+                Expression.And(
+                    parameterExpression ,
+                    Expression.Constant(1)
+                )
+           );
+
+            binaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do bitwise `AND` operation (without short circuit) to the parameter value.
+                Expression.AndAssign(
+                    parameterExpression ,
+                    Expression.Constant(2)
+                )
+           );
+
+
+            binaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do bitwise `OR` operation (without short circuit) to the parameter value.
+                Expression.Or(
+                    parameterExpression ,
+                    Expression.Constant(1)
+                )
+           );
+
+            binaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do bitwise `OR` operation (without short circuit) to the parameter value.
+                Expression.OrAssign(
+                    parameterExpression ,
+                    Expression.Constant(4)
+                )
+           );
+
+            binaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do bitwise `XOR` operation (without short circuit) to the parameter value.
+                Expression.ExclusiveOr(
+                    parameterExpression ,
+                    Expression.Constant(4)
+                )
+            );
+
+            binaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do bitwise `XOR` operation (without short circuit) to the parameter value.
+                Expression.ExclusiveOrAssign(
+                    parameterExpression ,
+                    Expression.Constant(4)
+                )
+            );
+
+            binaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do bitwise left-shift operation (without short circuit) to the parameter value.
+                Expression.LeftShift(
+                    parameterExpression ,
+                    Expression.Constant(4)
+                )
+            );
+
+            binaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do bitwise left-shift operation (without short circuit) to the parameter value.
+                Expression.LeftShiftAssign(
+                    parameterExpression ,
+                    Expression.Constant(4)
+                )
+            );
+
+            binaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do bitwise right-shift operation (without short circuit) to the parameter value.
+                Expression.RightShift(
+                    parameterExpression ,
+                    Expression.Constant(4)
+                )
+            );
+
+            binaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do bitwise right-shift operation (without short circuit) to the parameter value.
+                Expression.RightShiftAssign(
+                    parameterExpression ,
+                    Expression.Constant(4)
+                )
+            );
+
+            delegateExpressions.Add(
+                // This expression represents a lambda expression
+                // that do logical `AND` operation (with short circuit) to the parameter value.
+                Expression.Lambda<Func<int , bool>>(
+                     Expression.AndAlso(
+                        body1Rebound ,
+                        body2Rebound
+                     ) ,
+                     xParam // The new lambda's single parameter
+                )
+           );
+
+            delegateExpressions.Add(
+                // This expression represents a lambda expression
+                // that do logical `OR` operation (with short circuit) to the parameter value.
+                Expression.Lambda<Func<int , bool>>(
+                     Expression.OrElse(
+                        body1Rebound ,
+                        body2Rebound
+                     ) ,
+                     xParam // The new lambda's single parameter
+                )
+           );
+
+            Console.WriteLine("About `binaryExpressions`");
+            binaryExpressions.ForEach(
+                (binaryExpression) =>
+                {
+                    string infoText = binaryExpression.GetInfo();
+                    Console.WriteLine(infoText);
+                }
+            );
+            Console.WriteLine();
+
+            Console.WriteLine("About `delegateExpressions`");
+            delegateExpressions.ForEach(
+               (delegateExpression) =>
+               {
+                   var compiledDelegateExpression =  delegateExpression.Compile();
+                   Console.WriteLine("---- new round ----");
+                   for(int i=-5;i<=5;i++) 
+                   {
+                       Console.WriteLine("compiledDelegateExpression.DynamicInvoke({0}):{1}" , i , compiledDelegateExpression.DynamicInvoke(i));
+                   }
+               }
+           );
+            Console.WriteLine();
+        }
+```
+
+where
+
+`BinaryExpression.GetInfo` extension method is defined in `BinaryExpressionsExtensionMethods` static class.
+
+`BinaryExpressionsExtensionMethods` static class in `ExpressionsExtensionMethods.cs`.
+
+```
+    public static class BinaryExpressionsExtensionMethods
+    {
+        public static string GetInfo(
+            this BinaryExpression binaryExpression
+        )
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendFormat("binaryExpression.Left:{0}\n" , binaryExpression.Left);
+            stringBuilder.AppendFormat("binaryExpression.Right:{0}\n" , binaryExpression.Right);
+            stringBuilder.AppendFormat("binaryExpression.IsLifted:{0}\n" , binaryExpression.IsLifted);
+            stringBuilder.AppendFormat("binaryExpression.IsLiftedToNull:{0}\n" , binaryExpression.IsLiftedToNull);
+            return stringBuilder.ToString();
+        }
+    }
+```
+
+It will output following
+
+```
+In TestMethod10 method call,
+About `binaryExpressions`
+binaryExpression.Left:arg
+binaryExpression.Right:1
+binaryExpression.IsLifted:False
+binaryExpression.IsLiftedToNull:False
+
+binaryExpression.Left:arg
+binaryExpression.Right:2
+binaryExpression.IsLifted:False
+binaryExpression.IsLiftedToNull:False
+
+binaryExpression.Left:arg
+binaryExpression.Right:1
+binaryExpression.IsLifted:False
+binaryExpression.IsLiftedToNull:False
+
+binaryExpression.Left:arg
+binaryExpression.Right:4
+binaryExpression.IsLifted:False
+binaryExpression.IsLiftedToNull:False
+
+binaryExpression.Left:arg
+binaryExpression.Right:4
+binaryExpression.IsLifted:False
+binaryExpression.IsLiftedToNull:False
+
+binaryExpression.Left:arg
+binaryExpression.Right:4
+binaryExpression.IsLifted:False
+binaryExpression.IsLiftedToNull:False
+
+binaryExpression.Left:arg
+binaryExpression.Right:4
+binaryExpression.IsLifted:False
+binaryExpression.IsLiftedToNull:False
+
+binaryExpression.Left:arg
+binaryExpression.Right:4
+binaryExpression.IsLifted:False
+binaryExpression.IsLiftedToNull:False
+
+binaryExpression.Left:arg
+binaryExpression.Right:4
+binaryExpression.IsLifted:False
+binaryExpression.IsLiftedToNull:False
+
+binaryExpression.Left:arg
+binaryExpression.Right:4
+binaryExpression.IsLifted:False
+binaryExpression.IsLiftedToNull:False
+
+
+About `delegateExpressions`
+---- new round ----
+i:-5
+compiledDelegateExpression.DynamicInvoke(-5):False
+i:-4
+compiledDelegateExpression.DynamicInvoke(-4):False
+i:-3
+compiledDelegateExpression.DynamicInvoke(-3):False
+i:-2
+compiledDelegateExpression.DynamicInvoke(-2):False
+i:-1
+compiledDelegateExpression.DynamicInvoke(-1):False
+i:0
+compiledDelegateExpression.DynamicInvoke(0):False
+i:1
+j:1
+compiledDelegateExpression.DynamicInvoke(1):False
+i:2
+j:2
+compiledDelegateExpression.DynamicInvoke(2):False
+i:3
+j:3
+compiledDelegateExpression.DynamicInvoke(3):False
+i:4
+j:4
+compiledDelegateExpression.DynamicInvoke(4):False
+i:5
+j:5
+compiledDelegateExpression.DynamicInvoke(5):False
+---- new round ----
+i:-5
+j:-5
+compiledDelegateExpression.DynamicInvoke(-5):True
+i:-4
+j:-4
+compiledDelegateExpression.DynamicInvoke(-4):True
+i:-3
+j:-3
+compiledDelegateExpression.DynamicInvoke(-3):True
+i:-2
+j:-2
+compiledDelegateExpression.DynamicInvoke(-2):True
+i:-1
+j:-1
+compiledDelegateExpression.DynamicInvoke(-1):True
+i:0
+j:0
+compiledDelegateExpression.DynamicInvoke(0):True
+i:1
+compiledDelegateExpression.DynamicInvoke(1):True
+i:2
+compiledDelegateExpression.DynamicInvoke(2):True
+i:3
+compiledDelegateExpression.DynamicInvoke(3):True
+i:4
+compiledDelegateExpression.DynamicInvoke(4):True
+i:5
+compiledDelegateExpression.DynamicInvoke(5):True
+
+```
+
+## reference
+### API docs
++ [`Expression.AndAlso Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.andalso?view=net-8.0)
++ [`Expression.OrElse Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.orelse?view=net-8.0)
