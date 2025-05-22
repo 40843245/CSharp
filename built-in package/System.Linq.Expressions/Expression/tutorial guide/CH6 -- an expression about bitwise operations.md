@@ -211,40 +211,195 @@ For example,
 ### `Expression.LeftShift` static method
 `Expression.LeftShift` static method can do left shift operation to the parameter value.
 
-When compiling `Expression.LeftShift` and then execute it, it invokes `<<` (left shift operator with assignment). 
+When compiling `Expression.LeftShift` and then execute it, it invokes `<<` (left shift operator). 
 
 Think of 
 
 compiling and executing it 
 
 ```
-int constant = 4;
-UnaryExpression unaryExpression = Expression.LeftShift(Expression.Constant(constant));
+int leftOperand = 4;
+int rightOperand = 2;
+ParameterExpression parameterExpression = Expression.Parameter(typeof(int) , "arg");
+UnaryExpression unaryExpression = Expression.LeftShift(Expression.Constant(leftOperand));
 LambdaExpression lambdaExpression = Expression.Lambda<Func<int>>(unaryExpression);
-var result = lambdaExpression.Compile().DynamicInvoke();
+LambdaExpression lambdaExpression = Expression.Lambda(
+                                      binaryExpression ,
+                                      new List<ParameterExpression>() { parameterExpression }
+                                    );
+var compiledDelegateExpression = lambdaExpression.Compile();
+var result = compiledDelegateExpression.DynamicInvoke(rightOperand);
 ```
 
-will get one's complement of `42`
+will get result of left shifting 2 bits for 4
 
 which has same result of
 
 ```
-int constant = 42;
-var result = ~constant;
+int leftOperand = 4;
+int rightOperand = 2;
+var result = leftOperand << rightOperand;
 ```
 
 For example,
 
 ```
+            ParameterExpression parameterExpression = Expression.Parameter(typeof(int) , "arg");
             List<UnaryExpression> unaryExpressions = new List<UnaryExpression>();
             unaryExpressions.Add(
                 // This expression represents a lambda expression
-                // that do bitwise one's complementation (without short circuit) to the parameter value.
-                Expression.OnesComplement(
+                // that do left shiftment to the parameter value.
+                Expression.LeftShift(
+                    parameterExpression,
                     Expression.Constant(42)
                 )
             );
 ```
+
+### `Expression.LeftShiftAssign` static method
+`Expression.LeftShiftAssign` static method can do left shift operation to the parameter value.
+
+When compiling `Expression.LeftShiftAssign` and then execute it, it invokes `<<=` (left shift operator with assignment). 
+
+Think of 
+
+compiling and executing it 
+
+```
+int leftOperand = 4;
+int rightOperand = 2;
+ParameterExpression parameterExpression = Expression.Parameter(typeof(int) , "arg");
+UnaryExpression unaryExpression = Expression.LeftShiftAssign(Expression.Constant(leftOperand));
+LambdaExpression lambdaExpression = Expression.Lambda<Func<int>>(unaryExpression);
+LambdaExpression lambdaExpression = Expression.Lambda(
+                                      binaryExpression ,
+                                      new List<ParameterExpression>() { parameterExpression }
+                                    );
+var compiledDelegateExpression = lambdaExpression.Compile();
+var result = compiledDelegateExpression.DynamicInvoke(rightOperand);
+```
+
+will get result of left shifting 2 bits for 4
+
+which has same result of
+
+```
+int leftOperand = 4;
+int rightOperand = 2;
+var result = leftOperand <<= rightOperand;
+```
+
+For example,
+
+```
+            ParameterExpression parameterExpression = Expression.Parameter(typeof(int) , "arg");
+            List<UnaryExpression> unaryExpressions = new List<UnaryExpression>();
+            unaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do left shiftment to the parameter value.
+                Expression.LeftShiftAssign(
+                    parameterExpression,
+                    Expression.Constant(42)
+                )
+            );
+```
+
+### `Expression.RightShift` static method
+`Expression.RightShift` static method can do right shiftment to the parameter value.
+
+When compiling `Expression.RightShift` and then execute it, it invokes `>>` (right shift operator). 
+
+Think of 
+
+compiling and executing it 
+
+```
+int leftOperand = 4;
+int rightOperand = 2;
+ParameterExpression parameterExpression = Expression.Parameter(typeof(int) , "arg");
+UnaryExpression unaryExpression = Expression.RightShift(Expression.Constant(leftOperand));
+LambdaExpression lambdaExpression = Expression.Lambda<Func<int>>(unaryExpression);
+LambdaExpression lambdaExpression = Expression.Lambda(
+                                      binaryExpression ,
+                                      new List<ParameterExpression>() { parameterExpression }
+                                    );
+var compiledDelegateExpression = lambdaExpression.Compile();
+var result = compiledDelegateExpression.DynamicInvoke(rightOperand);
+```
+
+will get result of right shifting 2 bits for 4
+
+which has same result of
+
+```
+int leftOperand = 4;
+int rightOperand = 2;
+var result = leftOperand >> rightOperand;
+```
+
+For example,
+
+```
+            ParameterExpression parameterExpression = Expression.Parameter(typeof(int) , "arg");
+            List<UnaryExpression> unaryExpressions = new List<UnaryExpression>();
+            unaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do right shiftment to the parameter value.
+                Expression.RightShift(
+                    parameterExpression,
+                    Expression.Constant(42)
+                )
+            );
+```
+
+### `Expression.RightShiftAssign` static method
+`Expression.RightShiftAssign` static method can do right shiftment to the parameter value.
+
+When compiling `Expression.RightShiftAssign` and then execute it, it invokes `>>=` (right shift operator with assignment). 
+
+Think of 
+
+compiling and executing it 
+
+```
+int leftOperand = 4;
+int rightOperand = 2;
+ParameterExpression parameterExpression = Expression.Parameter(typeof(int) , "arg");
+UnaryExpression unaryExpression = Expression.RightShiftAssign(Expression.Constant(leftOperand));
+LambdaExpression lambdaExpression = Expression.Lambda<Func<int>>(unaryExpression);
+LambdaExpression lambdaExpression = Expression.Lambda(
+                                      binaryExpression ,
+                                      new List<ParameterExpression>() { parameterExpression }
+                                    );
+var compiledDelegateExpression = lambdaExpression.Compile();
+var result = compiledDelegateExpression.DynamicInvoke(rightOperand);
+```
+
+will get result of right shifting 2 bits for 4
+
+which has same result of
+
+```
+int leftOperand = 4;
+int rightOperand = 2;
+var result = leftOperand >>= rightOperand;
+```
+
+For example,
+
+```
+            ParameterExpression parameterExpression = Expression.Parameter(typeof(int) , "arg");
+            List<UnaryExpression> unaryExpressions = new List<UnaryExpression>();
+            unaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do right shiftment to the parameter value.
+                Expression.RightShiftAssign(
+                    parameterExpression,
+                    Expression.Constant(42)
+                )
+            );
+```
+
 
 ## reference
 ### API docs
