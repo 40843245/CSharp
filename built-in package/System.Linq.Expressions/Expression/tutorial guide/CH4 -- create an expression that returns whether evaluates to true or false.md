@@ -153,8 +153,6 @@ unaryExpression.IsLiftedToNull:False
 unaryExpression.Operand:False
 ```
 
-#### demo project
-
 ## reference
 ### API docs
 + [`Expression.IsTrue Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.istrue?view=net-8.0)
