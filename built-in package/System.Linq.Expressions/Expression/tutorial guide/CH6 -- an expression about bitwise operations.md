@@ -208,6 +208,44 @@ For example,
             );
 ```
 
+### `Expression.LeftShift` static method
+`Expression.LeftShift` static method can do left shift operation to the parameter value.
+
+When compiling `Expression.LeftShift` and then execute it, it invokes `<<` (left shift operator with assignment). 
+
+Think of 
+
+compiling and executing it 
+
+```
+int constant = 4;
+UnaryExpression unaryExpression = Expression.LeftShift(Expression.Constant(constant));
+LambdaExpression lambdaExpression = Expression.Lambda<Func<int>>(unaryExpression);
+var result = lambdaExpression.Compile().DynamicInvoke();
+```
+
+will get one's complement of `42`
+
+which has same result of
+
+```
+int constant = 42;
+var result = ~constant;
+```
+
+For example,
+
+```
+            List<UnaryExpression> unaryExpressions = new List<UnaryExpression>();
+            unaryExpressions.Add(
+                // This expression represents a lambda expression
+                // that do bitwise one's complementation (without short circuit) to the parameter value.
+                Expression.OnesComplement(
+                    Expression.Constant(42)
+                )
+            );
+```
+
 ## reference
 ### API docs
 + [`Expression.And Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.and?view=net-8.0)
