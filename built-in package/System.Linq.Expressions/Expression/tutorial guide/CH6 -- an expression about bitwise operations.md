@@ -209,7 +209,7 @@ For example,
 ```
 
 ### `Expression.LeftShift` static method
-`Expression.LeftShift` static method can do left shift operation to the parameter value.
+`Expression.LeftShift` static method can do left shiftment to the parameter value.
 
 When compiling `Expression.LeftShift` and then execute it, it invokes `<<` (left shift operator). 
 
@@ -257,7 +257,7 @@ For example,
 ```
 
 ### `Expression.LeftShiftAssign` static method
-`Expression.LeftShiftAssign` static method can do left shift operation to the parameter value.
+`Expression.LeftShiftAssign` static method can do left shiftment to the parameter value.
 
 When compiling `Expression.LeftShiftAssign` and then execute it, it invokes `<<=` (left shift operator with assignment). 
 
@@ -400,6 +400,8 @@ For example,
             );
 ```
 
+## examples
+See examples in CH8.
 
 ## reference
 ### API docs
@@ -411,3 +413,7 @@ For example,
 + [`Expression.ExclusiveOrAssign Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.exclusiveorassign?view=net-8.0)
 + [`Expression.Not Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.not?view=net-8.0)
 + [`Expression.OnesComplement Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.onescomplement?view=net-8.0)
++ [`Expression.LeftShift Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.leftshift?view=net-8.0)
++ [`Expression.LeftShiftAssign Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.leftshiftassign?view=net-8.0)
++ [`Expression.RightShift Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.rightshift?view=net-8.0)
++ [`Expression.RightShiftAssign Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.rightshiftassign?view=net-8.0)
