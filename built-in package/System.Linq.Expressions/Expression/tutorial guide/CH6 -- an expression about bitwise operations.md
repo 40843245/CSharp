@@ -216,3 +216,5 @@ For example,
 + [`Expression.OrAssign Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.orassign?view=net-8.0)
 + [`Expression.ExclusiveOr Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.exclusiveor?view=net-8.0)
 + [`Expression.ExclusiveOrAssign Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.exclusiveorassign?view=net-8.0)
++ [`Expression.Not Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.not?view=net-8.0)
++ [`Expression.OnesComplement Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.onescomplement?view=net-8.0)
