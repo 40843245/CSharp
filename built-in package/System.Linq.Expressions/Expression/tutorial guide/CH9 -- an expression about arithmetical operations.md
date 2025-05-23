@@ -1,10 +1,10 @@
-# CH7 -- an expression about arithmetical operations
+# CH9 -- an expression about arithmetical operations
 ## objectives
 You will learn
 
 + an expression about arithmetical operations
 
-## CH7.1 -- an expression about arithmetical operations
+## CH9.1 -- an expression about arithmetical operations
 ### `Expression.Negate` static method
 `Expression.Negate` static method can arithmetically negate an number.
 

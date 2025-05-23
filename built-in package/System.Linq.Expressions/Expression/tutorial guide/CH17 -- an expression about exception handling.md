@@ -1,4 +1,4 @@
-# CH15 -- an expression about exception handling
+# CH17 -- an expression about exception handling
 ## objectives
 You will learn how to
 
@@ -9,7 +9,7 @@ You will learn how to
 + create an expression that represents `try` block combined with `finally` block
 + create an expression that represents `try` block combined with `catch` block then combined with `finally` block
 
-## CH15.1 -- create an expression about `throw` statement
+## CH17.1 -- create an expression about `throw` statement
 ### `Expression.Throw` static method
 To create an expression that represents `throw` statement, just simply invoke `Expression.Throw` static method.
 
@@ -42,7 +42,7 @@ it will become `throw` statement, as follows.
 throw new DivideByZeroException();
 ```
 
-## CH15.2 -- create an expression about `rethrow` statement
+## CH17.2 -- create an expression about `rethrow` statement
 ### `Expression.Rethrow` static method
 To create an expression that represents `rethrow` statement, just simply invoke `Expression.Rethrow` static method.
 
@@ -74,7 +74,7 @@ it will become `rethrow` statement, as follows.
 rethrow;
 ```
 
-## CH15.3 -- create an expression about `catch` block
+## CH17.3 -- create an expression about `catch` block
 ### `Expression.Catch` static method
 To create an expression that represents `catch` block, just simply invoke `Expression.Catch` static method.
 
@@ -114,7 +114,7 @@ catch(DivideByZeroException ex)
 }
 ```
 
-## CH15.4 -- create an expression that represents `try` block or `try` block combined with `catch` block
+## CH17.4 -- create an expression that represents `try` block or `try` block combined with `catch` block
 ### `Expression.TryCatch` static method
 To create an expression (`TryExpression`) that represents a try-catch block with zero or more catach statement and niether a fault nor finally block,
 
@@ -212,7 +212,7 @@ try{
 }
 ```
 
-## CH15.5 -- create an expression that represents `try` block combined with `finally` block
+## CH17.5 -- create an expression that represents `try` block combined with `finally` block
 ### `Expression.TryFinally` static method
 To create an expression that represents `try` block combined with `finally` block, 
 
@@ -302,7 +302,7 @@ finnally
 }
 ```
 
-## CH15.6 -- create an expression that represents `try` block combined with `catch` block then combined with `finally` block
+## CH17.6 -- create an expression that represents `try` block combined with `catch` block then combined with `finally` block
 ### `Expression.TryCatchFinally` static method
 To create an expression that represents `try` block combined with `catch` block then combined with `finally` block,
 

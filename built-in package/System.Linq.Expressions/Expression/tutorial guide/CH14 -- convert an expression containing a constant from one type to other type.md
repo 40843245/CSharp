@@ -1,10 +1,10 @@
-# CH12 -- convert an expression containing a constant from one type to other type
+# CH14 -- convert an expression containing a constant from one type to other type
 ## objectives
 You will learn how to
 
 + convert an expression containing a constant from one type to other type
 
-## CH12.1 -- convert an expression containing a constant from one type to other type
+## CH14.1 -- convert an expression containing a constant from one type to other type
 ### `Expression.Convert` static method
 To convert an expression containing a constant from one type to other type, just simply invoke `Expression.Convert` static method.
 

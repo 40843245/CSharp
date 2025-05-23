@@ -1,10 +1,10 @@
-# CH6 -- an expression about bitwise operations
+# CH8 -- an expression about bitwise operations
 ## objectives
 You will learn 
 
 + an expression about bitwise operations
 
-## CH6.1 -- an expression about bitwise operations
+## CH8.1 -- an expression about bitwise operations
 ### `Expression.And` static method
 `Expression.And` static method can do bitwise `AND` operation (without short circuit) to the parameter value.
 

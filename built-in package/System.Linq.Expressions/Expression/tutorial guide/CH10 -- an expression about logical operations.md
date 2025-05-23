@@ -1,10 +1,10 @@
-# CH8 -- an expression about logical operations
+# CH10 -- an expression about logical operations
 ## objectives
 You will learn
 
 + an expression about logical operations
 
-## CH8.1 -- an expression about logical operations
+## CH10.1 -- an expression about logical operations
 ### `Expression.AndAlso` static method
 `Expression.AndAlso` static method creates an expression that evaluate two conditions by logical `AND` operation (with short-ciruit feature).
 

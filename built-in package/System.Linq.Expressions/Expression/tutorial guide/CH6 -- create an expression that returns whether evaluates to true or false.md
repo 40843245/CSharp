@@ -1,10 +1,10 @@
-# CH4 -- create an expression that returns whether evaluates to true or false
+# CH6 -- create an expression that returns whether evaluates to true or false
 ## objectives
 You will learn how to
 
 + create an expression that returns whether evaluates to true or false
 
-## CH4.1 -- create an expression that returns whether evaluates true or false
+## CH6.1 -- create an expression that returns whether evaluates true or false
 ### `Expression.IsTrue` static method
 You can invoke `Expression.IsTrue` static method to create an expression that returns whether evaluates to true.
 

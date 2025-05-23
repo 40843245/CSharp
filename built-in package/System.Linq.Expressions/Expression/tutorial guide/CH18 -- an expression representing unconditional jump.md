@@ -1,10 +1,10 @@
-# CH16 -- an expression representing unconditional jump
+# CH18 -- an expression representing unconditional jump
 ## objectives
 You will learn how to 
 
 + create an expression about unconditional jump
 
-## CH16.1 -- create an expression representing unconditional jump
+## CH18.1 -- create an expression representing unconditional jump
 ### `Expression.Goto` static method
 To create an expression representing unconditional jump, 
 

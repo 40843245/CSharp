@@ -1,10 +1,10 @@
-# CH13 -- create a dynamic expression
+# CH15 -- create a dynamic expression
 ## objectives
 You will learn how to
 
 + create a dynamic expression
 
-## CH13.1 -- create a dynamic expression
+## CH15.1 -- create a dynamic expression
 ### `Expression.Dynamic` static method
 
 Step 1:

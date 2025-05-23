@@ -1,10 +1,10 @@
-# CH11 -- referential equality and non-referential equality
+# CH13 -- referential equality and non-referential equality
 ## objectives
 I will discussed about 
 
 + referential equality and non-referential equality between two expressions and delegates (after compiling)
 
-## CH11.1 -- referential equality and non-referential equality between two expressions and delegates (after compiling)
+## CH13.1 -- referential equality and non-referential equality between two expressions and delegates (after compiling)
 > [!CAUTION]
 > Watch out the referential equality and non-referential equality between two expressions, even if they have same behavior, and so for delegates that are compiled from expressions.
 

@@ -1,10 +1,10 @@
-# CH5 -- create an expression about comparison
+# CH7 -- create an expression about comparison
 ## objectives
 You will learn how to
 
 + create an expression that compares two numbers
 
-## CH5.1 -- create an expression that compares two numbers
+## CH7.1 -- create an expression that compares two numbers
 ### `Expression.Equal` static method
 `Expression.Equal` static method can compares two expression that containing a number (which is a kind of a constant) are equal and then return an expression -- `BinaryExpression` type.
 

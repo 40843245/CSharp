@@ -1,10 +1,10 @@
-# CH14 -- create an expression containing a member
+# CH16 -- create an expression containing a member
 ## objectives
 You will learn how to
 
 + create an expression containing a member
 
-## CH14.1 -- create an expression containing a member
+## CH16.1 -- create an expression containing a member
 ### `Expression.Field` static method
 You can create an expression containing a member by invoking `Expression.Field` static method.
 

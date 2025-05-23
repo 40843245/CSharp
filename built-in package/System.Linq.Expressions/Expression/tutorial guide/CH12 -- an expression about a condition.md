@@ -1,10 +1,10 @@
-# CH10 -- an expression about a condition
+# CH12 -- an expression about a condition
 ## objectives
 You will know
 
 + an expression about a condition
 
-## CH10.1 -- an expression about a condition
+## CH12.1 -- an expression about a condition
 ### `Expression.Condition` static method
 `Expression.Condition` static method creates an expression that represents a condition.
 
