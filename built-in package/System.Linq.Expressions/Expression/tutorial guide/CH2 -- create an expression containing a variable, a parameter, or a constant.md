@@ -6,6 +6,7 @@ You will learn
 + an expression containing a parameter
 + an expression containing a constant
 + an expression containing a default value of the given type
++ an expression containing void type
 + an expression about assigment operator
 
 ## CH2.1 -- an expression containing a variable
@@ -56,7 +57,14 @@ You can create an expression containing a default value of the given type using 
 DefaultExpression boolDefaultExpression = Expression.Default(typeof(bool));
 ```
 
-## CH2.5 -- an expression about assigment operator
+## CH2.5 -- an expression containing void type
+### `Expression.Empty` static method
+
+```
+DefaultExpression emptyExpression = Expression.Empty();
+```
+
+## CH2.6 -- an expression about assigment operator
 ### `Expression.Assign` static method
 You can create an expression about assigment operator using `Expression.Assign` static method call.
 
@@ -332,6 +340,110 @@ default(Dictionary`2)
 
 ```
 
+### example 4
+Invoking following method
+
+```
+        /// <summary>
+        /// illustrate how to create an expression containing void type.
+        /// </summary>
+        public static void TestMethod19()
+        {
+            DefaultExpression emptyExpression = Expression.Empty();
+
+            BlockExpression emptyBlock = Expression.Block(emptyExpression);
+            string infoText = emptyBlock.GetInfo();
+            Console.WriteLine(infoText);
+        }
+```
+
+where
+
+`BlockExpression.GetInfo` extension method is defined in `BlockExpressionsExtensionMethods` static class.
+
+`BlockExpressionsExtensionMethods` static class in `ExpressionsExtensionMethods.cs` 
+
+```
+using static Example.Extensions.ExtensionMethods.HighOrderFunctionsExtensionMethods.HighOrderFunctionsExtensionMethods; // to use `Apply` extension method
+
+    public static class BlockExpressionsExtensionMethods
+    {
+        public static string GetInfo(
+            this BlockExpression blockExpression
+        )
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            List<string> textList = new List<string>();
+            string formattingString = "{0}th {1}:`{2}`";
+            int counter = 0;
+            var variables = blockExpression.Variables;
+            var expressions = blockExpression.Expressions;
+
+            counter = 0;
+            textList = variables.Apply<ParameterExpression , string>(
+                variable =>
+                {
+                    var result = string.Format(formattingString , counter , "variable" , variable.ToString());
+                    counter++;
+                    return result;
+                }
+            );
+            stringBuilder.Append(string.Join(System.Environment.NewLine , textList));
+
+            counter = 0;
+            textList = expressions.Apply<Expression , string>(
+                expression =>
+                {
+                    var result = string.Format(formattingString , counter , "expression" , expression.ToString());
+                    counter++;
+                    return result;
+                }
+            );
+            stringBuilder.Append(string.Join(System.Environment.NewLine,textList));
+
+            
+            stringBuilder.AppendFormat("{0}\n" , blockExpression.ToString());
+            return stringBuilder.ToString();
+        }
+    }
+```
+
+`Apply` extension method is defined as follows.
+
+`HighOrderFunctionsExtensionMethods.cs`
+
+```
+using System;
+using System.Collections.Generic;
+
+namespace Example.Extensions.ExtensionMethods.HighOrderFunctionsExtensionMethods
+{
+    public static partial class HighOrderFunctionsExtensionMethods
+    {
+        public static List<TFunctionResult> Apply<TElement, TFunctionResult>(
+            this ICollection<TElement> collection,
+            Func<TElement , TFunctionResult> func
+        )
+        {
+            List<TFunctionResult> list = new List<TFunctionResult>();
+            foreach(var coll in collection)
+            {
+                var result = func.Invoke(coll);
+                list.Add(result);
+            }
+            return list;
+        }
+    }
+}
+```
+
+It will output
+
+```
+0th expression:`default(Void)`{ ... }
+
+```
+
 ## reference
 ### API docs
 + [`Expression.Variable Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.variable?view=net-8.0)
@@ -340,3 +452,4 @@ default(Dictionary`2)
 + [`Expression.Assign(Expression, Expression) Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.assign?view=net-8.0)
 + [`Expression.Default(Type) Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.default?view=net-8.0)
 + [`DefaultExpression Class`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.defaultexpression?view=net-8.0)
++ [`Expression.Empty Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.empty?view=net-8.0)
