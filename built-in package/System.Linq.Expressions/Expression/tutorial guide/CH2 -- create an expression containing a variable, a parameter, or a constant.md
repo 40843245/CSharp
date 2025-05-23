@@ -5,6 +5,7 @@ You will learn
 + an expression containing a variable
 + an expression containing a parameter
 + an expression containing a constant
++ an expression containing a default value of the given type
 + an expression about assigment operator
 
 ## CH2.1 -- an expression containing a variable
@@ -47,7 +48,16 @@ In above code snippets, an expression containing a constant `1` will be created.
 
 For more details, see [`Expression.Constant Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.constant?view=net-8.0)
 
-## CH2.4 -- an expression about assigment operator
+## CH2.4 -- an expression containing a default value of the given type
+### `Expression.Default` static method
+You can create an expression containing a default value of the given type using `Expression.Default` static method call.
+
+```
+DefaultExpression boolDefaultExpression = Expression.Default(typeof(bool));
+```
+
+## CH2.5 -- an expression about assigment operator
+### `Expression.Assign` static method
 You can create an expression about assigment operator using `Expression.Assign` static method call.
 
 ```
@@ -126,9 +136,138 @@ binaryExpression.IsLiftedToNull:False
 
 ```
 
+### example 2
+Invoking this method
+
+```
+        /// <summary>
+        /// illustrates an expression with default value.
+        /// </summary>
+        public static void TestMethod16()
+        {
+            string text = string.Empty;
+
+            DefaultExpression boolDefaultExpression = Expression.Default(typeof(bool));
+            text = boolDefaultExpression.GetInfo<bool>();
+            Console.WriteLine(text);
+
+            DefaultExpression byteDefaultExpression = Expression.Default(typeof(byte));
+            text = byteDefaultExpression.GetInfo<byte>();
+            Console.WriteLine(text);
+
+            DefaultExpression shortDefaultExpression = Expression.Default(typeof(short));
+            text = shortDefaultExpression.GetInfo<short>();
+            Console.WriteLine(text);
+
+            DefaultExpression int32DefaultExpression = Expression.Default(typeof(int));
+            text = int32DefaultExpression.GetInfo<int>();
+            Console.WriteLine(text);
+
+            DefaultExpression longDefaultExpression = Expression.Default(typeof(long));
+            text = longDefaultExpression.GetInfo<long>();
+            Console.WriteLine(text);
+
+            DefaultExpression ushortDefaultExpression = Expression.Default(typeof(ushort));
+            text = ushortDefaultExpression.GetInfo<ushort>();
+            Console.WriteLine(text);
+
+            DefaultExpression uintDefaultExpression = Expression.Default(typeof(uint));
+            text = uintDefaultExpression.GetInfo<uint>();
+            Console.WriteLine(text);
+
+            DefaultExpression ulongDefaultExpression = Expression.Default(typeof(ulong));
+            text = ulongDefaultExpression.GetInfo<ulong>();
+            Console.WriteLine(text);
+
+            DefaultExpression floatDefaultExpression = Expression.Default(typeof(float));
+            text = floatDefaultExpression.GetInfo<float>();
+            Console.WriteLine(text);
+
+            DefaultExpression doubleDefaultExpression = Expression.Default(typeof(double));
+            text = doubleDefaultExpression.GetInfo<double>();
+            Console.WriteLine(text);
+
+            DefaultExpression charDefaultExpression = Expression.Default(typeof(char));
+            text = charDefaultExpression.GetInfo<char>();
+            Console.WriteLine(text);
+
+            DefaultExpression stringDefaultExpression = Expression.Default(typeof(string));
+            text = stringDefaultExpression.GetInfo<string>();
+            Console.WriteLine(text);
+
+            /// *---------------------- More complex type --------------------- *///
+            
+            // *---------------------- About Date and Time --------------------- *//
+            DefaultExpression datetTimeDefaultExpression = Expression.Default(typeof(DateTime));
+            text = datetTimeDefaultExpression.GetInfo<DateTime>();
+            Console.WriteLine(text);
+
+            DefaultExpression timeSpanDefaultExpression = Expression.Default(typeof(TimeSpan));
+            text = timeSpanDefaultExpression.GetInfo<TimeSpan>();
+            Console.WriteLine(text);
+
+            DefaultExpression timeZoneDefaultExpression = Expression.Default(typeof(TimeZone));
+            text = timeZoneDefaultExpression.GetInfo<TimeZone>();
+            Console.WriteLine(text);
+
+            // *---------------------- About generics --------------------- *//
+            DefaultExpression listStringDefaultExpression = Expression.Default(typeof(List<string>));
+            text = listStringDefaultExpression.GetInfo<List<string>>();
+            Console.WriteLine(text);
+
+            DefaultExpression listIntDefaultExpression = Expression.Default(typeof(List<int>));
+            text = listIntDefaultExpression.GetInfo<List<int>>();
+            Console.WriteLine(text);
+
+            DefaultExpression hashSetIntDefaultExpression = Expression.Default(typeof(HashSet<int>));
+            text = hashSetIntDefaultExpression.GetInfo<HashSet<int>>();
+            Console.WriteLine(text);
+
+            DefaultExpression keyValuePairFromIntToStringSetIntDefaultExpression = Expression.Default(typeof(KeyValuePair<int , string>));
+            text = keyValuePairFromIntToStringSetIntDefaultExpression.GetInfo<KeyValuePair<int , string>>();
+            Console.WriteLine(text);
+
+            DefaultExpression dictionaryFromIntToStringSetIntDefaultExpression = Expression.Default(typeof(Dictionary<int,string>));
+            text = dictionaryFromIntToStringSetIntDefaultExpression.GetInfo<Dictionary<int , string>>();
+            Console.WriteLine(text);
+
+            /// DON'T use non predefined type (including 
+            /// + primitive type and 
+            /// + defined in third package by Microsoft
+            /// ) to create an expression with default value.
+            //DefaultExpression userClassDefaultExpression = Expression.Default(typeof(User));
+            //text = stringDefaultExpression.GetInfo<User>();
+            //Console.WriteLine(text);
+
+        }
+```
+
+where
+
+`DefaultExpression.GetInfo` extension method is defined in `DefaultExpressionsExtensionMethods` static class
+
+`DefaultExpression.GetInfo` extension method in `ExpressionsExtensionMethods.cs`
+
+```
+public static class DefaultExpressionsExtensionMethods
+    {
+        public static string GetInfo<TDefaultExpression>(
+            this DefaultExpression defaultExpression
+        )
+        {
+            var compiledDelegateFunction = Expression.Lambda<Func<TDefaultExpression>>(defaultExpression).Compile(); // TDefaultExpression MUST be primitive data, otherwise, it will throw an exception at runtime.
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendFormat("{0}\n" , defaultExpression.ToString());
+            stringBuilder.AppendFormat("{0}\n" , compiledDelegateFunction()); 
+            return stringBuilder.ToString();
+        }
+    }
+```
 ## reference
 ### API docs
 + [`Expression.Variable Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.variable?view=net-8.0)
 + [`Expression.Parameter Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.parameter?view=net-8.0)
 + [`Expression.Constant Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.constant?view=net-8.0)
 + [`Expression.Assign(Expression, Expression) Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.assign?view=net-8.0)
++ [`Expression.Default(Type) Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.default?view=net-8.0)
++ [`DefaultExpression Class`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.defaultexpression?view=net-8.0)
