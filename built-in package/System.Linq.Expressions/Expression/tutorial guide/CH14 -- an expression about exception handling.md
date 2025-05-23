@@ -1,10 +1,120 @@
-# CH14 -- an expression about exception handling
+# CH15 -- an expression about exception handling
 ## objectives
 You will learn how to
 
-+ create an expression about exception handling
++ create an expression that represents `throw` statement 
++ create an expression that represents `rethrow` statement
++ create an expression that represents `catch` block 
++ create an expression that represents `try` block or `try` block combined with `catch` block
++ create an expression that represents `try` block combined with `finally` block
++ create an expression that represents `try` block combined with `catch` block then combined with `finally` block
 
-## CH14.1 -- an expression about exception handling
+## CH15.1 -- create an expression about `throw` statement
+### `Expression.Throw` static method
+To create an expression that represents `throw` statement, just simply invoke `Expression.Throw` static method.
+
+basic structure:
+
+```
+UnaryExpression unaryExpression = Expression.Throw(Expression.Constant(new DivideByZeroException())); // inside the `Expression.Constant` method call, instantiate an exception with type `Exception` class or its derived class.
+```
+
+or
+
+```
+UnaryExpression unaryExpression = Expression.Throw(Expression.Constant(new DivideByZeroException()),typeof(int)); // inside the `Expression.Constant` method call, instantiate an exception with type `Exception` class or its derived class.
+```
+
+
+Think of this:
+
+When the expression
+
+```
+UnaryExpression unaryExpression = Expression.Throw(Expression.Constant(new DivideByZeroException())); // inside the `Expression.Constant` method call, instantiate an exception with type `Exception` class or its derived class.
+```
+
+is compiled, 
+
+it will become `throw` statement, as follows.
+
+```
+throw new DivideByZeroException();
+```
+
+## CH15.2 -- create an expression about `rethrow` statement
+### `Expression.Rethrow` static method
+To create an expression that represents `rethrow` statement, just simply invoke `Expression.Rethrow` static method.
+
+basic structure:
+
+```
+UnaryExpression unaryExpression = Expression.Rethrow();
+```
+
+or
+
+```
+UnaryExpression unaryExpression = Expression.Rethrow(typeof(int));
+```
+
+Think of this:
+
+When the expression
+
+```
+UnaryExpression unaryExpression = Expression.Rethrow();
+```
+
+is compiled, 
+
+it will become `rethrow` statement, as follows.
+
+```
+rethrow;
+```
+
+## CH15.3 -- create an expression about `catch` block
+### `Expression.Catch` static method
+To create an expression that represents `catch` block, just simply invoke `Expression.Catch` static method.
+
+basic structure:
+
+```
+CatchBlock catchBlock =
+      Expression.Catch(
+            typeof(DivideByZeroException), // type of Exception that will be fetched in `catch` block
+            // ... logic inside `catch` block
+            // ... return type of last expression
+      );
+```
+
+Think of this:
+
+When the expression
+
+```
+CatchBlock catchBlock =
+      Expression.Catch(
+            typeof(DivideByZeroException), // type of Exception that will be fetched in `catch` block
+            // ... logic inside `catch` block
+            // ... return type of last expression
+      );
+```
+
+is compiled, 
+
+it will become `catch` block, as follows.
+
+```
+catch(DivideByZeroException ex)
+{
+    // ... logic inside `catch` block
+    // ... return type of last expression
+}
+```
+
+## CH15.4 -- create an expression that represents `try` block or `try` block combined with `catch` block
 ### `Expression.TryCatch` static method
 To create an expression (`TryExpression`) that represents a try-catch block with zero or more catach statement and niether a fault nor finally block,
 
@@ -21,7 +131,7 @@ public static System.Linq.Expressions.TryExpression TryCatch(
 );
 ```
 
-Basic usage:
+basic structure:
 
 ```
 TryExpression tryExpression =
@@ -67,7 +177,46 @@ TryExpression tryExpression =
 >
 > The reason why is that the `try-catch` block must have same return type (which has been discussed before)
 
-## example
+Think of this:
+
+When it is
+
+```
+TryExpression tryExpression =
+    Expression.TryCatch(
+      Expression.Block(
+            // ... logic inside `try` block
+            // ... return type of last expression
+            // Watch out that return type of last expression here MUST be same of that in `catch` block.
+      ),
+      // can be null
+      Expression.Catch(
+            typeof(DivideByZeroException), // type of Exception that will be fetched in `catch` block
+            // ... logic inside `catch` block
+            // ... return type of last expression
+      )
+    );
+```
+
+compiled, it will become `try`-`catch` block as follows.
+
+```
+try{
+    // ... logic inside `try` block
+    // ... return type of last expression
+    // Watch out that return type of last expression here MUST be same of that in `catch` block.
+}catch(DivideByZeroException ex){
+    // ... logic inside `catch` block
+    // ... return type of last expression
+}
+```
+
+## CH15.5 -- create an expression that represents `try` block combined with `finally` block
+### `Expression.TryFinally` static method
+
+## CH15.6 -- create an expression that represents `try` block combined with `catch` block then combined with `finally` block
+
+## examples
 ### example 1
 Invoking this method
 
@@ -77,6 +226,8 @@ Invoking this method
         /// </summary>
         public static void TestMethod20()
         {
+            Console.WriteLine("In {0} method call," , MethodBase.GetCurrentMethod().Name);
+
             TryExpression tryCatchExpression =
                 Expression.TryCatch(
                     Expression.Block(
@@ -174,6 +325,7 @@ namespace Example.Extensions.ExtensionMethods.HighOrderFunctionsExtensionMethods
 It will output following
 
 ```
+In TestMethod20 method call,
 try { ... }
 Body:{ ... }
 Its Fault:
@@ -181,6 +333,65 @@ It has 1 handlers.
 0th handler:catch (DivideByZeroException) { ... }
 Finally Block:
 Catch block
+
+```
+
+### example 2
+Invoking this method will throw exception since one creates an expression that throws exception.
+
+```
+        /// <summary>
+        /// illustrate how to create an expression with `try` block and `finally` block.
+        /// 
+        /// In this example, one throws an Excpetion in try block and NOT be caught.
+        /// 
+        /// Thus, when the expression is compiled then is executed, it throws an exception.
+        /// </summary>
+        public static void TestMethod21()
+        {
+            Console.WriteLine("In {0} method call," , MethodBase.GetCurrentMethod().Name);
+
+            ParameterExpression variableExpression = Expression.Variable(typeof(string) , "name");
+
+            BinaryExpression assignmentExpression = Expression.Assign(
+                variableExpression,
+                Expression.Constant("Yazawa Nico")
+            );
+
+            BlockExpression blockExpression = Expression.Block(
+                new ParameterExpression [ ] { variableExpression },
+                assignmentExpression
+            );
+
+            TryExpression tryExpression =
+                Expression.TryFinally(
+                    Expression.Block(
+                        Expression.Throw(
+                            Expression.Constant(new DivideByZeroException())
+                        ) ,
+                        Expression.Constant("Try block")
+                    ),
+                    Expression.Block(
+                        blockExpression,
+                        Expression.Constant("Finally block")
+                    )
+                );
+
+            string infoText = tryExpression.GetInfo();
+            Console.WriteLine(infoText);
+        }
+```
+
+The output:
+
+<img width="869" alt="image" src="https://github.com/user-attachments/assets/6ab1cd82-12ca-45c6-8e57-7a5ce85bbe16" />
+
+<img width="638" alt="image" src="https://github.com/user-attachments/assets/b7c8f039-a2b3-49ee-9950-59254b61d48b" />
+
+### example 3
+Invoking following method
+
+```
 
 ```
 
