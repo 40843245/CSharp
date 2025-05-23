@@ -136,14 +136,15 @@ basic structure:
 ```
 TryExpression tryExpression =
     Expression.TryCatch(
-      Expression.Block(
-            // ... logic inside `try` block
-            // ... return type of last expression
-            // Watch out that return type of last expression here MUST be same of that in `catch` block.
-      ),
+      /// `try` block
+      // ... logic inside `try` block
+      // ... return type of last expression
+      // Watch out that return type of last expression here MUST be same of that in `catch` block.
+      ,
+      /// `catch` block
       // can be null
       Expression.Catch(
-            typeof(DivideByZeroException), // type of Exception that will be fetched in `catch` block
+            typeof(DivideByZeroException), // type of `Exception` that will be fetched in `catch` block
             // ... logic inside `catch` block
             // ... return type of last expression
       )
@@ -213,8 +214,122 @@ try{
 
 ## CH15.5 -- create an expression that represents `try` block combined with `finally` block
 ### `Expression.TryFinally` static method
+To create an expression that represents `try` block combined with `finally` block, 
+
+just simply invoke `Expression.TryFinally` static method.
+
+basic structure:
+
+```
+TryExpression tryExpression =
+                Expression.TryFinally(
+                        /// `try` block
+                        // ... logic here
+                        // ... return type of last expression
+                        // return type of last expression here MUST be same as that in other block
+                        ,
+                        /// `finally` block
+                        // ... logic here
+                        // ... return type of last expression
+                );
+```
+
+Think of this:
+
+After compiling it
+
+```
+            ParameterExpression nameVariableExpression = Expression.Variable(typeof(string) , "name");
+
+            ParameterExpression reachedVariableExpression = Expression.Variable(typeof(bool) , "reached");
+
+            TryExpression tryExpression =
+                Expression.TryFinally(
+                    Expression.Block(
+                        Expression.Block(
+                            new ParameterExpression [ ] { reachedVariableExpression } ,
+                            Expression.Assign(
+                                reachedVariableExpression ,
+                                Expression.Constant(false)
+                            )
+                        ),
+                        Expression.Block(
+                            new ParameterExpression [ ] { nameVariableExpression } ,
+                            Expression.Assign(
+                                nameVariableExpression ,
+                                Expression.Constant("Yazawa Nico")
+                            )
+                        ),
+                        Expression.Constant("Try block")
+                    ) ,
+                    Expression.Block(
+                        Expression.Block(
+                            new ParameterExpression [ ] { nameVariableExpression } ,
+                            Expression.Assign(
+                                nameVariableExpression ,
+                                Expression.Constant("Ayase Eli")
+                            )
+                        ),
+                        Expression.Block(
+                            new ParameterExpression [ ] { reachedVariableExpression } ,
+                            Expression.Assign(
+                                reachedVariableExpression ,
+                                Expression.Constant(true)
+                            )
+                        ),
+                        Expression.Constant("Finally block")
+                    )
+                );
+```
+
+it will become
+
+```
+bool reached;
+string name;
+
+try
+{
+      reached = false;
+      name = "Yazawa Nico";
+      return "Try block";
+}
+finnally
+{
+      name = "Ayase Eli";
+      reached = true;
+      return "Finally block";
+}
+```
 
 ## CH15.6 -- create an expression that represents `try` block combined with `catch` block then combined with `finally` block
+### `Expression.TryCatchFinally` static method
+To create an expression that represents `try` block combined with `catch` block then combined with `finally` block,
+
+just simply invoke `Expression.TryCatchFinally` static method.
+
+basic structure:
+
+```
+TryExpression tryCatchExpression =
+                Expression.TryCatchFinally(
+                        /// `try` block 
+                        // ... logic here
+                        // ... return type of last expression
+                        // return type of last expression here MUST be same as that in other block
+                        ,
+                        /// `finnally` block
+                        // ... logic here
+                        // ... return type of last expression
+                        ,
+                        /// `catch` block
+                    Expression.Catch(
+                        typeof(DivideByZeroException), // type of the `Exception` to be fetched in `catch` block.
+                        // ... logic here
+                        // ... return type of last expression
+                    )
+                );
+```
 
 ## examples
 ### example 1
@@ -392,7 +507,243 @@ The output:
 Invoking following method
 
 ```
+        /// <summary>
+        /// illustrate how to create an expression with `try` block and `finally` block.
+        /// 
+        /// In this example, one does NOT throw exceptions in `try` block.
+        /// 
+        /// Thus, when the expression is compiled then is executed, 
+        /// 
+        /// `finally` block will be executed.
+        /// </summary>
+        public static void TestMethod22()
+        {
+            Console.WriteLine("In {0} method call," , MethodBase.GetCurrentMethod().Name);
 
+            ParameterExpression nameVariableExpression = Expression.Variable(typeof(string) , "name");
+
+            ParameterExpression reachedVariableExpression = Expression.Variable(typeof(bool) , "reached");
+
+            TryExpression tryExpression =
+                Expression.TryFinally(
+                    Expression.Block(
+                        Expression.Block(
+                            new ParameterExpression [ ] { reachedVariableExpression } ,
+                            Expression.Assign(
+                                reachedVariableExpression ,
+                                Expression.Constant(false)
+                            )
+                        ),
+                        Expression.Block(
+                            new ParameterExpression [ ] { nameVariableExpression } ,
+                            Expression.Assign(
+                                nameVariableExpression ,
+                                Expression.Constant("Yazawa Nico")
+                            )
+                        ),
+                        Expression.Constant("Try block")
+                    ) ,
+                    Expression.Block(
+                        Expression.Block(
+                            new ParameterExpression [ ] { nameVariableExpression } ,
+                            Expression.Assign(
+                                nameVariableExpression ,
+                                Expression.Constant("Ayase Eli")
+                            )
+                        ),
+                        Expression.Block(
+                            new ParameterExpression [ ] { reachedVariableExpression } ,
+                            Expression.Assign(
+                                reachedVariableExpression ,
+                                Expression.Constant(true)
+                            )
+                        ),
+                        Expression.Constant("Finally block")
+                    )
+                );
+
+            string infoText = tryExpression.GetInfo();
+            Console.WriteLine(infoText);
+        }
+```
+
+where
+
+`TryCatchExpressionsExtensionMethods.GetInfo` extension method is defined in `TryCatchExpressionsExtensionMethods` static class.
+
+`TryCatchExpressionsExtensionMethods` static class in `ExpressionExtensionMethods.cs`
+
+```
+    public static class TryCatchExpressionsExtensionMethods
+    {
+        public static string GetInfo(
+            this TryExpression tryExpression
+        )
+        {
+            var handlers = tryExpression.Handlers;
+            var compiledDelegateFunction = Expression.Lambda<Func<string>>(tryExpression).Compile();
+            StringBuilder stringBuilder = new StringBuilder();
+
+            List<string> textList = new List<string>();
+            string formattingString = "{0}th {1}:{2}";
+            int counter = 0;
+
+            counter = 0;
+            textList = handlers.Apply<CatchBlock , string>(
+                handler =>
+                {
+                    var result = string.Format(formattingString , counter , "handler" , handler?.GetSimpleInfo());
+                    counter++;
+                    return result;
+                }
+            );
+            
+            stringBuilder.AppendFormat("{0}\n" , tryExpression.ToString());
+            stringBuilder.AppendFormat("Body:{0}\n" , tryExpression.Body.GetSimpleInfo());
+            stringBuilder.AppendFormat("Its Fault:{0}\n" , tryExpression.Fault?.GetSimpleInfo());
+            stringBuilder.AppendFormat("It has {0} handlers.\n",handlers.Count);
+            stringBuilder.Append(string.Join(System.Environment.NewLine , textList));
+            stringBuilder.Append(handlers.Count > 0 ? System.Environment.NewLine : string.Empty);
+            stringBuilder.AppendFormat("Finally Block:{0}\n" , tryExpression.Finally?.GetSimpleInfo());
+            stringBuilder.AppendLine("After executing the compiled delegate function,");
+            stringBuilder.AppendFormat("{0}\n" , compiledDelegateFunction.Invoke());
+            return stringBuilder.ToString();
+        }
+    }
+```
+
+and 
+
+`ExpressionsExtensionMethods.GetSimpleInfo` extension method is defined in `ExpressionsExtensionMethods` static class.
+
+`ExpressionsExtensionMethods` static class in `ExpressionsExtensionMethods.cs`
+
+```
+    public static class ExpressionsExtensionMethods
+    {
+        public static string GetSimpleInfo(
+            this Expression expression
+        )
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(expression.Type.ToString());
+            stringBuilder.AppendLine(expression.NodeType.ToString());
+            stringBuilder.AppendLine(expression.CanReduce.ToString());
+            return stringBuilder.ToString();
+        }
+    }
+```
+
+and
+
+`CatchBlocksExtensionMethods.GetSimpleInfo` extension method is defined in `CatchBlocksExtensionMethods` static class.
+
+`CatchBlocksExtensionMethods` static class in `ExpressionsExtensionMethods.cs`.
+
+```
+    public static class CatchBlocksExtensionMethods
+    {
+        public static string GetSimpleInfo(
+            this CatchBlock catchBlock
+        )
+        {
+            var compiledDelegateFunction = Expression.Lambda<Func<object>>(catchBlock.Body).Compile();
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(catchBlock.Test.Name);
+            stringBuilder.AppendLine(compiledDelegateFunction.ToString());
+            return stringBuilder.ToString();
+        }
+    }
+```
+
+and 
+
+`Apply` extension method is defined in `HighOrderFunctionsExtensionMethods` static class.
+
+`HighOrderFunctionsExtensionMethods.cs`
+
+```
+using System;
+using System.Collections.Generic;
+
+namespace Example.Extensions.ExtensionMethods.HighOrderFunctionsExtensionMethods
+{
+    public static partial class HighOrderFunctionsExtensionMethods
+    {
+        public static List<TFunctionResult> Apply<TElement, TFunctionResult>(
+            this ICollection<TElement> collection,
+            Func<TElement , TFunctionResult> func
+        )
+        {
+            List<TFunctionResult> list = new List<TFunctionResult>();
+            foreach(var coll in collection)
+            {
+                var result = func.Invoke(coll);
+                list.Add(result);
+            }
+            return list;
+        }
+    }
+}
+```
+
+It will output following
+
+```
+In TestMethod22 method call,
+try { ... }
+Body:System.String
+Block
+False
+
+Its Fault:
+It has 0 handlers.
+Finally Block:System.String
+Block
+False
+
+After executing the compiled delegate function,
+Try block
+```
+
+### example 3
+Invoking this method 
+
+```
+        /// <summary>
+        /// `Expression.TryCatchFinally` example.
+        /// </summary>
+        public static void TestMethod23()
+        {
+            Console.WriteLine("In {0} method call," , MethodBase.GetCurrentMethod().Name);
+            TryExpression tryCatchExpression =
+                Expression.TryCatchFinally(
+                    Expression.Block(
+                        Expression.Throw(Expression.Constant(new DivideByZeroException())) ,
+                        Expression.Constant("Try block")
+                    ) ,
+                    Expression.Call(typeof(Console).GetMethod("WriteLine" , new Type [ ] { typeof(string) }) , Expression.Constant("Finally block")) ,
+                    Expression.Catch(
+                        typeof(DivideByZeroException) ,
+                        Expression.Constant("Catch block")
+                    )
+                );
+
+            // The following statement first creates an expression tree,
+            // then compiles it, and then runs it.
+            // If the exception is caught,
+            // the result of the TryExpression is the last statement
+            // of the corresponding catch statement.
+            Console.WriteLine(Expression.Lambda<Func<string>>(tryCatchExpression).Compile()());
+        }
+```
+
+will output following
+
+```
+In TestMethod23 method call,
+Finally block
+Catch block
 ```
 
 ## reference
