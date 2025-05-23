@@ -263,6 +263,72 @@ public static class DefaultExpressionsExtensionMethods
         }
     }
 ```
+
+It will output following
+
+```
+default(Boolean)
+False
+
+default(Byte)
+0
+
+default(Int16)
+0
+
+default(Int32)
+0
+
+default(Int64)
+0
+
+default(UInt16)
+0
+
+default(UInt32)
+0
+
+default(UInt64)
+0
+
+default(Single)
+0
+
+default(Double)
+0
+
+default(Char)
+
+
+default(String)
+
+
+default(DateTime)
+0001/1/1 上午 12:00:00
+
+default(TimeSpan)
+00:00:00
+
+default(TimeZone)
+
+
+default(List`1)
+
+
+default(List`1)
+
+
+default(HashSet`1)
+
+
+default(KeyValuePair`2)
+[0, ]
+
+default(Dictionary`2)
+
+
+```
+
 ## reference
 ### API docs
 + [`Expression.Variable Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.variable?view=net-8.0)
