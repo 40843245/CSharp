@@ -1,4 +1,4 @@
-# CH2 -- create an expression containing a variable, a parameter, or a constant
+em# CH2 -- create an expression containing a variable, a parameter, or a constant
 ## objectives
 You will learn
 
