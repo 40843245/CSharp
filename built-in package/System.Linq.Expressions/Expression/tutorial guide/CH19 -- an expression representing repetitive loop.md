@@ -93,16 +93,170 @@ Step 4:
 To updates its value after it finishes to run each loop and before checking conditions.
 
 ```
-
+Expression.PostIncrementAssign(i)
 ```
 
-Step 4:
+Step 5:
 
-To create an expression containing a condition, for example, when the `i>3` condition is true, then exits the repetitive loop,
+To create an expression containing a condition, for example, when the `i >= 3` condition is true, then exits the repetitive loop,
 
-we need to invoke `Expression.`
+we need to invoke `Expression.GreaterThanOrEqual` inside `Expression.IfThen`
 
 ```
+Expression.IfThen(
+                    Expression.GreaterThanOrEqual(i , Expression.Constant(3)) ,
+                    Expression.Break(loopBreak)
+                )
 ```
 
+Step 6:
 
+To create an expression representing `Console.WriteLine("i="+1)`,
+
+```
+// Print "i=" + i
+                Expression.Call(
+                    typeof(Console).GetMethod("WriteLine" , new [ ] { typeof(string) }) ,
+                    Expression.Call(
+                        typeof(string).GetMethod("Concat" , new [ ] { typeof(object) , typeof(object) }) , // Or other overloads as needed
+                        Expression.Constant("i=") ,
+                        Expression.Convert(i , typeof(object)) // Convert 'i' to object for string.Concat(object, object)
+                    )
+                )
+```
+
+Step 7:
+
+Combine them together.
+
+```
+        Expression loopBody = Expression.Block(
+                // Print "i=" + i
+                Expression.Call(
+                    typeof(Console).GetMethod("WriteLine" , new [ ] { typeof(string) }) ,
+                    Expression.Call(
+                        typeof(string).GetMethod("Concat" , new [ ] { typeof(object) , typeof(object) }) , // Or other overloads as needed
+                        Expression.Constant("i=") ,
+                        Expression.Convert(i , typeof(object)) // Convert 'i' to object for string.Concat(object, object)
+                    )
+                ),
+                // Postfix Increment to i
+                Expression.PostIncrementAssign(i) ,
+                // Check condition (i < 3) and break if false
+                Expression.IfThen(
+                    Expression.GreaterThanOrEqual(i , Expression.Constant(3)) ,
+                    Expression.Break(loopBreak)
+                )
+            );
+```
+
+Step 8:
+
+Create an expression containg a loop
+
+```
+            // 5. Create the LoopExpression
+            LoopExpression loop = Expression.Loop(
+                loopBody ,
+                loopBreak // Associate the break label with the loop
+            );
+```
+
+Step 9:
+
+Combine initialization and the loop into a block expression
+
+```
+BlockExpression fullProgram = Expression.Block(
+                new [ ] { i } , // Declare 'i' as a local variable within the block
+                initializeI ,
+                loop
+            );
+```
+
+Step 10:
+
+compile the expression and execute it.
+
+```
+Action compiledLoop = Expression.Lambda<Action>(fullProgram).Compile();
+compiledLoop();
+```
+
+## examples
+### exampl 1
+Invoking following method
+
+```
+        /// <summary>
+        /// illustrate how to create a loop using `Expression.Loop`.
+        /// 
+        /// The following example will output
+        /// 
+        /// ```
+        /// i=0
+        /// i=1
+        /// i=2
+        /// ```
+        /// </summary>
+        public static void TestMethod25()
+        {
+            Console.WriteLine("In {0} method call," , MethodBase.GetCurrentMethod().Name);
+            // 1. Define a ParameterExpression for our loop variable 'i'
+            ParameterExpression i = Expression.Variable(typeof(int) , "i");
+
+            // 2. Define a LabelTarget for the loop's break condition
+            LabelTarget loopBreak = Expression.Label("loopBreak");
+
+            // 3. Define the loop's initialization (i = 0)
+            Expression initializeI = Expression.Assign(i , Expression.Constant(0));
+
+            // 4. Define the loop body
+            Expression loopBody = Expression.Block(
+                // Print "i=" + i
+                Expression.Call(
+                    typeof(Console).GetMethod("WriteLine" , new [ ] { typeof(string) }) ,
+                    Expression.Call(
+                        typeof(string).GetMethod("Concat" , new [ ] { typeof(object) , typeof(object) }) , // Or other overloads as needed
+                        Expression.Constant("i=") ,
+                        Expression.Convert(i , typeof(object)) // Convert 'i' to object for string.Concat(object, object)
+                    )
+                ),
+                // Postfix Increment to i
+                Expression.PostIncrementAssign(i) ,
+                // Check condition (i < 3) and break if false
+                Expression.IfThen(
+                    Expression.GreaterThanOrEqual(i , Expression.Constant(3)) ,
+                    Expression.Break(loopBreak)
+                )
+            );
+
+            // 5. Create the LoopExpression
+            LoopExpression loop = Expression.Loop(
+                loopBody ,
+                loopBreak // Associate the break label with the loop
+            );
+
+            // 6. Combine initialization and the loop into a block expression
+            BlockExpression fullProgram = Expression.Block(
+                new [ ] { i } , // Declare 'i' as a local variable within the block
+                initializeI ,
+                loop
+            );
+
+            // 7. Compile the expression tree into an executable Action
+            Action compiledLoop = Expression.Lambda<Action>(fullProgram).Compile();
+
+            // 8. Execute the compiled delegate
+            compiledLoop();
+        }
+```
+
+will output following.
+
+```
+In TestMethod25 method call,
+i=0
+i=1
+i=2
+```
