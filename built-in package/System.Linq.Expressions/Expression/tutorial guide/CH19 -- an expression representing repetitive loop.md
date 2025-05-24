@@ -260,3 +260,9 @@ i=0
 i=1
 i=2
 ```
+
+## reference
+### API docs
++ [`Expression.Label Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.label?view=net-8.0)
++ [`Expression.Break Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.break?view=net-8.0)
++ [`Expression.Loop Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.loop?view=net-8.0)
