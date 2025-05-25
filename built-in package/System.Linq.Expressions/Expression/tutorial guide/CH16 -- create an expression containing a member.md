@@ -14,6 +14,9 @@ You can create an expression containing a property by invoking `Expression.Prope
 > [!IMPORTANT]
 > What is the difference between `fields` and `properties`, see [difference between `fields` and `properties`](https://g.co/gemini/share/7461cadebf80)
 
+### `Expression.PropertyOrField` static method
+You can create an expression containing a field or property by invoking `Expression.Property` static method.
+
 ## examples
 ### example 1
 Invoking the following method
@@ -61,4 +64,5 @@ value(Example.AppData.Animal).species
 ### API docs
 + [`Expression.Field Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.field?view=net-8.0)
 + [`Expression.Property Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.property?view=net-8.0)
++ [`Expression.PropertyOrField(Expression, String) Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.propertyorfield?view=net-8.0)
 + [`MemberExpression Class`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.memberexpression?view=net-8.0)
