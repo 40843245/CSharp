@@ -116,7 +116,7 @@ see example 1 for full example.
 ## examples
 ### example 1
 #### demo project
-See [`AutoMapper demo5.7z (version 1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/AutoMapper/AutoMapper%20demo5/1.0.0/AutoMapper%20demo5.7z)
+See [`AutoMapper demo5.7z (version 1.0.0)`](https://github.com/40843245/CSharp-Demo-Project/blob/main/third%20packages/AutoMapper/AutoMapper%20demo5/1.0.0/AutoMapper%20demo5.7z)
 
 ## reference
 ### further reading
