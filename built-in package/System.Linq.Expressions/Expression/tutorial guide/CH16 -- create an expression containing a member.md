@@ -6,7 +6,13 @@ You will learn how to
 
 ## CH16.1 -- create an expression containing a member
 ### `Expression.Field` static method
-You can create an expression containing a member by invoking `Expression.Field` static method.
+You can create an expression containing a field by invoking `Expression.Field` static method.
+
+### `Expression.Property` static method
+You can create an expression containing a property by invoking `Expression.Property` static method.
+
+> [!IMPORTANT]
+> What is the difference between `fields` and `properties`, see [difference between `fields` and `properties`](https://g.co/gemini/share/7461cadebf80)
 
 ## examples
 ### example 1
