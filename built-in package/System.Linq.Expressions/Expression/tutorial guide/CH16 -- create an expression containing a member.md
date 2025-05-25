@@ -60,4 +60,5 @@ value(Example.AppData.Animal).species
 ## reference
 ### API docs
 + [`Expression.Field Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.field?view=net-8.0)
++ [`Expression.Property Method`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.property?view=net-8.0)
 + [`MemberExpression Class`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.memberexpression?view=net-8.0)
