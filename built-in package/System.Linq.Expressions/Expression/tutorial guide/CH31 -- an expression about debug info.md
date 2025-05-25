@@ -1,10 +1,10 @@
-# CH27 -- an expression about debug info
+# CH31 -- an expression about debug info
 ## objectives
 You will learn how to
 
 + create an expression containing debug info
 
-## CH27.1 -- create an expression containing debug info
+## CH31.1 -- create an expression containing debug info
 ### `Expression.DebugInfo` static method
 To create an expression containing debug info, simply invoke `Expression.DebugInfo` static method.
 
