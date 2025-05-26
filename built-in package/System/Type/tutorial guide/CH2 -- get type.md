@@ -36,7 +36,7 @@ else
 ## examples
 ### example 1
 #### code about extension methods
-`TypeExtensionMethods.GetInfo` and `TypeExtensionMethods.GetSimpleInfo` extension method is defined in `TypeExtensionMethods` static class as follows.
+`TypeExtensionMethods.GetInfo` extension method is defined in `TypeExtensionMethods` static class as follows.
 
 ```
 using Example.Helpers.Indentation;
@@ -54,30 +54,7 @@ namespace Example.Extensions.ExtensionMethods.TypeExtensionMethods
         {
             return type.BaseType != null;
         }
-        public static string GetSimpleInfo(
-            this Type data,
-            int indentationLevel = 0
-        )
-        {
-            indentationHandler.IndentationLevel = indentationLevel;
-
-            StringBuilder stringBuilder = new StringBuilder();
-            
-            stringBuilder.AppendFormat("The instance (is at IndentationLevel:{0}) with type `Type`:{0}\n" , indentationLevel, data.ToString());
-            stringBuilder.AppendLine(indentationHandler.GetIndentedMessage(data.Name));
-            stringBuilder.AppendLine(indentationHandler.GetIndentedMessage(data.FullName));
-            stringBuilder.AppendLine(indentationHandler.GetIndentedMessage(data.Assembly.FullName));
-            stringBuilder.AppendLine(indentationHandler.GetIndentedMessage(data.AssemblyQualifiedName));
-
-            if(data.HasBaseType())
-            {
-                stringBuilder.AppendLine(indentationHandler.GetIndentedMessage("There are base type as follows:"));
-                stringBuilder.AppendLine(data.BaseType.GetSimpleInfo(indentationLevel+1));
-            }
-            
-            stringBuilder.AppendFormat("~~~~ end at IndentationLevel:{0}~~~~\n", indentationLevel);
-            return stringBuilder.ToString();
-        }
+        
         public static string GetInfo(
             this Type data,
             int indentationLevel = 0
