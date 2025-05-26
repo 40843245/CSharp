@@ -572,7 +572,3 @@ There are no base type.
 
 ### docs
 + [`Type-testing operators and cast expressions - is, as, typeof, and casts`](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/type-testing-and-cast)
-
-### Q&A
-#### stackoverflow
-+ [`Type Checking: typeof, GetType, or is?`](https://stackoverflow.com/questions/983030/type-checking-typeof-gettype-or-is)
