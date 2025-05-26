@@ -227,3 +227,5 @@ Example.DirtyBean.Employee is an Example.Bean.Person type
 ### Q&A
 #### stackoverflow
 + [`Type Checking: typeof, GetType, or is?`](https://stackoverflow.com/questions/983030/type-checking-typeof-gettype-or-is)
+
++ About the performance of `is` v.s. `typeof` keyword, see [willeM_ Van Onsem's answer in `Which is good to use: Object.GetType() == typeof(Type) or Object is Type? [duplicate]`](https://stackoverflow.com/questions/27813304/which-is-good-to-use-object-gettype-typeoftype-or-object-is-type/27813381#27813381)
