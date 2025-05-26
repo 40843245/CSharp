@@ -8,6 +8,19 @@ You will learn how to
 > [!CAUTION]
 > It's only supported in `C#` version 7.0 (or above)
 
+```
+if(employeeNico is Person person1)
+{
+    // when `employeeNico` instance is `Person` type,
+    // it will inline cast `employeeNico` instance to local scope variable named `person1`
+    // thus, you can use `person1` variable here.
+}
+else
+{
+    // it will NOT inline cast `employeeNico` instance to local scope variable named `person1`
+    // thus, you can NOT use `person1` variable here.
+}
+```
 ## examples
 ### example 1
 Invoking following method
