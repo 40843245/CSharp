@@ -63,6 +63,15 @@ Although one can not directly compare an variable or property is specific type o
 >
 > + Otherwise, it will return `null`.
 
+> [!CAUTION]
+> Under `C#` 8.0 version,
+> 
+> the type that trying to be cast using `as` keyword MUST be nullable type or referential type. 
+>
+> Otherwise, it will throw a compiler error.
+>
+> [wrong usage of `as`.png](wrong%20usage%20of%20`as`.png)
+
 Due to this feature, we can compare an variable or property is specific type of structure (`struct` keyword), specific type of a variable and a property, and specific (your defined own) class using `as` keyword by enforcing type casting using `as` keyword (and which return the result after type casting), then compare the return value is equal to `null`.
 
 For example,
