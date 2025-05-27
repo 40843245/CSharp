@@ -68,7 +68,7 @@ Invoking following method
                 memberInfo =>
                 {
                     var result = string.Empty;
-                    if(memberInfo is MethodInfo nonNullMemberInfo)
+                    if(memberInfo is MemberInfo nonNullMemberInfo)
                     {
                         result = string.Format(
                            formattingString ,
@@ -109,9 +109,9 @@ Person
 5th memberInfo.Name::GetHashCode
 6th memberInfo.Name::GetType
 7th memberInfo.Name::ToString
-8th memberInfo is:null
-9th memberInfo is:null
-10th memberInfo is:null
+8th memberInfo.Name::.ctor
+9th memberInfo.Name::FirstName
+10th memberInfo.Name::LastName
 ```
 
 ## reference
