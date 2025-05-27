@@ -3,13 +3,22 @@
 You will learn how to 
 
 + get type of structure (such as `int`)
-+ get type of a variable, or property (such as `x` in `int x=2;`)
++ get type of an instance (such as `x` in `int x=2;`, `person` in `Person person = new Person();`)
+
+**extra bonus**
+
++ get an array of type given an array of `object`
 
 ## CH2.1 -- get type of structure
 ### `typeof` function
 To get type of structure, 
 
 just simply invoking `typeof` function.
+
+> [!CAUTION]
+> Watch out the argument of `typeof` function.
+> 
+> The `typeof` function only accepts one arguments with `struct` (such as `typeof(int)`)
 
 `typeof` function will return `System.Type` type.
 
@@ -32,6 +41,33 @@ else
     // x is NOT `int` type
 }
 ```
+
+## CH2.2 -- get type of an instance
+### `GetType` instance method
+To get type of an instance,
+
+just simply invoke `GetType` instance method
+
+`GetType` instance method will return `System.Type` type.
+
+```
+class Person {}
+
+Person person = new Person();
+Type type = person.GetType();
+```
+
+There are lots of overloads, see [`Type.GetType Method`](https://learn.microsoft.com/en-us/dotnet/api/system.type.gettype?view=net-8.0)
+
+## CH2.3 -- get an array of type given an array of `object`
+### `Type.GetTypeArray` static method
+In `Type` class under `System` namespace, it also defines a useful method.
+
++ `Type.GetTypeArray` static method: 
+
+given an `object[]` instance as first argument, 
+
+`Type.GetTypeArray` static method will return `Type[]`.
 
 ## examples
 ### example 1
@@ -89,7 +125,6 @@ namespace Example.Extensions.ExtensionMethods.TypeExtensionMethods
 we omitted `IndentationHandler` helper class and other code here.
 
 For complete code, see project in [demo project](../demo%20project.md)
-
 
 #### main code
 Invoking following method
@@ -543,9 +578,279 @@ There are no base type.
 
 ```
 
+### example 2
+#### extension methods
+
+same above example 1.
+
+#### main code
+Invoking following method
+
+```
+        /// <summary>
+        /// illustrate get an array of type given `object[]` instance through `Type.GetTypeArray` static method.
+        /// </summary>
+        public static void TestMethod20()
+        {
+            Console.WriteLine("In {0} method call" , MethodBase.GetCurrentMethod().Name);
+
+            int clubId = 1;
+            string clubName = "LoveLive club";
+
+            Person personNico = new Person()
+            {
+                FirstName = "Yazawa" ,
+                LastName = "Nico" ,
+            };
+
+            Employee employeeNico = new Employee()
+            {
+                FirstName = "Yazawa" ,
+                LastName = "Nico" ,
+                Company = new Company() 
+                {
+                    Id = clubId,
+                    Name = clubName,
+                }
+            };
+
+            List<object> objectList = new List<object>() 
+            { 
+                personNico,
+                employeeNico
+            };
+
+            Dictionary<int , Person> personDictionary = new Dictionary<int , Person>();
+
+            EmployeeRepository employeeRepository = new EmployeeRepository();
+
+            IGenericRepository<Person> iPersonnelRepository = new GenericRepository<Person>();
+
+            object[] objectArray = new object [ ]
+            {
+                clubId,
+                clubName,
+                objectList,
+                personDictionary,
+                personNico,
+                employeeNico,
+                employeeRepository,
+                iPersonnelRepository,
+                clubId.GetType(),
+            };
+
+            Type[] datas = Type.GetTypeArray(objectArray);
+            
+            foreach(var data in datas)
+            {
+                string infoText = data.GetInfo();
+                Console.WriteLine(infoText);
+            }
+        }
+```
+
+will output following
+
+```
+In TestMethod20 method call
+The instance (is at IndentationLevel:0) with type `Type`:0
+ + Name:Int32
+ + FullName:System.Int32
+ + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+ + AssemblyQualifiedName:System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+ + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:ValueType
+  + FullName:System.ValueType
+  + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + AssemblyQualifiedName:System.ValueType, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:Object
+  + FullName:System.Object
+  + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + AssemblyQualifiedName:System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+There are no base type.
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+The instance (is at IndentationLevel:0) with type `Type`:0
+ + Name:String
+ + FullName:System.String
+ + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+ + AssemblyQualifiedName:System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+ + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:Object
+  + FullName:System.Object
+  + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + AssemblyQualifiedName:System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+There are no base type.
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+The instance (is at IndentationLevel:0) with type `Type`:0
+ + Name:List`1
+ + FullName:System.Collections.Generic.List`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
+ + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+ + AssemblyQualifiedName:System.Collections.Generic.List`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+ + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:Object
+  + FullName:System.Object
+  + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + AssemblyQualifiedName:System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+There are no base type.
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+The instance (is at IndentationLevel:0) with type `Type`:0
+ + Name:Dictionary`2
+ + FullName:System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+ + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+ + AssemblyQualifiedName:System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+ + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:Object
+  + FullName:System.Object
+  + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + AssemblyQualifiedName:System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+There are no base type.
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+The instance (is at IndentationLevel:0) with type `Type`:0
+ + Name:Person
+ + FullName:Example.Bean.Person
+ + Assembly.FullName:Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+ + AssemblyQualifiedName:Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+ + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:Object
+  + FullName:System.Object
+  + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + AssemblyQualifiedName:System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+There are no base type.
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+The instance (is at IndentationLevel:0) with type `Type`:0
+ + Name:Employee
+ + FullName:Example.DirtyBean.Employee
+ + Assembly.FullName:Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+ + AssemblyQualifiedName:Example.DirtyBean.Employee, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+ + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:Person
+  + FullName:Example.Bean.Person
+  + Assembly.FullName:Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  + AssemblyQualifiedName:Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:Object
+  + FullName:System.Object
+  + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + AssemblyQualifiedName:System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+There are no base type.
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+The instance (is at IndentationLevel:0) with type `Type`:0
+ + Name:EmployeeRepository
+ + FullName:Example.Repositories.EmployeeRepository
+ + Assembly.FullName:Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+ + AssemblyQualifiedName:Example.Repositories.EmployeeRepository, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+ + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:GenericRepository`1
+  + FullName:Example.Generics.Repository.GenericRepository`1[[Example.DirtyBean.Employee, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+  + Assembly.FullName:Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  + AssemblyQualifiedName:Example.Generics.Repository.GenericRepository`1[[Example.DirtyBean.Employee, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:Object
+  + FullName:System.Object
+  + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + AssemblyQualifiedName:System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+There are no base type.
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+The instance (is at IndentationLevel:0) with type `Type`:0
+ + Name:GenericRepository`1
+ + FullName:Example.Generics.Repository.GenericRepository`1[[Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+ + Assembly.FullName:Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+ + AssemblyQualifiedName:Example.Generics.Repository.GenericRepository`1[[Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+ + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:Object
+  + FullName:System.Object
+  + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + AssemblyQualifiedName:System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+There are no base type.
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+The instance (is at IndentationLevel:0) with type `Type`:0
+ + Name:RuntimeType
+ + FullName:System.RuntimeType
+ + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+ + AssemblyQualifiedName:System.RuntimeType, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+ + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:TypeInfo
+  + FullName:System.Reflection.TypeInfo
+  + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + AssemblyQualifiedName:System.Reflection.TypeInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:Type
+  + FullName:System.Type
+  + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + AssemblyQualifiedName:System.Type, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:MemberInfo
+  + FullName:System.Reflection.MemberInfo
+  + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + AssemblyQualifiedName:System.Reflection.MemberInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + There are base type as follows:
+The instance (is at IndentationLevel:1) with type `Type`:1
+  + Name:Object
+  + FullName:System.Object
+  + Assembly.FullName:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  + AssemblyQualifiedName:System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+There are no base type.
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+~~~~ end at IndentationLevel:0~~~~
+
+```
 ## reference
 ### API docs
 + [`Type Class`](https://learn.microsoft.com/en-us/dotnet/api/system.type?view=net-8.0)
++ [`Type.GetType Method`](https://learn.microsoft.com/en-us/dotnet/api/system.type.gettype?view=net-8.0)
++ [`Type.GetTypeArray(Object[]) Method`](https://learn.microsoft.com/en-us/dotnet/api/system.type.gettypearray?view=net-8.0)
 
 ### docs
 + [`Type-testing operators and cast expressions - is, as, typeof, and casts`](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/type-testing-and-cast)
