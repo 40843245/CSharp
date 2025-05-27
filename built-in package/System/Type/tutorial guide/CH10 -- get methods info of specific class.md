@@ -1,10 +1,10 @@
-# CH9 -- get methods info of specific type
+# CH12 -- get methods info of specific type
 ## objectives
 You will learn how to
 
 + get methods info of specific type
 
-## CH9.1 -- get methods info of specific type
+## CH12.1 -- get methods info of specific type
 ### `GetMethods` instance method
 To get methods info of specific type,
 

@@ -1,12 +1,12 @@
-# CH9 -- get members info of specific type
+# CH9 -- get members info of specific class
 ## objectives
 You will learn how to
 
-+ get members info of specific type
++ get members info of specific class
 
-## CH9.1 -- get members info of specific type
+## CH9.1 -- get members info of specific class
 ### `GetMembers` instance method
-To get members info of specific type,
+To get members info of specific class,
 
 just simply invoking `GetMembers` instance method.
 

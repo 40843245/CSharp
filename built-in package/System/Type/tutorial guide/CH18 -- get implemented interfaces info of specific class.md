@@ -1,10 +1,10 @@
-# CH11 -- get implemented interfaces info of specific class
+# CH18 -- get implemented interfaces info of specific class
 ## objectives
 You will learn how to
 
 + get implemented interfaces info of specific class
 
-## CH11.1 -- get implemented interfaces info of specific class
+## CH18.1 -- get implemented interfaces info of specific class
 ### `GetInterfaces` instance method
 To get implemented interfaces info of specific class,
 

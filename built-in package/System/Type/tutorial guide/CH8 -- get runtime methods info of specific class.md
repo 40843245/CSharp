@@ -1,12 +1,12 @@
-# CH8 -- get runtime methods info of specific type
+# CH8 -- get runtime methods info of specific class
 ## objectives
 You will learn how to
 
-+ get runtime methods info of specific type
++ get runtime methods info of specific class
 
-## CH8.1 -- get runtime methods info of specific type
+## CH8.1 -- get runtime methods info of specific class
 ### `GetRuntimeMethods` instance method
-To get runtime methods info of specific type,
+To get runtime methods info of specific class,
 
 just simply invoking `GetRuntimeMethods` instance method.
 
