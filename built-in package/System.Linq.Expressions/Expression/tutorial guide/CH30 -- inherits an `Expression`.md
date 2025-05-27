@@ -149,7 +149,7 @@ namespace Example.Utilities.Expressions
 >
 > we want to hide `Expression.Variable` in derived class (according to `C#` syntax).
 >
->[hide member in parent class.png](./hide%20member%20in%20parent%20class.png)
+>![hide member in parent class.png](./hide%20member%20in%20parent%20class.png)
 
 It will output following
 
