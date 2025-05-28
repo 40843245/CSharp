@@ -155,3 +155,7 @@ The System.Object type has 1 constructor(s).
 ## reference
 ### API docs
 + [`Type.GetConstructors Method`](https://learn.microsoft.com/en-us/dotnet/api/system.type.getconstructors?view=net-9.0)
+
++ [`ConstructorInfo Class`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.constructorinfo?view=net-9.0)
+
++ [`BindingFlags Enum`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.bindingflags?view=net-9.0)
