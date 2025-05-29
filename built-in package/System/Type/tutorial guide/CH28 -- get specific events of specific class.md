@@ -1,35 +1,33 @@
-# CH27 -- get specific event by name of specific class
+# CH28 -- get specific events of specific class
 ## objectives
 You will learn how to
 
-+ get specific event by name of specific class
++ get specific events of specific class
 
-## CH27.1 -- get specific event by name of specific class
-### `GetEvent` instance method
-`GetEvent` instance method will find specific event (event type that is defined with `event`) by name that is declared or inherited by current `Type`.
+## CH28.1 -- get specific events of specific class
+### `GetEvents` instance method
+`GetEvents` instance method will find all events (event type that is defined with `event`) that is declared or inherited by current `Type`.
 
 + If the flags (`BindingFlags` enum type) is passed as last argument,
 
-it will also filter the event by the flags (see [overloads](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevent?view=net-8.0#system-type-getevent(system-string-system-reflection-bindingflags)))
+it will also filter the event by the flags (see [overloads](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevents?view=net-8.0#system-type-getevents(system-reflection-bindingflags)))
 
-+ Otherwise, it will filter public event (with `public` modifier) (see [overloads](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevent?view=net-8.0#system-type-getevent(system-string)))
++ Otherwise, it will filter public event (with `public` modifier) (see [overloads](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevents?view=net-8.0#system-type-getevents))
 
 #### Overloads
 
 + 
 
 ```
-public System.Reflection.EventInfo? GetEvent(
-    string name
-);
+public System.Reflection.EventInfo[] GetEvents();
 ```
 
-It will find an event (the first found) by name that is declared or inherited by current `Type` and filter public event (with `public` modifier) (see [overloads](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevent?view=net-8.0#system-type-getevent(system-string)))
+It will find and event by name that is declared or inherited by current `Type` and filter public event (with `public` modifier) (see [overloads](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevents?view=net-8.0#system-type-getevents))
 
 +
 
 ```
-public abstract System.Reflection.EventInfo? GetEvent(
+public abstract System.Reflection.EventInfo? GetEvents(
     string name, 
     System.Reflection.BindingFlags bindingAttr
 );
@@ -72,7 +70,7 @@ Invoking following method
             type = typeof(GenericRepository<Person>);
 
             eventNameToFind = "DeleteOne";
-            eventInfo = type.GetEvent(eventNameToFind);
+            eventInfo = type.GetEvents(eventNameToFind);
 
             text = $"There is {eventInfo?.Name ?? "no such"} event in {type.FullName} type";
 
@@ -87,7 +85,7 @@ Invoking following method
             type = typeof(IGenericRepository<Person>);
 
             eventNameToFind = "DeleteOne";
-            eventInfo = type.GetEvent(eventNameToFind);
+            eventInfo = type.GetEvents(eventNameToFind);
 
             text = $"There is {eventInfo?.Name ?? "no such"} event in {type.FullName} type";
 
@@ -102,7 +100,7 @@ Invoking following method
             type = typeof(StatisticsHandler);
 
             eventNameToFind = "CalculateEvent";
-            eventInfo = type.GetEvent(eventNameToFind);
+            eventInfo = type.GetEvents(eventNameToFind);
 
             text = $"There is {eventInfo?.Name ?? "no such"} event in {type.FullName} type";
 
@@ -130,7 +128,7 @@ There is CalculateEvent event in Example.Helpers.Numbers.StatisticsHandler type
 
 ## reference
 ### API docs
-+ [`Type.GetEvent Method`](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevent?view=net-8.0)
++ [`Type.GetEvents Method`](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevent?view=net-8.0)
 
 + [`EventInfo Class`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.eventinfo?view=net-8.0)
 
