@@ -1,10 +1,10 @@
-# CH20 -- get specific constructor info of specific class
+# CH21 -- get specific constructor info of specific class
 ## objectives
 You will learn how to
 
 + get specific constructor info of specific class
 
-## CH20.1 -- get specific constructor info of specific class
+## CH21.1 -- get specific constructor info of specific class
 ### `GetConstructor` instance method
 To get specific implemented interface info of specific class,
 
