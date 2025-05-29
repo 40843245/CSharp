@@ -11,12 +11,12 @@ To get specific implemented interface info of specific class,
 just simply invoke `GetConstructor` instance method.
 
 #### Overloads
-There are many overloads.
-
 > [!CAUTION]
 > Watch out the meaning in overloads. It is NOT intuitive.
 
-see [`Type.GetConstructor Method`](https://learn.microsoft.com/en-us/dotnet/api/system.type.getconstructor?view=net-9.0) for more details.
+There are many overloads.
+
+see [`Type.GetConstructor Method`](https://learn.microsoft.com/en-us/dotnet/api/system.type.getconstructor?view=net-9.0) for all overloads.
 
 ## examples
 ### example 1
