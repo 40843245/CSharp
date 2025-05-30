@@ -53,7 +53,7 @@ see demo project for complete code.
 Invoking following method
 
 ```
-        /// <summary>
+       /// <summary>
         /// illustrate how to get specific event that is declared or inherited by the current Type.
         /// </summary>
         public static void TestMethod31()
@@ -62,6 +62,7 @@ Invoking following method
 
             int counter = 1;
             Type type;
+            BindingFlags bindingFlags;
             string eventNameToFind = string.Empty;
             EventInfo eventInfo;
             string text;
@@ -74,7 +75,7 @@ Invoking following method
             eventNameToFind = "DeleteOne";
             eventInfo = type.GetEvent(eventNameToFind);
 
-            text = $"There is {eventInfo?.Name ?? "no such"} event in {type.FullName} type";
+            text = $"There is {eventInfo?.Name ?? "no such"} public event in {type.FullName} type";
 
             Console.WriteLine(text);
             Console.WriteLine();
@@ -89,7 +90,7 @@ Invoking following method
             eventNameToFind = "DeleteOne";
             eventInfo = type.GetEvent(eventNameToFind);
 
-            text = $"There is {eventInfo?.Name ?? "no such"} event in {type.FullName} type";
+            text = $"There is {eventInfo?.Name ?? "no such"} public event in {type.FullName} type";
 
             Console.WriteLine(text);
             Console.WriteLine();
@@ -104,7 +105,85 @@ Invoking following method
             eventNameToFind = "CalculateEvent";
             eventInfo = type.GetEvent(eventNameToFind);
 
-            text = $"There is {eventInfo?.Name ?? "no such"} event in {type.FullName} type";
+            text = $"There is {eventInfo?.Name ?? "no such"} public event in {type.FullName} type";
+
+            Console.WriteLine(text);
+            Console.WriteLine();
+
+            counter++;
+
+            ///* ------------------ Example 4 ------------------ *///
+            Console.WriteLine(@"///* ------------------ Example {0} ------------------ *///" , counter);
+
+            type = typeof(GreetingEvent);
+
+            eventNameToFind = "goodMorningEvent";
+            eventInfo = type.GetEvent(eventNameToFind);
+
+            text = $"There is {eventInfo?.Name ?? "no such"} public event in {type.FullName} type";
+
+            Console.WriteLine(text);
+            Console.WriteLine();
+
+            counter++;
+
+            ///* ------------------ Example 5 ------------------ *///
+            Console.WriteLine(@"///* ------------------ Example {0} ------------------ *///" , counter);
+
+            type = typeof(GreetingEvent);
+
+            eventNameToFind = "goodAfternoonEvent";
+            eventInfo = type.GetEvent(eventNameToFind);
+
+            text = $"There is {eventInfo?.Name ?? "no such"} public event in {type.FullName} type";
+
+            Console.WriteLine(text);
+            Console.WriteLine();
+
+            counter++;
+
+            ///* ------------------ Example 6 ------------------ *///
+            Console.WriteLine(@"///* ------------------ Example {0} ------------------ *///" , counter);
+
+            type = typeof(GreetingEvent);
+
+            bindingFlags = BindingFlags.NonPublic;
+            eventNameToFind = "goodMorningEvent";
+            eventInfo = type.GetEvent(eventNameToFind, bindingFlags);
+
+            text = $"There is {eventInfo?.Name ?? "no such"} non-public event in {type.FullName} type";
+
+            Console.WriteLine(text);
+            Console.WriteLine();
+
+            counter++;
+
+            ///* ------------------ Example 7 ------------------ *///
+            Console.WriteLine(@"///* ------------------ Example {0} ------------------ *///" , counter);
+
+            type = typeof(GreetingEvent);
+
+            bindingFlags = BindingFlags.NonPublic;
+            eventNameToFind = "goodAfternoonEvent";
+            eventInfo = type.GetEvent(eventNameToFind, bindingFlags);
+
+            text = $"There is {eventInfo?.Name ?? "no such"} non-public event in {type.FullName} type";
+
+            Console.WriteLine(text);
+            Console.WriteLine();
+
+            counter++;
+
+            ///* ------------------ Example 8 ------------------ *///
+            Console.WriteLine(@"///* ------------------ Example {0} ------------------ *///" , counter);
+
+            type = typeof(GreetingEvent);
+
+            bindingFlags = BindingFlags.NonPublic;
+            eventNameToFind = "goodEveningEvent";
+            eventInfo = type.GetEvent(eventNameToFind, bindingFlags);
+
+            text = $"There is {eventInfo?.Name ?? "no such"} non-public event in {type.FullName} type";
 
             Console.WriteLine(text);
             Console.WriteLine();
@@ -118,13 +197,28 @@ will output following
 ```
 In TestMethod31 method call
 ///* ------------------ Example 1 ------------------ *///
-There is no such event in Example.Generics.Repository.GenericRepository`1[[Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] type
+There is no such public event in Example.Generics.Repository.GenericRepository`1[[Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] type
 
 ///* ------------------ Example 2 ------------------ *///
-There is no such event in Example.Generics.Repository.IGenericRepository`1[[Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] type
+There is no such public event in Example.Generics.Repository.IGenericRepository`1[[Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] type
 
 ///* ------------------ Example 3 ------------------ *///
-There is CalculateEvent event in Example.Helpers.Numbers.StatisticsHandler type
+There is CalculateEvent public event in Example.Helpers.Numbers.StatisticsHandler type
+
+///* ------------------ Example 4 ------------------ *///
+There is goodMorningEvent public event in Example.Helpers.Events.GreetingEvent type
+
+///* ------------------ Example 5 ------------------ *///
+There is no such public event in Example.Helpers.Events.GreetingEvent type
+
+///* ------------------ Example 6 ------------------ *///
+There is no such non-public event in Example.Helpers.Events.GreetingEvent type
+
+///* ------------------ Example 7 ------------------ *///
+There is no such non-public event in Example.Helpers.Events.GreetingEvent type
+
+///* ------------------ Example 8 ------------------ *///
+There is no such non-public event in Example.Helpers.Events.GreetingEvent type
 
 ```
 
