@@ -19,29 +19,29 @@ it will also filter the event by the flags (see [overloads](https://learn.micros
 + 
 
 ```
-public System.Reflection.EventInfo[] GetEvents();
+public virtual System.Reflection.EventInfo[] GetEvents();
 ```
 
-It will find and event by name that is declared or inherited by current `Type` and filter public event (with `public` modifier) (see [overloads](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevents?view=net-8.0#system-type-getevents))
+It will find all events that is declared or inherited by current `Type` and filter public event (with `public` modifier) (see [overloads](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevents?view=net-8.0#system-type-getevents))
 
 +
 
 ```
-public abstract System.Reflection.EventInfo? GetEvents(
-    string name, 
+public abstract System.Reflection.EventInfo[] GetEvents(
     System.Reflection.BindingFlags bindingAttr
 );
 ```
 
-It will by name that is declared or inherited by current `Type` and filter the event by the flags (see [overloads](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevent?view=net-8.0#system-type-getevent(system-string-system-reflection-bindingflags)))
+It will by name that is declared or inherited by current `Type` and filter the event by the flags (see [overloads](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevents?view=net-8.0#system-type-getevents(system-reflection-bindingflags)))
+
 #### Returned value
-It will return `EventInfo?`.
+It will return `EventInfo[]`.
 
 + When it finds such event by name of current `Type`, 
 
-it will an `EventInfo?` which is NOT null.
+it will return a non-empty array of `EventInfo`
 
-+ Otherwise, it will return null (`EventInfo?` type)
++ Otherwise, it will return an non-empty array of `EventInfo`
 
 ## examples
 ### example 1
