@@ -52,29 +52,29 @@ Invoking following method
 
 ```
         /// <summary>
-        /// illustrate how to get specific event that is declared or inherited by the current Type.
+        /// illustrate how to get events that is declared or inherited by the current Type.
         /// </summary>
-        public static void TestMethod31()
+        public static void TestMethod33()
         {
             Console.WriteLine("In {0} method call" , MethodBase.GetCurrentMethod().Name);
 
             int counter = 1;
             Type type;
-            string eventNameToFind = string.Empty;
-            EventInfo eventInfo;
-            string text;
+            BindingFlags bindingFlags;
+            BindingFlags[] bindingFlagses;
+            EventInfo[] eventInfos;
+            string textInfo;
 
             ///* ------------------ Example 1 ------------------ *///
             Console.WriteLine(@"///* ------------------ Example {0} ------------------ *///" , counter);
 
             type = typeof(GenericRepository<Person>);
 
-            eventNameToFind = "DeleteOne";
-            eventInfo = type.GetEvents(eventNameToFind);
+            eventInfos = type.GetEvents();
 
-            text = $"There is {eventInfo?.Name ?? "no such"} event in {type.FullName} type";
+            textInfo = eventInfos.GetInfo(sourceType: type);
 
-            Console.WriteLine(text);
+            Console.WriteLine(textInfo);
             Console.WriteLine();
 
             counter++;
@@ -84,12 +84,11 @@ Invoking following method
 
             type = typeof(IGenericRepository<Person>);
 
-            eventNameToFind = "DeleteOne";
-            eventInfo = type.GetEvents(eventNameToFind);
+            eventInfos = type.GetEvents();
 
-            text = $"There is {eventInfo?.Name ?? "no such"} event in {type.FullName} type";
+            textInfo = eventInfos.GetInfo(sourceType: type);
 
-            Console.WriteLine(text);
+            Console.WriteLine(textInfo);
             Console.WriteLine();
 
             counter++;
@@ -99,12 +98,83 @@ Invoking following method
 
             type = typeof(StatisticsHandler);
 
-            eventNameToFind = "CalculateEvent";
-            eventInfo = type.GetEvents(eventNameToFind);
+            eventInfos = type.GetEvents();
 
-            text = $"There is {eventInfo?.Name ?? "no such"} event in {type.FullName} type";
+            textInfo = eventInfos.GetInfo(sourceType: type);
 
-            Console.WriteLine(text);
+            Console.WriteLine(textInfo);
+            Console.WriteLine();
+
+            counter++;
+
+            ///* ------------------ Example 4 ------------------ *///
+            Console.WriteLine(@"///* ------------------ Example {0} ------------------ *///" , counter);
+
+            type = typeof(GreetingEvent);
+
+            eventInfos = type.GetEvents();
+
+            textInfo = eventInfos.GetInfo(sourceType: type);
+
+            Console.WriteLine(textInfo);
+            Console.WriteLine();
+
+            counter++;
+
+            ///* ------------------ Example 5 ------------------ *///
+            Console.WriteLine(@"///* ------------------ Example {0} ------------------ *///" , counter);
+
+            type = typeof(GreetingEvent);
+
+            eventInfos = type.GetEvents();
+
+            textInfo = eventInfos.GetInfo(sourceType: type);
+
+            Console.WriteLine(textInfo);
+            Console.WriteLine();
+
+            counter++;
+
+            ///* ------------------ Example 6 ------------------ *///
+            Console.WriteLine(@"///* ------------------ Example {0} ------------------ *///" , counter);
+
+            type = typeof(GreetingEvent);
+
+            bindingFlags = 
+                BindingFlags.NonPublic
+                ;
+            bindingFlagses = new BindingFlags [ ]
+            {
+                BindingFlags.NonPublic
+            };
+
+            eventInfos = type.GetEvents();
+
+            textInfo = eventInfos.GetInfo(sourceType: type, bindingFlagses: bindingFlagses);
+
+            Console.WriteLine(textInfo);
+            Console.WriteLine();
+
+            counter++;
+
+            ///* ------------------ Example 7 ------------------ *///
+            Console.WriteLine(@"///* ------------------ Example {0} ------------------ *///" , counter);
+
+            type = typeof(GreetingEvent);
+
+            bindingFlags =
+                BindingFlags.Static
+                ;
+            bindingFlagses = new BindingFlags [ ]
+            {
+                BindingFlags.NonPublic
+            };
+
+            eventInfos = type.GetEvents();
+
+            textInfo = eventInfos.GetInfo(sourceType: type , bindingFlagses: bindingFlagses);
+
+            Console.WriteLine(textInfo);
             Console.WriteLine();
 
             counter++;
@@ -114,23 +184,69 @@ Invoking following method
 will output following
 
 ```
-In TestMethod31 method call
+In TestMethod33 method call
 ///* ------------------ Example 1 ------------------ *///
-There is no such event in Example.Generics.Repository.GenericRepository`1[[Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] type
+With these flags:
+BindingFlags.Public
+There are no such events found in Example.Generics.Repository.GenericRepository`1[[Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] type.
 
 ///* ------------------ Example 2 ------------------ *///
-There is no such event in Example.Generics.Repository.IGenericRepository`1[[Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] type
+With these flags:
+BindingFlags.Public
+There are no such events found in Example.Generics.Repository.IGenericRepository`1[[Example.Bean.Person, Example, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] type.
 
 ///* ------------------ Example 3 ------------------ *///
-There is CalculateEvent event in Example.Helpers.Numbers.StatisticsHandler type
+With these flags:
+BindingFlags.Public
+There are 1 such events found in Example.Helpers.Numbers.StatisticsHandler type.
+0th info:
+Name:CalculateEvent
+EventHandlerType.FullName:Example.Helpers.Numbers.StatisticsHandler+CalculateEventHandler
+DeclaringType.FullName:Example.Helpers.Numbers.StatisticsHandler
 
+
+///* ------------------ Example 4 ------------------ *///
+With these flags:
+BindingFlags.Public
+There are 1 such events found in Example.Helpers.Events.GreetingEvent type.
+0th info:
+Name:goodMorningEvent
+EventHandlerType.FullName:Example.Helpers.Events.GreetingEvent+GoodMorningEventHandler
+DeclaringType.FullName:Example.Helpers.Events.GreetingEvent
+
+
+///* ------------------ Example 5 ------------------ *///
+With these flags:
+BindingFlags.Public
+There are 1 such events found in Example.Helpers.Events.GreetingEvent type.
+0th info:
+Name:goodMorningEvent
+EventHandlerType.FullName:Example.Helpers.Events.GreetingEvent+GoodMorningEventHandler
+DeclaringType.FullName:Example.Helpers.Events.GreetingEvent
+
+
+///* ------------------ Example 6 ------------------ *///
+With these flags:
+BindingFlags.NonPublic
+There are 1 such events found in Example.Helpers.Events.GreetingEvent type.
+0th info:
+Name:goodMorningEvent
+EventHandlerType.FullName:Example.Helpers.Events.GreetingEvent+GoodMorningEventHandler
+DeclaringType.FullName:Example.Helpers.Events.GreetingEvent
+
+
+///* ------------------ Example 7 ------------------ *///
+With these flags:
+BindingFlags.NonPublic
+There are 1 such events found in Example.Helpers.Events.GreetingEvent type.
+0th info:
+Name:goodMorningEvent
+EventHandlerType.FullName:Example.Helpers.Events.GreetingEvent+GoodMorningEventHandler
+DeclaringType.FullName:Example.Helpers.Events.GreetingEvent
 ```
 
 ## reference
 ### API docs
-+ [`Type.GetEvents Method`](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevent?view=net-8.0)
++ [`Type.GetEvents Method`](https://learn.microsoft.com/en-us/dotnet/api/system.type.getevents?view=net-8.0)
 
 + [`EventInfo Class`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.eventinfo?view=net-8.0)
-
-### examples
-The code of example 1 are referenced then modified by [the example provided b資Google Gemini](https://g.co/gemini/share/040c487610c1)
