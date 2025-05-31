@@ -8,7 +8,7 @@ You will learn how to
 ### `GetMethod` instance method of current `Type`
 Invoking `GetMethod` instance method of current `Type` 
 
-will return `MethodInfo[]` representing all methods of the instance.
+will return `MethodInfo[]` representing all methods of current `Type`.
 
 If there are no methods defined in current `Type`,
 
