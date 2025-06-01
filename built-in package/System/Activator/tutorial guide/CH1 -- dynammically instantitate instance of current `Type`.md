@@ -6,6 +6,7 @@ You will learn how to
 
 ## CH1.1 -- dynammically instantitate instance of current `Type`
 ### `Activator.CreateInstance` static method
+Creates an instance of the specified type using the constructor that best matches the specified parameters.
 
 ## examples
 ### example 1
