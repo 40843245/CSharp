@@ -6,6 +6,8 @@ You will learn how to
 
 + get the method definition from a generic method
 
++ get the type of arguments of a generic method or the type parameters of a generic method definition
+
 ## CH5.1 -- make a method into a generic method
 ### `MakeGenericMethod` instance method
 Given current (non-generic) method info (whose method is defined with generic) and `Type`,
@@ -17,6 +19,16 @@ Given current (non-generic) method info (whose method is defined with generic) a
 Given the current generic method info, 
 
 `GetGenericMethodDefinition` instance method will return the (non-generic) method definition.
+
+## CH5.3 -- get the type of arguments of a generic method or the type parameters of a generic method definition
+### `GetGenericArguments` instance method
+`GetGenericArguments` instance method will get the type of arguments of a generic method or the type parameters of a generic method definition.
+
+It will return `Type[]`.
+
+If there are no arguments of a generic method or the type parameters,
+
+it will return an empty array of `Type`.
 
 ## examples
 ### example 1
@@ -92,6 +104,8 @@ Void Generic[T](T)
 + [`MethodInfo.MakeGenericMethod(Type[]) Method`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.methodinfo.makegenericmethod?view=net-8.0) 
 
 + [`MethodInfo.GetGenericMethodDefinition Method`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.methodinfo.getgenericmethoddefinition?view=net-8.0)
+
++ [`MethodInfo.GetGenericArguments Method`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.methodinfo.getgenericarguments?view=net-8.0)
 
 ### examples
 + The code of example 1 is referenced from example of [`MethodInfo.MakeGenericMethod(Type[]) Method`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.methodinfo.makegenericmethod?view=net-8.0) and [`MethodInfo.GetGenericMethodDefinition Method`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.methodinfo.getgenericmethoddefinition?view=net-8.0)
