@@ -20,26 +20,7 @@ Invoking following method
         /// </summary>
         public static void TestMethod2()
         {
-            string guid = Guid.NewGuid().ToString();
-            string fileExtension = ".log";
-            string fileName = $@"Output in {MethodBase.GetCurrentMethod().Name} method";
-
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string projectRootDirectory = Directory.GetParent(baseDirectory).Parent.Parent.FullName;
-
-            string fileDirectory = 
-                Path.Combine(
-                    projectRootDirectory,
-                    "AppData",
-                    "Output",
-                    "Console"             
-                );
-
-            string fileFullPath =
-                Path.Combine(
-                    fileDirectory,
-                    $@"{fileName}_{guid}{fileExtension}"
-                );
+            string fileFullPath = FilePathHandler.FileFullPathHandler.GetExportedMessageFullPath(MethodBase.GetCurrentMethod().Name);
 
             Console.WriteLine("In {0} method call," , MethodBase.GetCurrentMethod().Name);
             Console.WriteLine("The output on the console will be exported into a `.log` file.");
