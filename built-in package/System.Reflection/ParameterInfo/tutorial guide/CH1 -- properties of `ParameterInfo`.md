@@ -8,7 +8,30 @@ You will know these common properties of `ParameterInfo`.
 ## examples
 ### example 1
 #### main code
-In this example, it will list some infos about assembly of class the root project `Program.cs`.
+In this example, it will list some metadata about assembly of class the root project `Program.cs`.
+
+> [!NOTE]
+> For new babie, to know the meaning of properties of `ParameterInfo` instance.
+>
+> Just pay attention to this code block.
+> 
+> ```
+> if(memberInfos.MemberType == MemberTypes.Method)
+> ```
+>
+> Other parts of code snippet is unrelated to `ParameterInfo` class.
+>
+> and it is harder to understand, 
+>
+> even one is familar with reflection and the use case of class under `System.Reflection` namespace.
+>
+> Thus, I NOT recommend to pay lots of attention to other parts.
+>
+
+> [!NOTE]
+> The code snippet is similar to code snippet of example 1 in [Advanced Reading CH3 -- discover the attributes of a parameter and provides access to parameter metadata.md](Advanced%20Reading%20CH3%20--%20discover%20the%20attributes%20of%20a%20parameter%20and%20provides%20access%20to%20parameter%20metadata.md)
+> 
+> which is referenced from the first example in MSDS [`ParameterInfo Class`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.parameterinfo?view=net-9.0) and then is modified by author.
 
 Invoking following method
 
@@ -161,14 +184,16 @@ Invoking following method
         }
 ```
 
-will export these info into a log (`.log`) file under `~/AppData/Output/Console` directory.
+will export these info into a log (`.log`) file under `~/AppData/Output/Console` directory
+
+after executing this method.
 
 ## reference
 ### API docs
 + [`ParameterInfo Class`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.parameterinfo?view=net-9.0)
 
 ### examples
-+ The code in example 1 is referenced from the first example in (https://learn.microsoft.com/en-us/dotnet/api/system.reflection.parameterinfo?view=net-9.0) .Then it is modified and is refactored by author.
++ The code in example 1 is referenced from the first example in [`ParameterInfo Class`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.parameterinfo?view=net-9.0) .Then it is modified and is refactored by author.
 
 ### further reading
 + About how to export output from console into a file (used in example 1), see
