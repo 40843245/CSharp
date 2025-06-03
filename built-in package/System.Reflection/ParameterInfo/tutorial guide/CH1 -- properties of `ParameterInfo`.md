@@ -3,7 +3,7 @@
 You will know these common properties of `ParameterInfo`.
 
 ## CH1.1 -- properties of `ParameterInfo`
-see []
++ [`ParameterInfo Class`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.parameterinfo?view=net-9.0)
 
 ## examples
 ### example 1
