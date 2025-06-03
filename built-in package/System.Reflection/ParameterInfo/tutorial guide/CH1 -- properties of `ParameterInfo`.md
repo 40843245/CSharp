@@ -46,28 +46,11 @@ Invoking following method
                 OutputHandler.Display(indentationLevel , "Assembly identity={0}" , assembly.FullName);
                 OutputHandler.Display(indentationLevel + 1 , "Codebase={0}" , assembly.CodeBase);
 
-                // Display the set of assemblies our assemblies reference.
-
-                OutputHandler.Display(indentationLevel , "Referenced assemblies:");
-                AssemblyName [ ] referencedAssembliesName = assembly.GetReferencedAssemblies();
-                foreach(AssemblyName referencedAssemblyName in referencedAssembliesName)
-                {
-                    OutputHandler.Display(indentationLevel + 1 , "Name={0}, Version={1}, Culture={2}, PublicKey token={3}" , referencedAssemblyName.Name , referencedAssemblyName.Version , referencedAssemblyName.CultureInfo.Name , (BitConverter.ToString(referencedAssemblyName.GetPublicKeyToken())));
-                }
-                OutputHandler.Display(indentationLevel , "");
-
                 Assembly [ ] currentAppDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
                 // Display information about each assembly loading into this AppDomain.
                 foreach(Assembly currentAppDomainAssembly in currentAppDomainAssemblies)
                 {
                     OutputHandler.Display(indentationLevel , "Assembly: {0}" , currentAppDomainAssembly);
-
-                    Module [ ] currentAppDomainModules = currentAppDomainAssembly.GetModules(true);
-                    // Display information about each module of this assembly.
-                    foreach(Module currentAppDomainModule in currentAppDomainModules)
-                    {
-                        OutputHandler.Display(indentationLevel + 1 , "Module: {0}" , currentAppDomainModule.Name);
-                    }
 
                     // Display information about each type exported from this assembly.
                     Type [ ] currentAppDomainExportedTypes = currentAppDomainAssembly.GetExportedTypes();
@@ -162,16 +145,6 @@ Invoking following method
                                             customAttributeData.AttributeType.FullName
                                         );
                                     }
-                                }
-                            }
-
-                            // If the member is a property, display information about the property's accessor methods.
-                            if(memberInfos.MemberType == MemberTypes.Property)
-                            {
-                                MethodInfo [ ] accessorsInfo = ((PropertyInfo)memberInfos).GetAccessors();
-                                foreach(MethodInfo accessorInfo in accessorsInfo)
-                                {
-                                    OutputHandler.Display(indentationLevel + 1 , "Accessor method: {0}" , accessorInfo);
                                 }
                             }
                         }
