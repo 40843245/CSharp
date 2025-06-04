@@ -1,11 +1,11 @@
-# CH2 -- describe a property with annotation
+# CH2 -- describe a property with `DescriptionAttribute` attribute inside annotation
 ## objectives
 You will learn how to
 
-+ describe a property with annotation
++ describe a property with `DescriptionAttribute` attribute inside annotation
 
-## CH2.1 -- describe a property with annotation
-### `DescriptionAttribute` annotation 
+## CH2.1 -- describe a property with `DescriptionAttribute` attribute inside annotation
+### `DescriptionAttribute` attribute 
 
 In this example, 
 
@@ -37,6 +37,24 @@ public class SociaMediaChannel
 see demo project.
 
 #### main code
+In this code snippets, there are no such property whose name is `SociaMediaChannel` (return value of `nameof(sociaMediaChannelNico)`),
+
+thus it will throw `System.NullReferenceException` exception at runtime.
+
+However, one catchs the exception with `try-catch` block and, 
+
+in `catch` block, I invoke the `Console.Error` method.
+
+Therefore, when `System.NullReferenceException` is thrown,
+
+it will be catch and stop at this statement (`Console.Error` statement),
+
+then it will continue executing the code by pressing play button.
+
+> [!NOTE]
+> 
+> If the exception is NOT caught, it will force to exit the code when one presses playing button. 
+
 Invoking following method
 
 ```
