@@ -1,10 +1,10 @@
-# Advanced Reading CH3 -- discover the attributes of a parameter and provides access to parameter metadata
+# Advanced Reading CH4 -- discover the attributes of a parameter and provides access to parameter metadata
 ## objectives
 You will learn how to
 
 + discover the attributes of a parameter and provides access to parameter metadata
 
-## Advanced Reading CH3.1 -- discover the attributes of a parameter and provides access to parameter metadata
+## Advanced Reading CH4.1 -- discover the attributes of a parameter and provides access to parameter metadata
 see following example.
 
 ## examples
