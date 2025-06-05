@@ -39,6 +39,7 @@ Then I wrote something like following example 1.
 ### example 1
 #### main code
 Invoking following method
+
 ```
 // ... other import stament
 
@@ -46,6 +47,9 @@ namespace Example.DemoClass
 {
     public class DemoClass1
     {
+        /// <summary>
+        /// illustrate how to get current running method info.
+        /// </summary>
         public static void TestMethod1()
         {
             Console.WriteLine("In {0} method call," , MethodBase.GetCurrentMethod().Name);
