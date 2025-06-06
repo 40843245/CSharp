@@ -112,4 +112,4 @@ Info about 1th Item:
 End of TestMethod3 method call,
 ```
 
-To see highlighted output in Console, see [built-in package/System.Reflection/MethodBase/tutorial guide/output of TestMethod3 method call.docx]()
+To see highlighted output in Console, see [output of TestMethod3 method call.docx](output%20of%20TestMethod3%20method%20call.docx)
