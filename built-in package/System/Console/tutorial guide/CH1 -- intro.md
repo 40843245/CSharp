@@ -32,6 +32,11 @@ In `C#`, one can prints text to console by invoking
 
 which will be discussed in CH2.
 
+## CH1.3 -- `Console`
+### `Console` static object
+#### namespace
+`System`
+
 ## reference
 ### terms
 + [`Consoles`](https://learn.microsoft.com/en-us/windows/console/consoles)
