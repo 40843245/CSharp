@@ -49,6 +49,8 @@ it will also NOT resize the window (created by executing `Example.exe` in `VS Te
 
 ![example of NOT resize height of window as 2 rows by executing project in VS](example%20of%20NOT%20resize%20height%20of%20window%20as%202%20rows%20by%20executing%20project%20in%20VS.png)
 
+[demo video](resize%20the%20window%20programmatically%20in%20CSharp%20by%20executing%20executable%20file%20in%20cmd.exe.mkv)
+
 Thanks to [Google Gemini's response](https://g.co/gemini/share/12b161ada1f6) which gives an detail explanation and the author came up with its response.
 
 ### `Console.WindowHeight` property
