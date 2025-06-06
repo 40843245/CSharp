@@ -15,7 +15,8 @@ check an overloaded method of a base class is hidden in its derived class by `ne
 ## examples
 ### example 1
 #### Bean
-``
+see demo project.
+
 #### main code
 Invoking following method
 
@@ -113,3 +114,7 @@ End of TestMethod3 method call,
 ```
 
 To see highlighted output in Console, see [output of TestMethod3 method call.docx](output%20of%20TestMethod3%20method%20call.docx)
+
+## reference
+### API docs
++ [`MethodBase.IsHideBySig Property`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.methodbase.ishidebysig?view=net-9.0)
