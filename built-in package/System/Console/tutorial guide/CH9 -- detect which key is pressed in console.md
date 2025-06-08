@@ -115,3 +115,14 @@ The following method will be exit iff the user inputs `cancel` key.
             Console.WriteLine("End of {0} method call," , MethodBase.GetCurrentMethod().Name);
         }
 ```
+
+## reference
+### API docs
++ [`Console.CapsLock Property`](https://learn.microsoft.com/en-us/dotnet/api/system.console.capslock?view=net-8.0)
+
++ [`Console.NumberLock Property`](https://learn.microsoft.com/en-us/dotnet/api/system.console.numberlock?view=net-8.0)
+
++ [`Console.ReadKey Method`](https://learn.microsoft.com/en-us/dotnet/api/system.console.readkey?view=net-8.0)
+
++ [`ConsoleKeyInfo Struct`](https://learn.microsoft.com/en-us/dotnet/api/system.consolekeyinfo?view=net-8.0)
+
