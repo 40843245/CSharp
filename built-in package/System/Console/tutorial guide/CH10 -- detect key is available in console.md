@@ -10,30 +10,39 @@ return true iff whether a key press is available in the input stream.
 
 ## examples
 ### example 1
-In this example, the loop terminates iff when the user presses the "Clear" key.
+In this example, it illustrates how to detect the key press in console is available.
 
 ```
         /// <summary>
-        /// Executes a loop that prompts the user to press any key to continue or exit the loop.
+        /// illustrate how to
+        /// 
+        /// + detect the key press in console is available 
         /// </summary>
-        /// <remarks>This method continuously displays a message in the console, waiting for user input.
-        /// The loop terminates when the user presses the "Clear" key.
-        /// </remarks>
-        public static void TestMethod9()
+        public static void TestMethod13()
         {
-            Console.WriteLine("In {0} method call," , MethodBase.GetCurrentMethod().Name);
+            Console.WriteLine("In {0} method call,",MethodBase.GetCurrentMethod().Name);
 
-            while(true)
+            ConsoleKeyInfo key;
+
+            do
             {
-                Console.WriteLine("Press any key to continue, or `cancel` to exit.");
-                ConsoleKeyInfo key = Console.ReadKey(true); // read a key without displaying it in the console.
-                if(key.Key == ConsoleKey.Clear)
+                Console.WriteLine("\nPress a key to display; press the 'x' key to quit.");
+
+                // Your code could perform some useful task in the following loop. However,
+                // for the sake of this example we'll merely pause for a quarter second.
+
+                while(!Console.KeyAvailable)
                 {
-                    break;
+                    Thread.Sleep(250); // Loop until input is entered.
                 }
 
-            }
-            Console.WriteLine("End of {0} method call," , MethodBase.GetCurrentMethod().Name);
+                key = Console.ReadKey(true);
+                Console.WriteLine("You pressed the '{0}' key." , key.Key);
+            } while(key.Key != ConsoleKey.X);
+
+            Console.WriteLine("GoodBye");
+
+            Console.WriteLine("End of {0} method call",MethodBase.GetCurrentMethod().Name);
         }
 ```
 
