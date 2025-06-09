@@ -39,10 +39,39 @@ if(key.Key == ConsoleKey.F1)
 
 if(key.Key == ConsoleKey.Clear)
 {
-    // if the user pressed the `cancel` key.
+    // if the user pressed the `clear` key.
     break;
 }
 ```
+
+### `ConsoleKeyInfo.Modifier` instance method
+> [!IMPORTANT]
+> Key modifiers in computer science are those keys on keyboard that 
+> 
+> can be detected whether they will be pressed with other key at same time.
+>
+> For example,
+> 
+> the OS can detect the user is pressed NOT ONLY `CTL` + `C`
+>
+> BUT ALSO `CTL` + `R` at same time.
+>
+> So, `CTL` (control key) is a key modifier.
+>
+> Key modifiers for Windows include:
+>
+> + `CTL`: control key
+> + `Alt`: `Alt` key
+> + `Shift`: `Shift` key.
+
+In `C#`, the `ConsoleModifiers` enum value are consist of following key modifier.
+
+| Name | Value | Description | 
+| :-- | :-- | :-- |
+| None | 0 | | 
+| Alt | 1 | The left or right ALT modifier key. |
+| Shift | 2 | The left or right SHIFT modifier key. |
+| Control | 4 | The left or right CTRL modifier key. |
 
 ### `Console.CapsLock` static getter-property
 `Console.CapsLock` static getter-property will return `true` 
@@ -89,7 +118,7 @@ End of TestMethod8 method call,
 
 ### example 2
 #### main code
-The following method will be exit iff the user inputs `cancel` key.
+The following method will be exit iff the user inputs clear key.
 
 ```
         /// <summary>
@@ -125,4 +154,6 @@ The following method will be exit iff the user inputs `cancel` key.
 + [`Console.ReadKey Method`](https://learn.microsoft.com/en-us/dotnet/api/system.console.readkey?view=net-8.0)
 
 + [`ConsoleKeyInfo Struct`](https://learn.microsoft.com/en-us/dotnet/api/system.consolekeyinfo?view=net-8.0)
+
++ [`ConsoleModifiers Enum`](https://learn.microsoft.com/en-us/dotnet/api/system.consolemodifiers?view=net-9.0)
 
