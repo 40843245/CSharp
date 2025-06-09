@@ -61,13 +61,20 @@ do
 
 ### example 2
 #### main code
-In this example, it illustrates other way to do so in example 1
+The following method, it illustrates a better and flexible way to do so in example 1.
 
 ```
-                while(!Console.KeyAvailable)
-                {
-                    Thread.Sleep(250); // Loop until input is entered.
-                }
+       /// <summary>
+       /// waits until a key is pressed before continuing execution.
+       /// </summary>
+       public static void WaitUntilKeyAvailable()
+       {
+           while(!Console.KeyAvailable)
+           {
+               // Wait until a key is pressed
+               Thread.Sleep(250); // Sleep to avoid busy waiting
+           }
+       }
 ```
 
 And it can be used as follows.
