@@ -10,7 +10,67 @@ return true iff whether a key press is available in the input stream.
 
 ## examples
 ### example 1
-In this example, it illustrates how to detect the key press in console is available.
+### example 1
+#### main code
+The following method will simulate how to clear the buffer -- a queue that 
+
+stores the key from user inputs 
+
+(i.e. return value of `Console.ReadKey` static method call).
+
+The user inputs during the code is sleeping,
+
+will be put in the queue and immediately be consumed, so that
+
+after sleeping, the queue does NOT contain the user inputs during the code is sleeping.
+
+This can simulate the simulate how to clear the buffer
+
+```
+public static class KeyboardHelper
+{
+    /// <summary>
+    /// Clears any pending input from the console's input buffer.
+    /// </summary>
+    public static void ClearConsoleInputBuffer()
+    {
+        while(Console.KeyAvailable)
+        {
+            Console.ReadKey(true); // Read and discard the key
+        }
+    }
+}
+```
+
+And it can be used as follows.
+
+```
+do
+{
+    Console.WriteLine("Press any key to continue or Press `X` key to exit.");
+    KeyboardHelper.ClearConsoleInputBuffer(); // Clear any pending input from the console's input buffer.
+    currentKeyInfo = Console.ReadKey(true); // read a key without displaying it in the console.
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.WriteLine("You pressed `{0}`.Continuing..." , currentKeyInfo.GetInfo());
+    Console.ResetColor();
+
+    previousKeyInfo = currentKeyInfo;
+    Thread.Sleep(1000); // Prevent busy-waiting                
+} while(true);
+```
+
+### example 2
+#### main code
+In this example, it illustrates other way to do so in example 1
+
+```
+                while(!Console.KeyAvailable)
+                {
+                    Thread.Sleep(250); // Loop until input is entered.
+                }
+```
+
+And it can be used as follows.
 
 ```
         /// <summary>
