@@ -144,7 +144,7 @@ Invoking following method
         }
 ```
 
-might be shown as [demo video](./demo%20of%20beep%20programmatically.mkv)
+might be shown as [demo video](https://github.com/40843245/CSharp/blob/master/demo%20of%20beep%20programmatically.mkv)
 
 ## reference
 ### API docs
