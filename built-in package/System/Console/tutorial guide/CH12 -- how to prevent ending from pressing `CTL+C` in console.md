@@ -65,7 +65,7 @@ Invoking following method
 
 might output following
 
-[demo project](demo%20of%20pressing%20control%20in%20console.mkv)
+[demo video](demo%20of%20pressing%20control%20in%20console.mkv)
 
 ## reference
 ### API docs
