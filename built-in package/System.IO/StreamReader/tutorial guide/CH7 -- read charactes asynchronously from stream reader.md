@@ -91,27 +91,6 @@ iff the pointer points to the end of the stream and
 
 there are no available char that can be read.
 
-### difference between `StreamReader.Read` and `StreamReader.ReadAsync`
-For their behaviour, the main difference between
-
-`StreamReader.Read(char[] buffer, int index, int count)`
-
-and 
-
-`StreamReader.ReadAsync(char[] buffer, int index, int count)`
-
-instance method is 
-
-the reading is **sync** or **async**
-
-+ `StreamReader.Read(char[] buffer, int index, int count)`:
-
-**synchronously** read more characters from stream reader.
-
-+ `StreamReader.ReadAsync(char[] buffer, int index, int count)`
-
-**asynchronously** read more characters from stream reader.
-
 ## examples
 ### example 1
 #### main code
