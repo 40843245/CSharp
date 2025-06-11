@@ -68,9 +68,7 @@ and
 
 instance method is 
 
-the reading is **sync** or **async**, or 
-
-whether there is **no guarantee**.
+whether it does **NOT guarantee** that reads `count` characters.
 
 + `StreamReader.Read(char[] buffer, int index, int count)`:
 
@@ -322,6 +320,100 @@ read `10` char, these chars `\nOf\r\nWords` to be read.
 End of TestMethod6 method call,
 ```
 
+### example 4
+#### main code
+Invoking following method
+
+```
+        /// <summary>
+        /// illustrate how to
+        /// 
+        /// + read a set of character **with guarantee** from a file using `System.IO.StreamReader` and `Span<char>`.
+        /// 
+        /// </summary>
+        public static void TestMethod11()
+        {
+            Console.WriteLine("In {0} method call," , MethodBase.GetCurrentMethod().Name);
+            string inputDirectory = Example.Constants.PathConstants.DirectoryConstants.INPUT;
+            string fileName = "Words.txt";
+            string filePath = System.IO.Path.Combine(inputDirectory , fileName);
+            
+            int length = 10; // Define the length of the buffer
+            Span<char> buffer = stackalloc char [ length ]; // Allocate a buffer on the stack
+
+            using(StreamReader streamReader = new StreamReader(filePath))
+            {
+                int numberOfCharToRead = -1;
+                while((numberOfCharToRead = streamReader.ReadBlock(buffer)) > 0)
+                {
+                    Console.WriteLine("read `{0}` char, these chars `{1}` to be read." , numberOfCharToRead , buffer.ToString().Replace("\n" , "\\n").Replace("\r" , "\\r"));
+                }
+            }
+
+            Console.WriteLine("End of {0} method call," , MethodBase.GetCurrentMethod().Name);
+        }
+```
+
+will output following
+
+```
+In TestMethod11 method call,
+read `10` char, these chars `Hello\r\nWor` to be read.
+read `10` char, these chars `ld\r\nA\r\nFil` to be read.
+read `10` char, these chars `e\r\nContain` to be read.
+read `10` char, these chars `\r\nA\r\nList\r` to be read.
+read `10` char, these chars `\nOf\r\nWords` to be read.
+End of TestMethod11 method call,
+```
+
+### example 5
+Invoking following method
+
+```
+        /// <summary>
+        /// illustrate how to
+        /// 
+        /// + read a set of character **with guarantee** from a file using `System.IO.StreamReader` and `char []`.
+        /// </summary>
+        public static void TestMethod12()
+        {
+            Console.WriteLine("In {0} method call," , MethodBase.GetCurrentMethod().Name);
+            string inputDirectory = Example.Constants.PathConstants.DirectoryConstants.INPUT;
+            string fileName = "Words.txt";
+            string filePath = System.IO.Path.Combine(inputDirectory , fileName);
+            using(StreamReader streamReader = new StreamReader(filePath))
+            {
+                int length = 10; // Define the length of the buffer
+                int index = 0;
+                int count = 0;
+                int numberOfCharToRead = 0;
+                char [ ] buffer = new char [ length ];
+                for(
+                    count = buffer.Length;
+                    (numberOfCharToRead = streamReader.ReadBlock(buffer , index , count)) > 0;
+                    count = buffer.Length
+                )
+                {
+                    Console.WriteLine("read `{0}` char, these chars `{1}` to be read." , numberOfCharToRead , (new string(buffer)).Replace("\n" , "\\n").Replace("\r" , "\\r"));
+                }
+            }
+            Console.WriteLine("End of {0} method call," , MethodBase.GetCurrentMethod().Name);
+        }
+```
+
+will output following
+
+```
+In TestMethod12 method call,
+read `10` char, these chars `Hello\r\nWor` to be read.
+read `10` char, these chars `ld\r\nA\r\nFil` to be read.
+read `10` char, these chars `e\r\nContain` to be read.
+read `10` char, these chars `\r\nA\r\nList\r` to be read.
+read `10` char, these chars `\nOf\r\nWords` to be read.
+End of TestMethod12 method call,
+```
 ## reference
 ### API docs
 + [`StreamReader.Read Method`](https://learn.microsoft.com/en-us/dotnet/api/system.io.streamreader.read?view=net-8.0)
+
++ [`StreamReader.ReadBlock Method`](https://learn.microsoft.com/en-us/dotnet/api/system.io.streamreader.readblock?view=net-8.0)
