@@ -1,10 +1,10 @@
-# CH2 -- read one line asynchronously from stream reader
+# CH6 -- read one line asynchronously from stream reader
 ## objectives
 You will learn how to
 
 + read one line asynchronously from stream reader
 
-## CH2.1 -- read one line asynchronously from stream reader
+## CH6.1 -- read one line asynchronously from stream reader
 ### `ReadLineAsync` instance method
 will **asynchronously** read a line from position 
 
@@ -12,13 +12,13 @@ will **asynchronously** read a line from position
 
 advance the pointer of the stream to beginning of next line.
 
-then returns the `Task<string>` instance containing the line that 
+then returns the `ValueTask<string?>` instance with result -- 
 
-is read.
+the line that is read.
 
 If it reaches the end (meaning that there are more available lines to be read), 
 
-then it will return `Task<string>` instance containing `null`.
+then it will return `ValueTask<string?>` instance with result `null`.
 
 The following code snippet prints the file content line-by-line 
 
@@ -112,6 +112,4 @@ End of TestMethod10 method call,
 ```
 ## reference
 ### API docs
-+ [`StreamReader Class`](https://learn.microsoft.com/en-us/dotnet/api/system.io.streamreader?view=net-8.0)
-
 + [`StreamReader.ReadLineAsync Method`](https://learn.microsoft.com/en-us/dotnet/api/system.io.streamreader.readlineasync?view=net-8.0)
