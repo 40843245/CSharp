@@ -7,7 +7,7 @@ You will learn how to
 ## CH2.1 -- read one line from stream reader
 ### `ReadLine` instance method
 
-It will return the line of current position and move it to next line.
+It will return the line from position (that current pointer points to) to the end of the line and advance the pointer of the stream to beginning of next line.
 
 If it reaches the end (meaning that there are more available lines to be read), 
 
