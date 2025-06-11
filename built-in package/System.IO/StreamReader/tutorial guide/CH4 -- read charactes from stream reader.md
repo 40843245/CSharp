@@ -55,8 +55,6 @@ returns 0 iff the pointer points to the end of the stream and
 
 there are no available char that can be read.
 
-### `ReadAsync` instance method
-
 ### difference between `StreamReader.Read` and `StreamReader.ReadBlock`
 For their behaviour, the main difference between
 
