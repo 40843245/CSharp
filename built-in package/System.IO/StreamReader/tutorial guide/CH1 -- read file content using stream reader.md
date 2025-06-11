@@ -134,3 +134,13 @@ Of
 Words
 End of TestMethod1 method call,
 ```
+
+## reference
+### API docs
++ [`StreamReader Class`](https://learn.microsoft.com/en-us/dotnet/api/system.io.streamreader?view=net-8.0)
+
++ [`StreamReader.ReadLine Method`](https://learn.microsoft.com/en-us/dotnet/api/system.io.streamreader.readline?view=net-8.0)
+
++ [`StreamReader.Close Method`](https://learn.microsoft.com/en-us/dotnet/api/system.io.streamreader.close?view=net-8.0)
+
++ [`StreamReader.Dispose(Boolean) Method`](https://learn.microsoft.com/en-us/dotnet/api/system.io.streamreader.dispose?view=net-8.0)
