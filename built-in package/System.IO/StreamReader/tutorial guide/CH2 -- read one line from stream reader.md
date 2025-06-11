@@ -6,12 +6,19 @@ You will learn how to
 
 ## CH2.1 -- read one line from stream reader
 ### `ReadLine` instance method
+reads the line from position 
 
-It will return the line from position (that current pointer points to) to the end of the line and advance the pointer of the stream to beginning of next line.
+(that current pointer points to) to the end of the line and 
+
+advance the pointer of the stream to beginning of next line.
+
+then returns the `string` instance containing the line that 
+
+is read.
 
 If it reaches the end (meaning that there are more available lines to be read), 
 
-then it will return null.
+then it will return `null`.
 
 The following code snippet prints the file content line-by-line.
 

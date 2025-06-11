@@ -55,6 +55,37 @@ returns 0 iff the pointer points to the end of the stream and
 
 there are no available char that can be read.
 
+### `ReadAsync` instance method
+
+### difference between `StreamReader.Read` and `StreamReader.ReadBlock`
+For their behaviour, the main difference between
+
+`StreamReader.Read(char[] buffer, int index, int count)`
+
+and 
+
+`StreamReader.ReadBlock(char[] buffer, int index, int count)`
+
+instance method is 
+
+the reading is **sync** or **async**, or 
+
+whether there is **no guarantee**.
+
++ `StreamReader.Read(char[] buffer, int index, int count)`:
+
+**no guarantee** to fill the `count` characters. 
+
+May return fewer characters than `count` if data is not immediately available.
+
++ `StreamReader.ReadBlock(char[] buffer, int index, int count)`
+
+**guarantees** to read `count` characters, unless the end of the stream is reached.
+
+For more details, see [What's the difference with `StreamReader.Read` and `StreamReader.ReadBlock`](https://docs.google.com/spreadsheets/d/1tLlLA_Dj6dpSHq1-qs7baLmPNvm2hEBGgd-Kvyfkp58/edit?usp=sharing)
+
+and [What's the difference with `StreamReader.Read` and `StreamReader.ReadBlock`](https://g.co/gemini/share/10aaccbb934b)
+
 ## examples
 ### example 1
 #### main code
