@@ -70,6 +70,7 @@ For more details, see [`using` block](/keyword/using/using.md#using-block)
 
 ## examples
 ### example 1
+#### main code
 The following example will read the file content from 
 
 `~/AppData/DataSource/Input/Words.txt` into a stream reader.
