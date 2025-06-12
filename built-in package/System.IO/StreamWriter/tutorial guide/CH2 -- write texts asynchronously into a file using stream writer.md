@@ -111,6 +111,9 @@ finsh of this song.
         }
 ```
 
+### example 2
+see example 2 in CH3.
+
 ## reference
 ### API docs
 + [`StreamWriter Class`](https://learn.microsoft.com/en-us/dotnet/api/system.io.streamwriter?view=net-8.0)
