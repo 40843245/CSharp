@@ -66,9 +66,10 @@ Invoking following method will
 
 1. create directory `TestMethod3` under `~/AppData/DataSource/Output` directory (if it does NOT exist).
 
-2. create file `output.txt` under `~/AppData/DataSource/Output/TestMethod3` (if it does NOT exist).
+2. create file `outputSyncWithoutAutoFlushFilePath.txt` and `outputSyncWithAutoFlushFilePath.txt` under `~/AppData/DataSource/Output/TestMethod3` (if it does NOT exist).
 
-3. then write (,or overwrite) text into that file as follows
+
+3. then write (,or overwrite) text into those files as follows
 
 `outputSyncWithoutAutoFlushFilePath.txt`
 
