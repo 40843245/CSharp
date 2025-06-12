@@ -30,34 +30,10 @@ assert(IsAutoFlush);
 
 indicates that
 
-the stream can auto flush.
+the stream will auto flush.
 
 ### Remarks
-+ If `AutoFlash` setter-getter property returns `false`,
-
-then when the first operation of `StreamWriter` instance,
-
-the operation of `StreamWriter` instance MUST be wait for 
-
-`the first operation1, Otherwise, instance is thrown a rumtime 
-
-error at runtime. 
-
-And it need to manually flush it (through invoking `Flush` instance method).
-
-+ If `AutoFlash` setter-getter property returns `true`,
-
-then when the first operation of `StreamWriter` instance,
-
-it will perform auto flush (through invoking `Flush` instance method)
-
-the operation of `StreamWriter` instance MUST be wait for 
-
-`the first operation1, Otherwise, instance is thrown a rumtime 
-
-error at runtime. 
-
-And it need not to manually flush it (through invoking `Flush` instance method).
+see Remarks in CH4.
 
 ## examples
 ### example 1
