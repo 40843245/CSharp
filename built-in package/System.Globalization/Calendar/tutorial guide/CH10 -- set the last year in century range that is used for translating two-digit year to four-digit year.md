@@ -26,12 +26,17 @@ when you try to set `TwoDigitYearMax` property,
 
 then it will throw an exception at runtime.
 
-+ If `TwoDigitYearMax` is set to less than 99 or greater than 9999,
++ If `TwoDigitYearMax` is set to less than 99 or greater than 9999 (for `GregorianCalendar` instance),
 
 then it will throw an exception at runtime.
 
++ For other `Calender` instance, 
+
+the accepted range might be different (than `GregorianCalendar` instance).
+
 ## examples
 ### example 1
+#### main code
 The following example uses `GregorianCalendar` as `Calender` to
 
 illustrate how `TwoDigitYearMax` property affects 
@@ -130,3 +135,98 @@ where
     
 `{0}` in `~/AppData/Console/Output/{0}`, again, is the current executing method name.
 
+### example 2
+The following example behaves same thing in example,
+
+but use `TaiwanCalendar` instance as calendar.
+
+> [!NOTE]
+> [`TaiwanCalendar` class](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.taiwancalendar?view=net-8.0) adopts taiwan calender (translated to `台灣曆法`)
+
+In following example,
+
+you will find the fact that
+
+    + for any value of `TwoDigitYearMax` property, 
+    
+    the `ToFourDigit` will always return the input value.
+
+    For example,
+    
+    ```
+    TaiwanCalendar taiwanCalendar = new TaiwanCalendar();
+    int fourDigitYear = taiwanCalendar.ToFourDigit(4); // return 4
+    assert(fourDigitYear == 4);
+    ```
+
+method:
+
+```
+        /// <summary>
+        /// do same thing in `TestMethod7` but use `TaiwanCalendar` instance as calendar.
+        /// </summary>
+        public static void TestMethod8()
+        {
+            Console.WriteLine("In {0} method call," , MethodBase.GetCurrentMethod().Name);
+
+            string outputDirectory = PathConstants.DirectoryConstants.CONSOLE_OUTPUT;
+            string testMethodName = MethodBase.GetCurrentMethod().Name;
+            string testMethodDirectory = Path.Combine(outputDirectory , testMethodName);
+            string outputFileFormattingString = "output ex{0:D6}.txt";
+            string outputFileName;
+            string outputFilePath;
+
+            Directory.CreateDirectory(testMethodDirectory);
+
+            TaiwanCalendar taiwanCalendar = new TaiwanCalendar();
+
+            int counter = 1;
+            for(
+                int lastYearOfCenturyRange = 99;
+                lastYearOfCenturyRange <= 8088;
+                lastYearOfCenturyRange++, counter++
+            )
+            {
+                ///* --------- Example {counter} --------- *///
+                //Console.WriteLine("///* --------- Example {0} --------- *///" , counter);
+
+                outputFileName = string.Format(outputFileFormattingString , counter);
+                outputFilePath = Path.Combine(testMethodDirectory , outputFileName);
+
+                FileHandler.CreateFile(outputFilePath);
+
+                using(StreamWriter streamWriter = new StreamWriter(outputFilePath , false))
+                {
+                    streamWriter.WriteLine("///* --------- Example {0} --------- *///" , counter);
+                    streamWriter.WriteLine("///* ----------- lastYearOfCenturyRange:{0}  ----------- *///" , lastYearOfCenturyRange);
+
+                    taiwanCalendar.TwoDigitYearMax = lastYearOfCenturyRange;
+                    streamWriter.WriteLine("After setting last year of a 100-year range to {0}," , taiwanCalendar.TwoDigitYearMax);
+
+                    for(int twoDigitsYear = 1; twoDigitsYear < 100; twoDigitsYear++)
+                    {
+                        int fourDigitsYear = taiwanCalendar.ToFourDigitYear(twoDigitsYear);
+                        streamWriter.WriteLine("+ The year with last two digit {0:D2} represents year {1} in A.D." , twoDigitsYear , fourDigitsYear);
+                    }
+                }
+            }
+        }
+```
+
+Output:
+
+see `~/AppData/Console/Output/{0}` in demo project
+    
+where 
+    
+`{0}` in `~/AppData/Console/Output/{0}`, again, is the current executing method name.
+
+## reference
+### API docs
++ [`Calendar.TwoDigitYearMax Property`](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.calendar.twodigityearmax?view=net-8.0)
+
++ [`Calendar.ToFourDigitYear(Int32) Method`](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.calendar.tofourdigityear?view=net-8.0)
+
++ [`GregorianCalendar Class`](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.gregoriancalendar?view=net-8.0)
+
++ [`TaiwanCalendar Class`](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.taiwancalendar?view=net-8.0)
