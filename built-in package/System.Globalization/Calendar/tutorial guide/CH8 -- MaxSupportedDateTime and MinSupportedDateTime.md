@@ -187,3 +187,20 @@ Is MaxSupportedDateTime getter property of calendar non-referentially equals to 
 Is MinSupportedDateTime getter property of calendar referentially equals to DateTime.MaxValue static field?`True`
 Is MinSupportedDateTime getter property of calendar non-referentially equals to DateTime.MaxValue static field?`True`
 ```
+
+## reference
+### API docs
++ [`Calendar.MaxSupportedDateTime Property`](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.calendar.maxsupporteddatetime?view=net-8.0)
+
++ [`Calendar.MinSupportedDateTime Property`](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.calendar.minsupporteddatetime?view=net-8.0)
+
+### source code
+#### `Calender.cs`
+
++ About `MaxSupportedDateTime`,
+
+[source code of `Calender.cs` which defines `MaxSupportedDateTime`](https://github.com/dotnet/runtime/blob/5535e31a712343a63f5d7d796cd874e563e5ac14/src/libraries/System.Private.CoreLib/src/System/Globalization/Calendar.cs#L64C57-L64C74)
+
++ About `MinSupportedDateTime`, 
+
+[source code of `Calender.cs` which defines `MinSupportedDateTime`](https://github.com/dotnet/runtime/blob/5535e31a712343a63f5d7d796cd874e563e5ac14/src/libraries/System.Private.CoreLib/src/System/Globalization/Calendar.cs#L62C57-L62C74)
