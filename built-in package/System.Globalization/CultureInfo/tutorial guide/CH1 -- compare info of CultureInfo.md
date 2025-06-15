@@ -11,6 +11,9 @@ gets the [CompareInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globa
 ## examples
 ### example 1
 #### main code
+Invoke following method
+
+```
        /// <summary>
        /// illustrate how to
        /// 
@@ -48,6 +51,7 @@ gets the [CompareInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globa
            Console.WriteLine("   With myCIintl.CompareInfo.Compare: {0}" , myCIintl.CompareInfo.Compare("llegar" , "lugar"));
            Console.WriteLine("   With myCItrad.CompareInfo.Compare: {0}" , myCItrad.CompareInfo.Compare("llegar" , "lugar"));
        }
+```
 
 will output following
 
