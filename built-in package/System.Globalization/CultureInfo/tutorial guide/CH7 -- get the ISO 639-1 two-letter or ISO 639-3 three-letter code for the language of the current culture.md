@@ -10,3 +10,4 @@ gets the `ISO 639-1` two-letter or `ISO 639-3` three-letter code for the languag
 ## reference
 ### API docs
 + [`CultureInfo.TwoLetterISOLanguageName Property`](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.twoletterisolanguagename?view=net-8.0)
+
