@@ -11,6 +11,7 @@ get the culture name in the format languagefull `[country/regionfull]` in Englis
 ## examples
 ### example 1
 see example of CH1. 
+
 ## reference
 ### API docs
 + [CultureInfo.EnglishName Property](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.englishname?view=net-8.0)
