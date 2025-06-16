@@ -10,52 +10,76 @@ gets the [CompareInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globa
 
 ## examples
 ### example 1
+#### extension methods
+
+`GetInfoWithInternationalCultureAndTraditionCulture` extension method is defined in `CultureInfoExtensionMethods` static class
+
+definition of `GetInfoWithInternationalCultureAndTraditionCulture` 
+
+```
+        public static string GetInfoWithInternationalCultureAndTraditionCulture(
+            this CultureInfo internationalCulture,
+            CultureInfo traditionalCulture
+        )
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            // Displays the properties of each culture.
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "PROPERTY" , "INTERNATIONAL" , "TRADITIONAL");
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "CompareInfo" , internationalCulture.CompareInfo , traditionalCulture.CompareInfo);
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "DisplayName" , internationalCulture.DisplayName , traditionalCulture.DisplayName);
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "EnglishName" , internationalCulture.EnglishName , traditionalCulture.EnglishName);
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "IsNeutralCulture" , internationalCulture.IsNeutralCulture , traditionalCulture.IsNeutralCulture);
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "IsReadOnly" , internationalCulture.IsReadOnly , traditionalCulture.IsReadOnly);
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "LCID" , internationalCulture.LCID , traditionalCulture.LCID);
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "Name" , internationalCulture.Name , traditionalCulture.Name);
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "NativeName" , internationalCulture.NativeName , traditionalCulture.NativeName);
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "Parent" , internationalCulture.Parent , traditionalCulture.Parent);
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "TextInfo" , internationalCulture.TextInfo , traditionalCulture.TextInfo);
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "ThreeLetterISOLanguageName" , internationalCulture.ThreeLetterISOLanguageName , traditionalCulture.ThreeLetterISOLanguageName);
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "ThreeLetterWindowsLanguageName" , internationalCulture.ThreeLetterWindowsLanguageName , traditionalCulture.ThreeLetterWindowsLanguageName);
+            stringBuilder.AppendFormat("{0,-31}{1,-47}{2,-25}\n" , "TwoLetterISOLanguageName" , internationalCulture.TwoLetterISOLanguageName , traditionalCulture.TwoLetterISOLanguageName);
+            stringBuilder.AppendLine();
+
+            // Compare two strings using internationalCulture.
+            stringBuilder.AppendFormat("Comparing \"llegar\" and \"lugar\"\n");
+            stringBuilder.AppendFormat("   With internationalCulture.CompareInfo.Compare: {0}\n" , internationalCulture.CompareInfo.Compare("llegar" , "lugar"));
+            stringBuilder.AppendFormat("   With traditionalCulture.CompareInfo.Compare: {0}\n" , traditionalCulture.CompareInfo.Compare("llegar" , "lugar"));
+
+            return stringBuilder.ToString();
+        }
+```
 #### main code
 Invoke following method
 
 ```
-       /// <summary>
-       /// illustrate how to
-       /// 
-       /// + access propeties of `CultereInfo`
-       /// </summary>
-       public static void TestMethod1()
-       {
-           Console.WriteLine("In {0} method call" , MethodBase.GetCurrentMethod().Name);
+        /// <summary>
+        /// illustrate how to
+        /// 
+        /// + access propeties of `CultereInfo`
+        /// </summary>
+        public static void TestMethod1()
+        {
+            Console.WriteLine("In {0} method call" , MethodBase.GetCurrentMethod().Name);
 
-           // Creates and initializes the CultureInfo which uses the international sort.
-           CultureInfo myCIintl = new CultureInfo("es-ES" , false);
+            string infoText;
 
-           // Creates and initializes the CultureInfo which uses the traditional sort.
-           CultureInfo myCItrad = new CultureInfo(0x040A , false);
+            // Creates and initializes the CultureInfo which uses the international sort.
+            CultureInfo myInternationCulture = new CultureInfo("es-ES" , false);
 
-           // Displays the properties of each culture.
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "PROPERTY" , "INTERNATIONAL" , "TRADITIONAL");
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "CompareInfo" , myCIintl.CompareInfo , myCItrad.CompareInfo);
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "DisplayName" , myCIintl.DisplayName , myCItrad.DisplayName);
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "EnglishName" , myCIintl.EnglishName , myCItrad.EnglishName);
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "IsNeutralCulture" , myCIintl.IsNeutralCulture , myCItrad.IsNeutralCulture);
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "IsReadOnly" , myCIintl.IsReadOnly , myCItrad.IsReadOnly);
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "LCID" , myCIintl.LCID , myCItrad.LCID);
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "Name" , myCIintl.Name , myCItrad.Name);
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "NativeName" , myCIintl.NativeName , myCItrad.NativeName);
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "Parent" , myCIintl.Parent , myCItrad.Parent);
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "TextInfo" , myCIintl.TextInfo , myCItrad.TextInfo);
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "ThreeLetterISOLanguageName" , myCIintl.ThreeLetterISOLanguageName , myCItrad.ThreeLetterISOLanguageName);
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "ThreeLetterWindowsLanguageName" , myCIintl.ThreeLetterWindowsLanguageName , myCItrad.ThreeLetterWindowsLanguageName);
-           Console.WriteLine("{0,-31}{1,-47}{2,-25}" , "TwoLetterISOLanguageName" , myCIintl.TwoLetterISOLanguageName , myCItrad.TwoLetterISOLanguageName);
-           Console.WriteLine();
+            // Creates and initializes the CultureInfo which uses the traditional sort.
+            CultureInfo myTraditionalCulture = new CultureInfo(0x040A , false);
 
-           // Compare two strings using myCIintl.
-           Console.WriteLine("Comparing \"llegar\" and \"lugar\"");
-           Console.WriteLine("   With myCIintl.CompareInfo.Compare: {0}" , myCIintl.CompareInfo.Compare("llegar" , "lugar"));
-           Console.WriteLine("   With myCItrad.CompareInfo.Compare: {0}" , myCItrad.CompareInfo.Compare("llegar" , "lugar"));
-       }
+            infoText = myInternationCulture.GetInfoWithInternationalCultureAndTraditionCulture(myTraditionalCulture);
+            
+            Console.WriteLine(infoText);
+        }
 ```
 
 will output following
 
 ```
+In TestMethod1 method call
 PROPERTY                       INTERNATIONAL                                  TRADITIONAL
 CompareInfo                    CompareInfo - es-ES                            CompareInfo - es-ES_tradnl
 DisplayName                    Spanish (Spain)                                Spanish (Spain)
@@ -72,8 +96,9 @@ ThreeLetterWindowsLanguageName ESN                                            ES
 TwoLetterISOLanguageName       es                                             es
 
 Comparing "llegar" and "lugar"
-   With myCIintl.CompareInfo.Compare: -1
-   With myCItrad.CompareInfo.Compare: -1
+   With internationalCulture.CompareInfo.Compare: -1
+   With traditionalCulture.CompareInfo.Compare: -1
+
 ```
 
 ## reference
