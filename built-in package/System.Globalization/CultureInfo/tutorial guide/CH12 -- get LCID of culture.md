@@ -14,7 +14,7 @@ For more details, see [2.2 LCID Structure in Microsoft Learn](https://learn.micr
 
 ## examples
 ### example 1
-see example 1 in CH1.
+see example 1 in Advanced CH1.
 
 ## reference
 ### API docs

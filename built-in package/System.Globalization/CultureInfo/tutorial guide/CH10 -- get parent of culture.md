@@ -10,7 +10,7 @@ Gets the [CultureInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globa
 
 ## examples
 ### example 1
-see example 1 in CH1
+see example 1 in Advanced CH1
 
 ## reference
 ### API docs

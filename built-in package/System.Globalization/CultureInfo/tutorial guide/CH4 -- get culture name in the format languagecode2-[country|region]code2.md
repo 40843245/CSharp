@@ -10,7 +10,7 @@ gets the culture name in the format languagecode2-country/regioncode2.
 
 ## examples
 ### example 1
-see example 1 in CH1.
+see example 1 in Advanced CH1.
 
 ## reference
 ### API docs

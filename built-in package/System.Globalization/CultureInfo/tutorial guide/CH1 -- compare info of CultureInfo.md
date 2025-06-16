@@ -79,3 +79,6 @@ Comparing "llegar" and "lugar"
 ## reference
 ### API docs
 + [`CultureInfo.CompareInfo Property`](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.compareinfo?view=net-8.0)
+
+### examples
+The code in example 1 is referenced from the first example in [`CultureInfo Class`](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo?view=net-8.0)

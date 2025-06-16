@@ -10,7 +10,7 @@ gets the [TextInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globaliz
 
 ## examples
 ### example 1
-see example 1 in CH1.
+see example 1 in Advanced CH1.
 
 ## reference
 ### API docs

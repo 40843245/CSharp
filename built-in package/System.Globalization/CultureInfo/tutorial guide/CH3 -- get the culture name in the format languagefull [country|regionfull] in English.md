@@ -10,7 +10,7 @@ get the culture name in the format languagefull `[country/regionfull]` in Englis
 
 ## examples
 ### example 1
-see example of CH1. 
+see example of Advanced CH1. 
 
 ## reference
 ### API docs
