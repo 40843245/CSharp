@@ -1,10 +1,10 @@
-# CH1 -- compare info of CultureInfo
+# Advanced Reading CH1 -- compare info of CultureInfo
 ## objectives
 You will learn how to 
 
 + compare info of CultureInfo
 
-## CH1.1 -- compare info of CultureInfo
+## Advanced Reading CH1.1 -- compare info of CultureInfo
 ### `CompareInfo` getter property
 gets the [CompareInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.compareinfo?view=net-8.0) that defines how to compare strings for the culture.
 

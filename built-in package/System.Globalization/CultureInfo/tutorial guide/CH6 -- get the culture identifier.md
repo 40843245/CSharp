@@ -10,7 +10,7 @@ gets the culture identifier for the current [CultureInfo](https://learn.microsof
 
 ## examples
 ### example 1
-see example 1 in Advanced CH1.
+see example 1 in Advanced Reading CH1.
 
 ## reference
 ### API docs
