@@ -44,4 +44,4 @@ then compare their value (if their hash code are considered to be same).
 ### Google Gemini
 Thank's to Google Gemini. I've reviewed/learned the core concept of comparing two instance.
 
-
++ [How to compare equality (using `IEqualityComparer` interface) for `Dictionary<string,string>` which checks the two numeric string are equal (after converts it to number then compare it) in when try to add a key-value pair (through `TryAdd` method call) in `C#`?](https://github.com/40843245/CSharp/blob/main/C%23%20Tutorial/comparison/equality%20comparison/hash%20code.md)
