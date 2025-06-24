@@ -12,7 +12,7 @@ Dictionary<string , string> dictionary = new Dictionary<string , string>();
 dictionary.ContainsKey(key);
 ```
 
-will check the `key` is in the `dictionary`.
+will check the `key` is one of keys in the `dictionary`.
 
 ## examples
 ### example 1
@@ -56,7 +56,7 @@ Invoking following method
                 Console.WriteLine("The {0} key deos NOT exist in the dictionary" , key);
             }
 
-            Console.WriteLine("End {0} method call," , MethodBase.GetCurrentMethod().Name);
+            Console.WriteLine("End of {0} method call," , MethodBase.GetCurrentMethod().Name);
         }
 ```
 
@@ -66,7 +66,7 @@ will output following
 In TestMethod5 method call,
 The Yazawa key exists in the dictionary
 The Ai key deos NOT exist in the dictionary
-End TestMethod5 method call,
+End of TestMethod5 method call,
 ```
 
 ## reference
