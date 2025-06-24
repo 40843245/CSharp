@@ -137,4 +137,6 @@ End of TestMethod8 method call,
 + [`Dictionary<TKey,TValue>.TrimExcess Method`](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2.trimexcess?view=net-8.0)
 
 ## further reading
-+ About internal implementation, see [Google Gemini's response -- `C#` Dictionary Capacity Explained](https://g.co/gemini/share/e4b5d675176e)
++ About internal implementation,
+
+see [Google Gemini's response -- `C#` Dictionary Capacity Explained](https://g.co/gemini/share/e4b5d675176e)
