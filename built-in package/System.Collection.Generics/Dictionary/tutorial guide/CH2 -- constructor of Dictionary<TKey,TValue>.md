@@ -29,3 +29,7 @@ will instaniate an empty dictionary (i.e. no entries) using `NumericStringEquali
 ```
 
 will instaniate an dictionary with memberwise-cloned `dictionary` using `NumericStringEqualityComparer()` that implements `IEqualComparer` (used to compare the key is equal to others) 
+
+## reference
+### API docs
++ [Dictionary<TKey,TValue> Constructors](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2.-ctor?view=net-8.0)
