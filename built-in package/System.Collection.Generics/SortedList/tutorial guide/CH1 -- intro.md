@@ -29,7 +29,7 @@ their data structure implementaion details are different, thus there are differe
 | :-- | :-- | :-- |
 | data structure | internally uses RBT (Red-Black Tree) | internally uses two arrays—one for keys and one for values. |
 | search | `O(log n)` since Red-Black Tree is a special kind of binary tree, it uses binary search. | `O(log n)` since it uses binary search. |
-| insertion | `O(log n)` | `O(n)` since it uses arrays,<br>and it can sort keys and values using insertion sort<br>which takes `O(n)` iff the original array is   |
+| insertion | `O(log n)` since it will perform binary search | `O(n)` since it uses arrays,<br>and it can sort keys and values using insertion sort<br>which takes `O(n)` iff the original array is fully sorted (here, is this case). |
 | search | `O(log n)` since Red-Black Tree is a special kind of binary tree, it uses binary search. | `O(log n)` since it uses binary search. |
 
 
