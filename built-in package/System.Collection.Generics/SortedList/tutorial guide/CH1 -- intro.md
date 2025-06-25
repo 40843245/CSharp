@@ -25,13 +25,16 @@ Although keys are automatically sorted after performing an operation that change
 
 their data structure implementaion details are different, thus there are different performance with same operations.
 
+Here is the time complexity and (memory) space complexity
+
 | item | `SortedDictionary<TKey,TValue>` | `SortedList<TKey,TValue>` |
 | :-- | :-- | :-- |
 | data structure | internally uses RBT (Red-Black Tree) | internally uses two arrays—one for keys and one for values. |
 | search | `O(log n)` since Red-Black Tree is a special kind of binary tree, it uses binary search. | `O(log n)` since it uses binary search. |
 | insertion | `O(log n)` since it will perform binary search | `O(n)` since it uses arrays,<br>and it can sort keys and values using insertion sort<br>which takes `O(n)` iff the original array is fully sorted (here, is this case). |
-| search | `O(log n)` since Red-Black Tree is a special kind of binary tree, it uses binary search. | `O(log n)` since it uses binary search. |
-
+| deleietion | `O(log n)` since it will perform binary search | `O(n)` since it just needs to find the value which takes `O(n)`, remove it, then shifts left which takes `O(n)`. The total time is `O(n)+O(n)=O(n)`  |
+| memory usage | less efficient than the another due to it is stored using Red-Black Tree | more efficient than the another since it uses array to store, while array is contiguous. |
+| 
 
 
 
