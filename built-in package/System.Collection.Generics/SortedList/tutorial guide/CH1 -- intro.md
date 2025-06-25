@@ -25,7 +25,7 @@ Although keys are automatically sorted after performing an operation that change
 
 their data structure implementaion details are different, thus there are different performance with same operations.
 
-Here is the time complexity and (memory) space complexity
+Here is the comparison table of featurem, time complexity and (memory) space complexity etc.
 
 | item | `SortedDictionary<TKey,TValue>` | `SortedList<TKey,TValue>` |
 | :-- | :-- | :-- |
@@ -34,8 +34,5 @@ Here is the time complexity and (memory) space complexity
 | insertion | `O(log n)` since it will perform binary search | `O(n)` since it uses arrays,<br>and it can sort keys and values using insertion sort<br>which takes `O(n)` iff the original array is fully sorted (here, is this case). |
 | deleietion | `O(log n)` since it will perform binary search | `O(n)` since it just needs to find the value which takes `O(n)`, remove it, then shifts left which takes `O(n)`. The total time is `O(n)+O(n)=O(n)`  |
 | memory usage | less efficient than the another due to it is stored using Red-Black Tree | more efficient than the another since it uses array to store, while array is contiguous. |
-| 
-
-
-
-
+| provide (zero-based) index access? | NO, since it is NOT an array | YES, since it consists of two arrays. |
+| use case | ideal for scenarios with frequent insertions and deletions, or when the dataset is large. | best for scenarios where the dataset is relatively small and you don't expect frequent insertions or deletions. |
